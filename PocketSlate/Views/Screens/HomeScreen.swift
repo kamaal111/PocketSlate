@@ -8,8 +8,36 @@
 import SwiftUI
 
 struct HomeScreen: View {
+    @State private var searchText = ""
+
     var body: some View {
-        Text(UserData.languageCode)
+        ScrollView {
+            TextField("Search", text: $searchText)
+                .padding(.horizontal, .medium)
+            ForEach(searchedText, id: \.self) { language in
+                Text(language)
+            }
+        }
+    }
+
+    private var searchedText: [String] {
+        let searchText = searchText.replacingOccurrences(of: " ", with: "")
+        if searchText.isEmpty {
+            return UserData.locales
+                .map { makeMessage(fromLocale: $0) }
+        }
+
+        return UserData.locales
+            .map { makeMessage(fromLocale: $0) }
+            .filter { $0
+                .replacingOccurrences(of: " ", with: "")
+                .fuzzyMatch(searchText)
+            }
+    }
+
+    private func makeMessage(fromLocale locale: Locale) -> String {
+        let identifier = locale.identifier
+        return "\(identifier) - \(locale.localizedString(forIdentifier: identifier)!)"
     }
 }
 

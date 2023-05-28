@@ -8,7 +8,6 @@ bump-version:
 
 clear-mac-data:
     rm -rf ~/Library/Containers/io.kamaal.PocketSlate
-    echo "Cleared Mac data"
 
 format:
     swiftformat .
@@ -18,16 +17,13 @@ acknowledgements:
 
 generate: acknowledgements localize
 
-build:
+build: generate
     #!/bin/sh
-
-    just generate
 
     CONFIGURATION="Debug"
     WORKSPACE="PocketSlate.xcworkspace"
     SCHEME="PocketSlate"
 
-    # set -o pipefail && xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
 [private]

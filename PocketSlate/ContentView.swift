@@ -11,7 +11,7 @@ import KamaalNavigation
 struct ContentView: View {
     var body: some View {
         NavigationStackView(
-            stack: [] as [Screens],
+            stack: [Screens](),
             root: { screen in MainView(screen: screen) },
             subView: { screen in MainView(screen: screen, displayMode: .inline) },
             sidebar: { Sidebar() }

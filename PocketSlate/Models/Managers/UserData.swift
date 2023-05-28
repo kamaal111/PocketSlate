@@ -9,6 +9,7 @@ import SwiftUI
 import AppLocales
 import KamaalLogger
 import KamaalSettings
+import KamaalExtensions
 
 private let logger = KamaalLogger(from: UserData.self)
 
@@ -31,17 +32,26 @@ final class UserData: ObservableObject {
         )
     }
 
-    static var languageCode: String {
-        let identifier: String?
-        if #available(macOS 13, iOS 16, *) {
-            assert(currentLocale.language.languageCode?.identifier != nil)
-            identifier = currentLocale.language.languageCode?.identifier
-        } else {
-            identifier = currentLocale.languageCode
-        }
+    static var locales: [Locale] {
+        let languages = Constants.priorityLanguages
 
-        assert(identifier != nil)
-        return identifier ?? Constants.defaultLanguageCode
+        let groupedIdentifiers = Locale.availableIdentifiers
+            .reduce((primary: [Locale](), sub: [Locale]())) { result, identifier in
+                let locale = Locale(identifier: identifier)
+                guard !languages.contains(locale) else { return result }
+
+                let splittedIdentifer = identifier.split(separator: "_")
+                if splittedIdentifer.count > 1 {
+                    return (result.primary, result.sub.appended(locale))
+                }
+
+                return (result.primary.appended(locale), result.sub)
+            }
+
+        return languages
+            .concat(groupedIdentifiers.primary.sorted())
+            .concat(groupedIdentifiers.sub.sorted())
+            .uniques()
     }
 
     private var colorConfiguration: SettingsConfiguration.ColorsConfiguration {
