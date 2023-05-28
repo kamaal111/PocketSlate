@@ -20,6 +20,8 @@ final class UserData: ObservableObject {
         color: Color("AccentColor")
     )
 
+    private static var currentLocale = Locale.current
+
     var settingsConfiguration: SettingsConfiguration {
         .init(
             feedback: .none,
@@ -27,6 +29,19 @@ final class UserData: ObservableObject {
             acknowledgements: AcknowledgementsJSON.shared.content,
             showLogs: showLogs
         )
+    }
+
+    static var languageCode: String {
+        let identifier: String?
+        if #available(macOS 13, iOS 16, *) {
+            assert(currentLocale.language.languageCode?.identifier != nil)
+            identifier = currentLocale.language.languageCode?.identifier
+        } else {
+            identifier = currentLocale.languageCode
+        }
+
+        assert(identifier != nil)
+        return identifier ?? Constants.defaultLanguageCode
     }
 
     private var colorConfiguration: SettingsConfiguration.ColorsConfiguration {
