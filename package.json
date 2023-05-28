@@ -1,0 +1,16 @@
+{
+  "name": "pocketslate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "author": "Kamaal Farah",
+  "license": "MIT",
+  "devDependencies": {
+    "@kamaal111/localize": "^0.1.0",
+    "git-format-staged": "^3.0.0",
+    "husky": "^8.0.1"
+  }
+}
