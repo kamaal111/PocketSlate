@@ -25,8 +25,8 @@ struct MainView: View {
     var body: some View {
         KJustStack {
             switch screen {
-            case .home:
-                HomeScreen()
+            case .phrases:
+                PhrasesScreen()
             case .settings:
                 AppSettingsScreen()
             }
@@ -39,6 +39,6 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView(screen: .home)
+        MainView(screen: .phrases)
     }
 }

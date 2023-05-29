@@ -1,5 +1,5 @@
 //
-//  HomeScreen.swift
+//  PhrasesScreen.swift
 //  PocketSlate
 //
 //  Created by Kamaal Farah on 28/05/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeScreen: View {
+struct PhrasesScreen: View {
     @State private var searchText = ""
 
     var body: some View {
@@ -41,8 +41,8 @@ struct HomeScreen: View {
     }
 }
 
-struct HomeScreen_Previews: PreviewProvider {
+struct PhrasesScreen_Previews: PreviewProvider {
     static var previews: some View {
-        HomeScreen()
+        PhrasesScreen()
     }
 }

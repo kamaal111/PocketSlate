@@ -1,7 +1,7 @@
 // en.js
 
 module.exports = {
-    HOME: 'Home',
+    PHRASES: 'Phrases',
     SCENES: 'Scenes',
     TOGGLE_SIDEBAR: 'Toggle sidebar',
     SETTINGS: 'Settings',
