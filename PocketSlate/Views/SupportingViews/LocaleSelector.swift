@@ -14,16 +14,13 @@ struct LocaleSelector: View {
     @EnvironmentObject private var userData: UserData
 
     @State private var textSize: CGSize = .zero
-    @State private var selected = false
 
     let currentLocale: Locale
-    let locales: [Locale]
+    let isSelected: Bool
+    let action: () -> Void
 
     var body: some View {
-        Button(action: {
-            print("currentLocale", currentLocale)
-            withAnimation { selected.toggle() }
-        }) {
+        Button(action: action) {
             ZStack {
                 backgroundColor
                 HStack {
@@ -49,7 +46,7 @@ struct LocaleSelector: View {
                     Image(systemName: "chevron.down")
                         .font(Font.headline.bold())
                         .foregroundColor(.accentColor)
-                        .rotationEffect(selected ? Angle(degrees: 180) : Angle(degrees: 0))
+                        .rotationEffect(isSelected ? Angle(degrees: 180) : Angle(degrees: 0))
                         .padding(.trailing, .small)
                 }
             }
@@ -82,8 +79,8 @@ struct LocaleSelector: View {
 struct LocaleSelector_Previews: PreviewProvider {
     static var previews: some View {
         HStack {
-            LocaleSelector(currentLocale: UserData.locales[300], locales: UserData.locales)
-            LocaleSelector(currentLocale: UserData.locales[0], locales: UserData.locales)
+            LocaleSelector(currentLocale: PhrasesScreen.ViewModel.locales.last!, isSelected: true, action: { })
+            LocaleSelector(currentLocale: PhrasesScreen.ViewModel.locales.first!, isSelected: false, action: { })
         }
         .padding(.vertical, .large)
         .environmentObject(UserData())

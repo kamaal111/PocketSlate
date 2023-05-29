@@ -33,39 +33,6 @@ final class UserData: ObservableObject {
         )
     }
 
-    static let locales: [Locale] = {
-        let languages = Constants.priorityLanguages
-
-        let groupedIdentifiers = Locale.availableIdentifiers
-            .reduce((primary: [Locale](), sub: [Locale]())) { result, identifier in
-                let locale = Locale(identifier: identifier)
-                guard !languages.contains(locale) else { return result }
-
-                let splittedIdentifer = identifier.split(separator: "_")
-                if splittedIdentifer.count > 1 {
-                    return (result.primary, result.sub.appended(locale))
-                }
-
-                return (result.primary.appended(locale), result.sub)
-            }
-
-        let combinedLocales = languages
-            .concat(groupedIdentifiers.primary.sorted())
-            .concat(groupedIdentifiers.sub.sorted())
-            .uniques()
-
-        guard let shortenedPreferredLocaleIdentifier = Locale.current.identifier.split(separator: "_").first
-        else { return combinedLocales }
-
-        let preferredLocale = Locale(identifier: String(shortenedPreferredLocaleIdentifier))
-        guard let preferredLocaleIndex = combinedLocales.findIndex(by: \.identifier, is: preferredLocale.identifier)
-        else { return combinedLocales }
-
-        return combinedLocales
-            .removed(at: preferredLocaleIndex)
-            .prepended(preferredLocale)
-    }()
-
     private var colorConfiguration: SettingsConfiguration.ColorsConfiguration {
         .init(colors: [appColor], currentColor: appColor)
     }
