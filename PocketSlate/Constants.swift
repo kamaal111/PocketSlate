@@ -8,9 +8,8 @@
 import Foundation
 
 enum Constants {
-    static let defaultLanguageCode = Locale(identifier: "en")
     static let priorityLanguages = [
-        defaultLanguageCode,
+        Locale(identifier: "en"),
         Locale(identifier: "zh"),
         Locale(identifier: "hi"),
         Locale(identifier: "es"),

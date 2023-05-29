@@ -7,47 +7,32 @@
 
 import SwiftUI
 import KamaalUI
-import KamaalAlgorithms
 
 struct PhrasesScreen: View {
-    @State private var searchText = ""
+    @Environment(\.colorScheme) private var colorScheme
+
+    @EnvironmentObject private var userData: UserData
 
     var body: some View {
-        KScrollableForm {
-            ForEach(searchedText, id: \.self) { language in
-                Text(language)
-                    .ktakeWidthEagerly()
+        VStack {
+            ZStack {
+                HStack {
+                    LocaleSelector(currentLocale: UserData.locales[300], locales: UserData.locales)
+                    LocaleSelector(currentLocale: UserData.locales[1], locales: UserData.locales)
+                }
             }
+            .padding(.vertical, .small)
+            .background(colorScheme == .dark ? Color.black : Color.gray.opacity(0.1))
+            .ktakeWidthEagerly()
+            Spacer()
+                .ktakeSizeEagerly()
         }
-        .searchable(text: $searchText)
-    }
-
-    private var searchedText: [String] {
-        let searchText = searchText.replacingOccurrences(of: " ", with: "")
-
-        let formattedLocales = UserData.locales
-            .map { makeMessage(fromLocale: $0) }
-
-        if searchText.isEmpty {
-            return formattedLocales
-        }
-
-        return formattedLocales
-            .filter {
-                $0
-                    .replacingOccurrences(of: " ", with: "")
-                    .fuzzyMatch(searchText)
-            }
-    }
-
-    private func makeMessage(fromLocale locale: Locale) -> String {
-        let identifier = locale.identifier
-        return "\(identifier) - \(locale.localizedString(forIdentifier: identifier)!)"
     }
 }
 
 struct PhrasesScreen_Previews: PreviewProvider {
     static var previews: some View {
         PhrasesScreen()
+            .environmentObject(UserData())
     }
 }

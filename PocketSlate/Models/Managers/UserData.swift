@@ -20,6 +20,7 @@ final class UserData: ObservableObject {
         name: AppLocales.getText(.DEFAULT_COLOR),
         color: Color("AccentColor")
     )
+    @Published private(set) var appLocale = Locale(identifier: "en")
 
     private static var currentLocale = Locale.current
 
