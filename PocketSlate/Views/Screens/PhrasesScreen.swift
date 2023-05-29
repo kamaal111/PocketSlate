@@ -16,6 +16,7 @@ struct PhrasesScreen: View {
         KScrollableForm {
             ForEach(searchedText, id: \.self) { language in
                 Text(language)
+                    .ktakeWidthEagerly()
             }
         }
         .searchable(text: $searchText)
@@ -23,13 +24,15 @@ struct PhrasesScreen: View {
 
     private var searchedText: [String] {
         let searchText = searchText.replacingOccurrences(of: " ", with: "")
+
+        let formattedLocales = UserData.locales
+            .map { makeMessage(fromLocale: $0) }
+
         if searchText.isEmpty {
-            return UserData.locales
-                .map { makeMessage(fromLocale: $0) }
+            return formattedLocales
         }
 
-        return UserData.locales
-            .map { makeMessage(fromLocale: $0) }
+        return formattedLocales
             .filter {
                 $0
                     .replacingOccurrences(of: " ", with: "")
