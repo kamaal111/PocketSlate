@@ -6,4 +6,7 @@ module.exports = {
     TOGGLE_SIDEBAR: 'Toggle sidebar',
     SETTINGS: 'Settings',
     DEFAULT_COLOR: 'Default Color',
+    LANGUAGES: 'Languages',
+    DONE: 'Done',
+    CLOSE: 'Close',
 }

@@ -18,38 +18,46 @@ struct PhrasesScreen: View {
 
     var body: some View {
         VStack {
-            ZStack {
-                HStack {
-                    LocaleSelector(
-                        currentLocale: viewModel.primaryLocale,
-                        isSelected: viewModel.selectedLocaleSelector == .primary,
-                        action: { viewModel.selectLocaleSelector(.primary) }
-                    )
-                    LocaleSelector(
-                        currentLocale: viewModel.secondaryLocale,
-                        isSelected: viewModel.selectedLocaleSelector == .secondary,
-                        action: { viewModel.selectLocaleSelector(.secondary) }
-                    )
-                }
-            }
-            .padding(.vertical, .small)
-            .background(colorScheme == .dark ? Color.black : Color.gray.opacity(0.1))
-            .ktakeWidthEagerly()
+            LocaleSelectors(
+                primaryLocale: viewModel.primaryLocale,
+                secondaryLocale: viewModel.secondaryLocale,
+                selectedLocaleSelector: viewModel.selectedLocaleSelector,
+                selectLocaleSelector: { viewModel.selectLocaleSelector($0) }
+            )
             Spacer()
                 .ktakeSizeEagerly()
+        }
+        .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {
+            LocaleSelectorSheet(onClose: { viewModel.closeLocaleSelectorSheet() })
         }
     }
 }
 
 extension PhrasesScreen {
     final class ViewModel: ObservableObject {
-        @Published private(set) var selectedLocaleSelector: LocaleSelectorType?
+        @Published private(set) var selectedLocaleSelector: LocaleSelectorTypes? {
+            didSet { Task { await selectedLocaleSelectorDidSet() } }
+        }
+
         @Published private(set) var primaryLocale = ViewModel.locales.last!
         @Published private(set) var secondaryLocale = ViewModel.locales.first!
+        @Published var localeSelectorSheetIsShown = false {
+            didSet { Task { await localeSelectorSheetIsShownDidSet() } }
+        }
 
         @MainActor
-        func selectLocaleSelector(_ selector: LocaleSelectorType) {
+        func selectLocaleSelector(_ selector: LocaleSelectorTypes) {
             withAnimation { self.selectedLocaleSelector = selector }
+        }
+
+        @MainActor
+        func closeLocaleSelectorSheet() {
+            localeSelectorSheetIsShown = false
+        }
+
+        @MainActor
+        func openLocaleSelectorSheet() {
+            localeSelectorSheetIsShown = true
         }
 
         static let locales: [Locale] = {
@@ -88,13 +96,27 @@ extension PhrasesScreen {
                 .removed(at: preferredLocaleIndex)
                 .prepended(preferredLocale)
         }()
-    }
-}
 
-extension PhrasesScreen {
-    enum LocaleSelectorType {
-        case primary
-        case secondary
+        @MainActor
+        private func localeSelectorSheetIsShownDidSet() {
+            if !localeSelectorSheetIsShown, selectedLocaleSelector != nil {
+                selectedLocaleSelector = nil
+            }
+        }
+
+        @MainActor
+        private func selectedLocaleSelectorDidSet() {
+            if selectedLocaleSelector != nil {
+                if !localeSelectorSheetIsShown {
+                    openLocaleSelectorSheet()
+                }
+                return
+            }
+
+            if localeSelectorSheetIsShown {
+                closeLocaleSelectorSheet()
+            }
+        }
     }
 }
 
