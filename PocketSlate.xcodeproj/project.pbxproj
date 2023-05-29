@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C042A912A24A7B900CC71CB /* Lowercased.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C042A902A24A7B900CC71CB /* Lowercased.swift */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
 		2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEF29FD59B200009E19 /* Preview Assets.xcassets */; };
@@ -31,8 +30,8 @@
 		2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2329FD6BD300009E19 /* AppSizes.swift */; };
 		2C6BAC2629FD6C0600009E19 /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2529FD6C0600009E19 /* View+extensions.swift */; };
 		2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBA2A23E1DC00D360F5 /* Constants.swift */; };
-		2C976BBD2A23EFDD00D360F5 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBC2A23EFDD00D360F5 /* String+extensions.swift */; };
 		2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */; };
+		2CE0E61B2A25017100BD09A3 /* KamaalAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 2CE0E61A2A25017100BD09A3 /* KamaalAlgorithms */; };
 		2CE62EF629FEC5370063BE1D /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE62EF529FEC5370063BE1D /* UserData.swift */; };
 		2CE62EF929FECAE50063BE1D /* Acknowledgements.json in Resources */ = {isa = PBXBuildFile; fileRef = 2CE62EF829FECAE50063BE1D /* Acknowledgements.json */; };
 		2CE62EFC29FED0E10063BE1D /* JSONUnpacker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE62EFB29FED0E10063BE1D /* JSONUnpacker.swift */; };
@@ -40,7 +39,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C042A902A24A7B900CC71CB /* Lowercased.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lowercased.swift; sourceTree = "<group>"; };
 		2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = PocketSlate.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketSlateApp.swift; sourceTree = "<group>"; };
@@ -61,7 +59,6 @@
 		2C6BAC2329FD6BD300009E19 /* AppSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSizes.swift; sourceTree = "<group>"; };
 		2C6BAC2529FD6C0600009E19 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBA2A23E1DC00D360F5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		2C976BBC2A23EFDD00D360F5 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+extensions.swift"; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -80,6 +77,7 @@
 				2C6BABFF29FD5CCD00009E19 /* KamaalUI in Frameworks */,
 				2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */,
 				2C6BABF929FD5CCD00009E19 /* KamaalLogger in Frameworks */,
+				2CE0E61B2A25017100BD09A3 /* KamaalAlgorithms in Frameworks */,
 				2C6BABFD29FD5CCD00009E19 /* KamaalSettings in Frameworks */,
 				2C6BABFB29FD5CCD00009E19 /* KamaalNavigation in Frameworks */,
 				2C6BAC1529FD62F300009E19 /* KamaalPopUp in Frameworks */,
@@ -90,14 +88,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2C042A922A24A7C200CC71CB /* PropertyWrappers */ = {
-			isa = PBXGroup;
-			children = (
-				2C042A902A24A7B900CC71CB /* Lowercased.swift */,
-			);
-			path = PropertyWrappers;
-			sourceTree = "<group>";
-		};
 		2C6BABEA29FD59B200009E19 /* PocketSlate */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */,
-				2C976BBC2A23EFDD00D360F5 /* String+extensions.swift */,
 				2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */,
 				2C6BAC2529FD6C0600009E19 /* View+extensions.swift */,
 			);
@@ -256,7 +245,6 @@
 			isa = PBXGroup;
 			children = (
 				2CE62EFB29FED0E10063BE1D /* JSONUnpacker.swift */,
-				2C042A922A24A7C200CC71CB /* PropertyWrappers */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -287,6 +275,7 @@
 				2C6BAC0F29FD605200009E19 /* AppLocales */,
 				2C6BAC1429FD62F300009E19 /* KamaalPopUp */,
 				2C6BAC1E29FD6A8200009E19 /* Backend */,
+				2CE0E61A2A25017100BD09A3 /* KamaalAlgorithms */,
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* PocketSlate.app */;
@@ -375,13 +364,11 @@
 				2C6BAC0329FD5D8500009E19 /* Screens.swift in Sources */,
 				2C6BAC1829FD63B900009E19 /* PhrasesScreen.swift in Sources */,
 				2C6BAC1329FD62D600009E19 /* MainView.swift in Sources */,
-				2C042A912A24A7B900CC71CB /* Lowercased.swift in Sources */,
 				2CE62EFE29FED5C10063BE1D /* AppSettingsScreen.swift in Sources */,
 				2CE62EFC29FED0E10063BE1D /* JSONUnpacker.swift in Sources */,
 				2C6BAC2629FD6C0600009E19 /* View+extensions.swift in Sources */,
 				2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */,
 				2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */,
-				2C976BBD2A23EFDD00D360F5 /* String+extensions.swift in Sources */,
 				2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */,
 				2C6BAC1A29FD643500009E19 /* Sidebar.swift in Sources */,
 				2C6BAC2229FD6B9900009E19 /* Text+extensions.swift in Sources */,
@@ -609,7 +596,7 @@
 			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.2.0;
+				minimumVersion = 0.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -652,6 +639,11 @@
 		2C6BAC1E29FD6A8200009E19 /* Backend */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Backend;
+		};
+		2CE0E61A2A25017100BD09A3 /* KamaalAlgorithms */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C6BABF529FD5CCD00009E19 /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalAlgorithms;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

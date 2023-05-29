@@ -6,24 +6,19 @@
 //
 
 import SwiftUI
+import KamaalUI
+import KamaalAlgorithms
 
 struct PhrasesScreen: View {
     @State private var searchText = ""
 
     var body: some View {
-        ScrollView {
-            TextField("Search", text: $searchText)
-                .padding(.horizontal, .medium)
-            Button(action: {
-                let settingsURL = URL(string: UIApplication.openSettingsURLString)!
-                Task { _ = await UIApplication.shared.open(settingsURL) }
-            }) {
-                Text("Go to settings")
-            }
+        KScrollableForm {
             ForEach(searchedText, id: \.self) { language in
                 Text(language)
             }
         }
+        .searchable(text: $searchText)
     }
 
     private var searchedText: [String] {
@@ -35,9 +30,10 @@ struct PhrasesScreen: View {
 
         return UserData.locales
             .map { makeMessage(fromLocale: $0) }
-            .filter { $0
-                .replacingOccurrences(of: " ", with: "")
-                .fuzzyMatch(searchText)
+            .filter {
+                $0
+                    .replacingOccurrences(of: " ", with: "")
+                    .fuzzyMatch(searchText)
             }
     }
 
