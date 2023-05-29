@@ -64,6 +64,7 @@
 		2C976BBC2A23EFDD00D360F5 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+extensions.swift"; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2CE62EF529FEC5370063BE1D /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		2CE62EF829FECAE50063BE1D /* Acknowledgements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Acknowledgements.json; sourceTree = "<group>"; };
 		2CE62EFB29FED0E10063BE1D /* JSONUnpacker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONUnpacker.swift; sourceTree = "<group>"; };
@@ -101,6 +102,7 @@
 			isa = PBXGroup;
 			children = (
 				2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */,
+				2CD49BC32A24C6D70085DD83 /* Info.plist */,
 				2C976BBA2A23E1DC00D360F5 /* Constants.swift */,
 				2C6BABF029FD59B200009E19 /* ContentView.swift */,
 				2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */,
@@ -513,6 +515,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PocketSlate/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -551,6 +554,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PocketSlate/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

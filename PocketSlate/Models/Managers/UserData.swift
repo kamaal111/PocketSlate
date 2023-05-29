@@ -35,6 +35,8 @@ final class UserData: ObservableObject {
     static var locales: [Locale] {
         let languages = Constants.priorityLanguages
 
+        let preferredLocale = Locale.current
+
         let groupedIdentifiers = Locale.availableIdentifiers
             .reduce((primary: [Locale](), sub: [Locale]())) { result, identifier in
                 let locale = Locale(identifier: identifier)

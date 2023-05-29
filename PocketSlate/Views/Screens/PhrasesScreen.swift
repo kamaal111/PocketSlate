@@ -14,6 +14,12 @@ struct PhrasesScreen: View {
         ScrollView {
             TextField("Search", text: $searchText)
                 .padding(.horizontal, .medium)
+            Button(action: {
+                let settingsURL = URL(string: UIApplication.openSettingsURLString)!
+                Task { _ = await UIApplication.shared.open(settingsURL) }
+            }) {
+                Text("Go to settings")
+            }
             ForEach(searchedText, id: \.self) { language in
                 Text(language)
             }
