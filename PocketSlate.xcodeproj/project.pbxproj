@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C440BF62A27EB99002C2602 /* KamaalUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 2C440BF52A27EB99002C2602 /* KamaalUtils */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
 		2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEF29FD59B200009E19 /* Preview Assets.xcassets */; };
@@ -88,6 +89,7 @@
 				2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */,
 				2C6BABF929FD5CCD00009E19 /* KamaalLogger in Frameworks */,
 				2CE0E61B2A25017100BD09A3 /* KamaalAlgorithms in Frameworks */,
+				2C440BF62A27EB99002C2602 /* KamaalUtils in Frameworks */,
 				2C6BABFD29FD5CCD00009E19 /* KamaalSettings in Frameworks */,
 				2C6BABFB29FD5CCD00009E19 /* KamaalNavigation in Frameworks */,
 				2C6BAC1529FD62F300009E19 /* KamaalPopUp in Frameworks */,
@@ -299,6 +301,7 @@
 				2C6BAC1429FD62F300009E19 /* KamaalPopUp */,
 				2C6BAC1E29FD6A8200009E19 /* Backend */,
 				2CE0E61A2A25017100BD09A3 /* KamaalAlgorithms */,
+				2C440BF52A27EB99002C2602 /* KamaalUtils */,
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* PocketSlate.app */;
@@ -624,12 +627,17 @@
 			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.4.0;
+				minimumVersion = 0.5.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2C440BF52A27EB99002C2602 /* KamaalUtils */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C6BABF529FD5CCD00009E19 /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalUtils;
+		};
 		2C6BABF629FD5CCD00009E19 /* KamaalExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2C6BABF529FD5CCD00009E19 /* XCRemoteSwiftPackageReference "KamaalSwift" */;
