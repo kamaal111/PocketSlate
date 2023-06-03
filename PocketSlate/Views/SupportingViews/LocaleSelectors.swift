@@ -12,6 +12,7 @@ struct LocaleSelectors: View {
     let primaryLocale: Locale
     let secondaryLocale: Locale
     let selectedLocaleSelector: LocaleSelectorTypes?
+    let swapLocales: () -> Void
     let selectLocaleSelector: (_ selector: LocaleSelectorTypes) -> Void
 
     var body: some View {
@@ -21,6 +22,12 @@ struct LocaleSelectors: View {
                 isSelected: selectedLocaleSelector == .primary,
                 action: { selectLocaleSelector(.primary) }
             )
+            Button(action: swapLocales) {
+                Image(systemName: "arrow.left.arrow.right")
+                    .kBold()
+                    .foregroundColor(.accentColor)
+            }
+            .buttonStyle(.plain)
             LocaleSelector(
                 currentLocale: secondaryLocale,
                 isSelected: selectedLocaleSelector == .secondary,
@@ -39,6 +46,7 @@ struct LocaleSelectors_Previews: PreviewProvider {
             primaryLocale: PhrasesScreen.ViewModel.locales.first!,
             secondaryLocale: PhrasesScreen.ViewModel.locales.last!,
             selectedLocaleSelector: .primary,
+            swapLocales: { },
             selectLocaleSelector: { _ in }
         )
     }

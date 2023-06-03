@@ -61,6 +61,14 @@ extension PhrasesScreen {
         }
 
         @MainActor
+        func swapLocales() {
+            let newPrimaryLocale = secondaryLocale
+            let newSecondaryLocale = primaryLocale
+            primaryLocale = newPrimaryLocale
+            secondaryLocale = newSecondaryLocale
+        }
+
+        @MainActor
         func selectLocaleSelector(_ selector: LocaleSelectorTypes) {
             withAnimation { self.selectedLocaleSelector = selector }
         }

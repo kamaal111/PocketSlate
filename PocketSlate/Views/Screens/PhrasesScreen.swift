@@ -21,6 +21,7 @@ struct PhrasesScreen: View {
                 primaryLocale: viewModel.primaryLocale,
                 secondaryLocale: viewModel.secondaryLocale,
                 selectedLocaleSelector: viewModel.selectedLocaleSelector,
+                swapLocales: { viewModel.swapLocales() },
                 selectLocaleSelector: { viewModel.selectLocaleSelector($0) }
             )
             Spacer()
