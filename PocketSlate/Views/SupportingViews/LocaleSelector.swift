@@ -9,8 +9,6 @@ import SwiftUI
 import KamaalUI
 
 struct LocaleSelector: View {
-    @Environment(\.colorScheme) private var colorScheme
-
     @EnvironmentObject private var userData: UserData
 
     @State private var textSize: CGSize = .zero
@@ -22,7 +20,6 @@ struct LocaleSelector: View {
     var body: some View {
         Button(action: action) {
             ZStack {
-                backgroundColor
                 HStack {
                     VStack {
                         Text(displayName)
@@ -50,19 +47,12 @@ struct LocaleSelector: View {
                         .padding(.trailing, .small)
                 }
             }
+            .backgroundColor(light: .secondaryItemBackground.light, dark: .secondaryItemBackground.dark)
             .cornerRadius(.small)
         }
         .buttonStyle(.plain)
         .frame(maxHeight: textSize.height + AppSizes.medium.rawValue)
         .padding(.horizontal, .small)
-    }
-
-    private var backgroundColor: Color {
-        if colorScheme == .dark {
-            return .white.opacity(0.2)
-        }
-
-        return .white
     }
 
     private var displayName: String {

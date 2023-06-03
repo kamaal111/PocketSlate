@@ -10,7 +10,11 @@ import KamaalUI
 import AppLocales
 
 struct LocaleSelectorSheet: View {
+    @EnvironmentObject private var userData: UserData
+
+    let locales: [Locale]
     let onClose: () -> Void
+    let onLocaleSelect: (_ locale: Locale) -> Void
 
     var body: some View {
         KSheetStack(
@@ -18,12 +22,18 @@ struct LocaleSelectorSheet: View {
             leadingNavigationButton: { leadingNavigationButton },
             trailingNavigationButton: { Text.empty() }
         ) {
-            VStack {
-                Text("Sheet")
+            ScrollView {
+                ForEach(locales, id: \.identifier) { locale in
+                    localeButton(locale)
+                }
             }
-            .padding(.vertical, .small)
+            .ktakeWidthEagerly()
+            .padding(.vertical, .medium)
         }
-        .frame(minWidth: 200, minHeight: 200)
+        .backgroundColor(light: .secondaryBackground.light, dark: .secondaryBackground.dark)
+        #if os(macOS)
+            .frame(minWidth: 300, minHeight: 200, maxHeight: 400)
+        #endif
     }
 
     private var leadingNavigationButton: some View {
@@ -33,10 +43,29 @@ struct LocaleSelectorSheet: View {
                 .bold()
         }
     }
+
+    private func localeButton(_ locale: Locale) -> some View {
+        Button(action: { onLocaleSelect(locale) }) {
+            Text(makeMessage(from: locale))
+                .foregroundColor(.accentColor)
+                .bold()
+                .padding(.vertical, .extraExtraSmall)
+                .padding(.horizontal, .small)
+                .ktakeWidthEagerly(alignment: .leading)
+                .backgroundColor(light: .secondaryItemBackground.light, dark: .secondaryItemBackground.dark)
+                .cornerRadius(.extraSmall)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func makeMessage(from locale: Locale) -> String {
+        "\(locale.identifier) - \(userData.appLocale.localizedString(forIdentifier: locale.identifier) ?? "")"
+    }
 }
 
 struct LocaleSelectorSheet_Previews: PreviewProvider {
     static var previews: some View {
-        LocaleSelectorSheet(onClose: { })
+        LocaleSelectorSheet(locales: PhrasesScreen.ViewModel.locales, onClose: { }, onLocaleSelect: { _ in })
+            .environmentObject(UserData())
     }
 }

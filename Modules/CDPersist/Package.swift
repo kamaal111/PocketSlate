@@ -13,7 +13,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.6.0" ..< "0.7.0"),
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.8.0" ..< "0.9.0"),
         .package(path: "../Models"),
     ],
     targets: [

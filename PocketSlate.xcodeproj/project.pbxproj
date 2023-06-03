@@ -18,9 +18,6 @@
 		2C6BABFD29FD5CCD00009E19 /* KamaalSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BABFC29FD5CCD00009E19 /* KamaalSettings */; };
 		2C6BABFF29FD5CCD00009E19 /* KamaalUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BABFE29FD5CCD00009E19 /* KamaalUI */; };
 		2C6BAC0329FD5D8500009E19 /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC0229FD5D8500009E19 /* Screens.swift */; };
-		2C6BAC0629FD5DB200009E19 /* en.js in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BAC0529FD5DB200009E19 /* en.js */; };
-		2C6BAC0829FD5E2600009E19 /* justfile in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BAC0729FD5E2600009E19 /* justfile */; };
-		2C6BAC0B29FD5E5C00009E19 /* generateLocales.js in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BAC0A29FD5E5C00009E19 /* generateLocales.js */; };
 		2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BAC0F29FD605200009E19 /* AppLocales */; };
 		2C6BAC1329FD62D600009E19 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC1229FD62D600009E19 /* MainView.swift */; };
 		2C6BAC1529FD62F300009E19 /* KamaalPopUp in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BAC1429FD62F300009E19 /* KamaalPopUp */; };
@@ -31,6 +28,7 @@
 		2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2329FD6BD300009E19 /* AppSizes.swift */; };
 		2C6BAC2629FD6C0600009E19 /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2529FD6C0600009E19 /* View+extensions.swift */; };
 		2C9416782A2BA0E100F572AC /* UserDefaults+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */; };
+		2C94167A2A2BC09500F572AC /* Color+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9416792A2BC09500F572AC /* Color+extensions.swift */; };
 		2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBA2A23E1DC00D360F5 /* Constants.swift */; };
 		2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */; };
 		2CD9ED602A252B77006F5566 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED5F2A252B77006F5566 /* Features.swift */; };
@@ -66,6 +64,7 @@
 		2C6BAC2329FD6BD300009E19 /* AppSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSizes.swift; sourceTree = "<group>"; };
 		2C6BAC2529FD6C0600009E19 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
 		2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+extensions.swift"; sourceTree = "<group>"; };
+		2C9416792A2BC09500F572AC /* Color+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBA2A23E1DC00D360F5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+extensions.swift"; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +207,7 @@
 		2C6BAC2029FD6B7F00009E19 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				2C9416792A2BC09500F572AC /* Color+extensions.swift */,
 				2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */,
 				2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */,
 				2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */,
@@ -352,10 +352,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CE62EF929FECAE50063BE1D /* Acknowledgements.json in Resources */,
-				2C6BAC0629FD5DB200009E19 /* en.js in Resources */,
 				2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */,
-				2C6BAC0B29FD5E5C00009E19 /* generateLocales.js in Resources */,
-				2C6BAC0829FD5E2600009E19 /* justfile in Resources */,
 				2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -395,6 +392,7 @@
 				2CE0E61D2A25112C00BD09A3 /* LocaleSelector.swift in Sources */,
 				2CD9ED632A253869006F5566 /* LocaleSelectorSheet.swift in Sources */,
 				2C6BAC0329FD5D8500009E19 /* Screens.swift in Sources */,
+				2C94167A2A2BC09500F572AC /* Color+extensions.swift in Sources */,
 				2C6BAC1829FD63B900009E19 /* PhrasesScreen.swift in Sources */,
 				2C6BAC1329FD62D600009E19 /* MainView.swift in Sources */,
 				2CE62EFE29FED5C10063BE1D /* AppSettingsScreen.swift in Sources */,
@@ -631,7 +629,7 @@
 			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.6.0;
+				minimumVersion = 0.8.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

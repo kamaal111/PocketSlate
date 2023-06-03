@@ -9,8 +9,6 @@ import SwiftUI
 import KamaalUI
 
 struct LocaleSelectors: View {
-    @Environment(\.colorScheme) private var colorScheme
-
     let primaryLocale: Locale
     let secondaryLocale: Locale
     let selectedLocaleSelector: LocaleSelectorTypes?
@@ -30,7 +28,7 @@ struct LocaleSelectors: View {
             )
         }
         .padding(.vertical, .small)
-        .background(colorScheme == .dark ? Color.black : Color.gray.opacity(0.1))
+        .backgroundColor(light: .secondaryBackground.light, dark: .secondaryBackground.dark)
         .ktakeWidthEagerly()
     }
 }

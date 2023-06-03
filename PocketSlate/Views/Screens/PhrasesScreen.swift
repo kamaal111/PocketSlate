@@ -31,7 +31,11 @@ struct PhrasesScreen: View {
                 .ktakeSizeEagerly()
         }
         .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {
-            LocaleSelectorSheet(onClose: { viewModel.closeLocaleSelectorSheet() })
+            LocaleSelectorSheet(
+                locales: ViewModel.locales,
+                onClose: { viewModel.closeLocaleSelectorSheet() },
+                onLocaleSelect: { locale in viewModel.selectLocale(locale) }
+            )
         }
     }
 }
@@ -58,6 +62,13 @@ extension PhrasesScreen {
         @MainActor
         func selectLocaleSelector(_ selector: LocaleSelectorTypes) {
             withAnimation { self.selectedLocaleSelector = selector }
+        }
+
+        @MainActor
+        func selectLocale(_ locale: Locale) {
+            assert(selectedLocaleSelector != nil)
+            print("locale", locale, selectedLocaleSelector!)
+            closeLocaleSelectorSheet()
         }
 
         @MainActor
