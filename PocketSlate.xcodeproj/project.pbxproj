@@ -31,6 +31,7 @@
 		2C94167A2A2BC09500F572AC /* Color+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9416792A2BC09500F572AC /* Color+extensions.swift */; };
 		2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBA2A23E1DC00D360F5 /* Constants.swift */; };
 		2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */; };
+		2CBC16242A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC16232A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift */; };
 		2CD9ED602A252B77006F5566 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED5F2A252B77006F5566 /* Features.swift */; };
 		2CD9ED632A253869006F5566 /* LocaleSelectorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED622A253869006F5566 /* LocaleSelectorSheet.swift */; };
 		2CD9ED652A253CD1006F5566 /* LocaleSelectorTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED642A253CD0006F5566 /* LocaleSelectorTypes.swift */; };
@@ -68,6 +69,7 @@
 		2C976BBA2A23E1DC00D360F5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+extensions.swift"; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CBC16232A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhrasesScreen+ViewModel.swift"; sourceTree = "<group>"; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2CD9ED5F2A252B77006F5566 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		2CD9ED622A253869006F5566 /* LocaleSelectorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleSelectorSheet.swift; sourceTree = "<group>"; };
@@ -237,6 +239,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2CBC16222A2BF03700FEB17E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2CBC16232A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		2CD9ED612A253850006F5566 /* Sheets */ = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				2CE62EF429FEC5290063BE1D /* Managers */,
+				2CBC16222A2BF03700FEB17E /* ViewModels */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -401,6 +412,7 @@
 				2CD9ED602A252B77006F5566 /* Features.swift in Sources */,
 				2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */,
 				2CD9ED672A253E9C006F5566 /* LocaleSelectors.swift in Sources */,
+				2CBC16242A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift in Sources */,
 				2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */,
 				2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */,
 				2C6BAC1A29FD643500009E19 /* Sidebar.swift in Sources */,
