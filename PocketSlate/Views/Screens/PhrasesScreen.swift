@@ -7,7 +7,10 @@
 
 import SwiftUI
 import KamaalUI
+import KamaalLogger
 import KamaalExtensions
+
+private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
 
 struct PhrasesScreen: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -35,14 +38,21 @@ struct PhrasesScreen: View {
 
 extension PhrasesScreen {
     final class ViewModel: ObservableObject {
+        @Published private(set) var primaryLocale: Locale
+        @Published private(set) var secondaryLocale: Locale
+
+        @Published var localeSelectorSheetIsShown = false {
+            didSet { Task { await localeSelectorSheetIsShownDidSet() } }
+        }
+
         @Published private(set) var selectedLocaleSelector: LocaleSelectorTypes? {
             didSet { Task { await selectedLocaleSelectorDidSet() } }
         }
 
-        @Published private(set) var primaryLocale = ViewModel.locales.last!
-        @Published private(set) var secondaryLocale = ViewModel.locales.first!
-        @Published var localeSelectorSheetIsShown = false {
-            didSet { Task { await localeSelectorSheetIsShownDidSet() } }
+        init() {
+            let (primaryLocale, secondaryLocale) = Self.getInitialLocales()
+            self.primaryLocale = primaryLocale
+            self.secondaryLocale = secondaryLocale
         }
 
         @MainActor
@@ -116,6 +126,27 @@ extension PhrasesScreen {
             if localeSelectorSheetIsShown {
                 closeLocaleSelectorSheet()
             }
+        }
+
+        private static func getInitialLocales() -> (primary: Locale, secondary: Locale) {
+            let preferredLocale = locales.first!
+            var primaryLocale = UserDefaults.primaryLocale
+            if primaryLocale == nil {
+                primaryLocale = preferredLocale
+                UserDefaults.primaryLocale = primaryLocale
+            }
+
+            var secondaryLocale = UserDefaults.secondaryLocale
+            if secondaryLocale == nil || secondaryLocale == primaryLocale {
+                if primaryLocale == preferredLocale {
+                    secondaryLocale = locales.at(1)!
+                } else {
+                    secondaryLocale = preferredLocale
+                }
+                UserDefaults.secondaryLocale = secondaryLocale!
+            }
+
+            return (primaryLocale!, secondaryLocale!)
         }
     }
 }

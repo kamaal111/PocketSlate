@@ -11,7 +11,7 @@ import KamaalLogger
 import KamaalSettings
 import KamaalExtensions
 
-private let logger = KamaalLogger(from: UserData.self)
+private let logger = KamaalLogger(from: UserData.self, failOnError: true)
 
 final class UserData: ObservableObject {
     @Published private var showLogs = true

@@ -30,6 +30,7 @@
 		2C6BAC2229FD6B9900009E19 /* Text+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */; };
 		2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2329FD6BD300009E19 /* AppSizes.swift */; };
 		2C6BAC2629FD6C0600009E19 /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2529FD6C0600009E19 /* View+extensions.swift */; };
+		2C9416782A2BA0E100F572AC /* UserDefaults+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */; };
 		2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBA2A23E1DC00D360F5 /* Constants.swift */; };
 		2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */; };
 		2CD9ED602A252B77006F5566 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED5F2A252B77006F5566 /* Features.swift */; };
@@ -64,6 +65,7 @@
 		2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+extensions.swift"; sourceTree = "<group>"; };
 		2C6BAC2329FD6BD300009E19 /* AppSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSizes.swift; sourceTree = "<group>"; };
 		2C6BAC2529FD6C0600009E19 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
+		2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBA2A23E1DC00D360F5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+extensions.swift"; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,6 +210,7 @@
 			children = (
 				2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */,
 				2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */,
+				2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */,
 				2C6BAC2529FD6C0600009E19 /* View+extensions.swift */,
 			);
 			path = Extensions;
@@ -388,6 +391,7 @@
 			files = (
 				2CD9ED652A253CD1006F5566 /* LocaleSelectorTypes.swift in Sources */,
 				2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */,
+				2C9416782A2BA0E100F572AC /* UserDefaults+extensions.swift in Sources */,
 				2CE0E61D2A25112C00BD09A3 /* LocaleSelector.swift in Sources */,
 				2CD9ED632A253869006F5566 /* LocaleSelectorSheet.swift in Sources */,
 				2C6BAC0329FD5D8500009E19 /* Screens.swift in Sources */,
@@ -627,7 +631,7 @@
 			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.5.1;
+				minimumVersion = 0.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

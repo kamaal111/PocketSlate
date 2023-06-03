@@ -9,7 +9,7 @@ import KamaalUtils
 import KamaalLogger
 import KamaalSettings
 
-private let logger = KamaalLogger(label: "JSONUnpacker")
+private let logger = KamaalLogger(label: "JSONUnpacker", failOnError: true)
 
 class AcknowledgementsJSON {
     private(set) var content: Acknowledgements?
@@ -22,5 +22,5 @@ class AcknowledgementsJSON {
         }
     }
 
-    static let shared = AcknowledgementsJSON().content
+    static let shared = AcknowledgementsJSON()
 }
