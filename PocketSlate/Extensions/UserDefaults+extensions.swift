@@ -14,4 +14,7 @@ extension UserDefaults {
 
     @UserDefaultsObject(key: "secondary_locale")
     static var secondaryLocale: Locale?
+
+    @UserDefaultsObject(key: "previously_selected_locales")
+    static var previouslySelectedLocales: [Locale]?
 }

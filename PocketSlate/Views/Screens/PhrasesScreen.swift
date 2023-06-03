@@ -42,8 +42,17 @@ struct PhrasesScreen: View {
 
 extension PhrasesScreen {
     final class ViewModel: ObservableObject {
-        @Published private(set) var primaryLocale: Locale
-        @Published private(set) var secondaryLocale: Locale
+        @Published private(set) var primaryLocale: Locale {
+            didSet { primaryLocaleDidSet() }
+        }
+
+        @Published private(set) var secondaryLocale: Locale {
+            didSet { secondaryLocaleDidSet() }
+        }
+
+        @Published private var previouslySelectedLocales: [Locale] {
+            didSet { previouslySelectedLocalesDidSet() }
+        }
 
         @Published var localeSelectorSheetIsShown = false {
             didSet { Task { await localeSelectorSheetIsShownDidSet() } }
@@ -57,6 +66,7 @@ extension PhrasesScreen {
             let (primaryLocale, secondaryLocale) = Self.getInitialLocales()
             self.primaryLocale = primaryLocale
             self.secondaryLocale = secondaryLocale
+            self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
         }
 
         var selectedLocaleSelectorLocales: [Locale] {
@@ -73,8 +83,10 @@ extension PhrasesScreen {
                 currentLocale = secondaryLocale
             }
 
-            return Self.locales
+            return previouslySelectedLocales
+                .concat(Self.locales)
                 .filter { $0 != currentLocale }
+                .uniques()
         }
 
         @MainActor
@@ -90,34 +102,7 @@ extension PhrasesScreen {
                 return
             }
 
-            var newPrimaryLocale: Locale
-            var newSecondaryLocale: Locale
-            switch selectedLocaleSelector {
-            case .primary:
-                newPrimaryLocale = locale
-                newSecondaryLocale = secondaryLocale
-                if newPrimaryLocale == newSecondaryLocale {
-                    newSecondaryLocale = primaryLocale
-                }
-            case .secondary:
-                newPrimaryLocale = primaryLocale
-                newSecondaryLocale = locale
-                if newPrimaryLocale == newSecondaryLocale {
-                    newPrimaryLocale = secondaryLocale
-                }
-            }
-
-            if newPrimaryLocale != primaryLocale {
-                UserDefaults.primaryLocale = newPrimaryLocale
-                primaryLocale = newPrimaryLocale
-            }
-
-            if newSecondaryLocale != secondaryLocale {
-                UserDefaults.secondaryLocale = newSecondaryLocale
-                secondaryLocale = newSecondaryLocale
-            }
-
-            logger.info("Updated \(selectedLocaleSelector.rawValue) locale to '\(locale.identifier)'")
+            setSelectedLocale(locale, localeSelector: selectedLocaleSelector)
             closeLocaleSelectorSheet()
         }
 
@@ -156,17 +141,56 @@ extension PhrasesScreen {
                 .concat(groupedIdentifiers.sub.sorted())
                 .uniques()
 
-            guard let shortenedPreferredLocaleIdentifier = Locale.current.identifier.split(separator: "_").first
-            else { return combinedLocales }
+            guard let shortenedPreferredLocaleIdentifier = Locale.current.identifier.split(separator: "_").first else {
+                logger.error("shortend preferred locale identifier should have been present")
+                return combinedLocales
+            }
 
             let preferredLocale = Locale(identifier: String(shortenedPreferredLocaleIdentifier))
-            guard let preferredLocaleIndex = combinedLocales.findIndex(by: \.identifier, is: preferredLocale.identifier)
-            else { return combinedLocales }
+            guard let preferredLocaleIndex = combinedLocales
+                .findIndex(by: \.identifier, is: preferredLocale.identifier) else {
+                logger.error("preferred locale identifier index should have been present")
+                return combinedLocales
+            }
 
             return combinedLocales
                 .removed(at: preferredLocaleIndex)
                 .prepended(preferredLocale)
         }()
+
+        @MainActor
+        private func setSelectedLocale(_ locale: Locale, localeSelector: LocaleSelectorTypes) {
+            var newPrimaryLocale: Locale
+            var newSecondaryLocale: Locale
+            switch localeSelector {
+            case .primary:
+                newPrimaryLocale = locale
+                newSecondaryLocale = secondaryLocale
+                if newPrimaryLocale == newSecondaryLocale {
+                    newSecondaryLocale = primaryLocale
+                }
+            case .secondary:
+                newPrimaryLocale = primaryLocale
+                newSecondaryLocale = locale
+                if newPrimaryLocale == newSecondaryLocale {
+                    newPrimaryLocale = secondaryLocale
+                }
+            }
+
+            if newPrimaryLocale != primaryLocale {
+                primaryLocale = newPrimaryLocale
+            }
+
+            if newSecondaryLocale != secondaryLocale {
+                secondaryLocale = newSecondaryLocale
+            }
+
+            previouslySelectedLocales = previouslySelectedLocales
+                .prepended(locale)
+                .uniques()
+
+            logger.info("Updated \(localeSelector.rawValue) locale to '\(locale.identifier)'")
+        }
 
         @MainActor
         private func localeSelectorSheetIsShownDidSet() {
@@ -187,6 +211,18 @@ extension PhrasesScreen {
             if localeSelectorSheetIsShown {
                 closeLocaleSelectorSheet()
             }
+        }
+
+        private func primaryLocaleDidSet() {
+            UserDefaults.primaryLocale = primaryLocale
+        }
+
+        private func secondaryLocaleDidSet() {
+            UserDefaults.secondaryLocale = secondaryLocale
+        }
+
+        private func previouslySelectedLocalesDidSet() {
+            UserDefaults.previouslySelectedLocales = previouslySelectedLocales
         }
 
         private static func getInitialLocales() -> (primary: Locale, secondary: Locale) {
