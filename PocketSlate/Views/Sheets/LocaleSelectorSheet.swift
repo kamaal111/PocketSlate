@@ -59,7 +59,7 @@ struct LocaleSelectorSheet: View {
     }
 
     private func makeMessage(from locale: Locale) -> String {
-        "\(locale.identifier) - \(userData.appLocale.localizedString(forIdentifier: locale.identifier) ?? "")"
+        "\(locale.identifier) - \(userData.appLocale.localizedString(forIdentifier: locale.identifier)!)"
     }
 }
 

@@ -32,7 +32,7 @@ struct PhrasesScreen: View {
         }
         .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {
             LocaleSelectorSheet(
-                locales: ViewModel.locales,
+                locales: viewModel.selectedLocaleSelectorLocales,
                 onClose: { viewModel.closeLocaleSelectorSheet() },
                 onLocaleSelect: { locale in viewModel.selectLocale(locale) }
             )
@@ -59,6 +59,24 @@ extension PhrasesScreen {
             self.secondaryLocale = secondaryLocale
         }
 
+        var selectedLocaleSelectorLocales: [Locale] {
+            guard let selectedLocaleSelector else {
+                logger.error("Failed to know which selector has been selected")
+                return Self.locales
+            }
+
+            let currentLocale: Locale
+            switch selectedLocaleSelector {
+            case .primary:
+                currentLocale = primaryLocale
+            case .secondary:
+                currentLocale = secondaryLocale
+            }
+
+            return Self.locales
+                .filter { $0 != currentLocale }
+        }
+
         @MainActor
         func selectLocaleSelector(_ selector: LocaleSelectorTypes) {
             withAnimation { self.selectedLocaleSelector = selector }
@@ -66,8 +84,40 @@ extension PhrasesScreen {
 
         @MainActor
         func selectLocale(_ locale: Locale) {
-            assert(selectedLocaleSelector != nil)
-            print("locale", locale, selectedLocaleSelector!)
+            guard let selectedLocaleSelector else {
+                closeLocaleSelectorSheet()
+                logger.error("Failed to know which selector has been selected")
+                return
+            }
+
+            var newPrimaryLocale: Locale
+            var newSecondaryLocale: Locale
+            switch selectedLocaleSelector {
+            case .primary:
+                newPrimaryLocale = locale
+                newSecondaryLocale = secondaryLocale
+                if newPrimaryLocale == newSecondaryLocale {
+                    newSecondaryLocale = primaryLocale
+                }
+            case .secondary:
+                newPrimaryLocale = primaryLocale
+                newSecondaryLocale = locale
+                if newPrimaryLocale == newSecondaryLocale {
+                    newPrimaryLocale = secondaryLocale
+                }
+            }
+
+            if newPrimaryLocale != primaryLocale {
+                UserDefaults.primaryLocale = newPrimaryLocale
+                primaryLocale = newPrimaryLocale
+            }
+
+            if newSecondaryLocale != secondaryLocale {
+                UserDefaults.secondaryLocale = newSecondaryLocale
+                secondaryLocale = newSecondaryLocale
+            }
+
+            logger.info("Updated \(selectedLocaleSelector.rawValue) locale to '\(locale.identifier)'")
             closeLocaleSelectorSheet()
         }
 

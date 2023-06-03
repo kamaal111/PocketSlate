@@ -29,7 +29,8 @@ struct LocaleSelector: View {
                             Text(localeSubIdentifier)
                                 .foregroundColor(.secondary)
                                 .ktakeWidthEagerly()
-                        } else {
+                                .lineLimit(1)
+                        } else if Features.showSubLocales {
                             Text("k")
                                 .foregroundColor(.white.opacity(0.01))
                                 .ktakeWidthEagerly()
@@ -56,7 +57,7 @@ struct LocaleSelector: View {
     }
 
     private var displayName: String {
-        userData.appLocale.localizedString(forIdentifier: String(currentLocale.identifierComponents.primary))!
+        "\(currentLocale.identifier) - \(userData.appLocale.localizedString(forIdentifier: currentLocale.identifier)!)"
     }
 
     private var localeSubIdentifier: String? {

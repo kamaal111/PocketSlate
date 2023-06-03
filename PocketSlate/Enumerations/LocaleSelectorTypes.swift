@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum LocaleSelectorTypes {
+enum LocaleSelectorTypes: String {
     case primary
     case secondary
 }
