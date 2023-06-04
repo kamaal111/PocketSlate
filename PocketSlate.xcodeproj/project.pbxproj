@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C00FAC12A2CBAE200483799 /* KeyEquivalent+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C00FAC02A2CBAE200483799 /* KeyEquivalent+extensions.swift */; };
+		2C00FAC32A2CBB0B00483799 /* EventModifiers+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C00FAC22A2CBB0B00483799 /* EventModifiers+extensions.swift */; };
+		2C00FAC52A2CBBAB00483799 /* KeyboardShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C00FAC42A2CBBAB00483799 /* KeyboardShortcutView.swift */; };
 		2C440BF62A27EB99002C2602 /* KamaalUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 2C440BF52A27EB99002C2602 /* KamaalUtils */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
@@ -45,6 +48,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C00FAC02A2CBAE200483799 /* KeyEquivalent+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyEquivalent+extensions.swift"; sourceTree = "<group>"; };
+		2C00FAC22A2CBB0B00483799 /* EventModifiers+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventModifiers+extensions.swift"; sourceTree = "<group>"; };
+		2C00FAC42A2CBBAB00483799 /* KeyboardShortcutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutView.swift; sourceTree = "<group>"; };
 		2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = PocketSlate.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketSlateApp.swift; sourceTree = "<group>"; };
@@ -189,6 +195,7 @@
 		2C6BAC1129FD62C200009E19 /* SupportingViews */ = {
 			isa = PBXGroup;
 			children = (
+				2C00FAC42A2CBBAB00483799 /* KeyboardShortcutView.swift */,
 				2CE0E61C2A25112C00BD09A3 /* LocaleSelector.swift */,
 				2CD9ED662A253E9C006F5566 /* LocaleSelectors.swift */,
 				2C6BAC1229FD62D600009E19 /* MainView.swift */,
@@ -210,6 +217,8 @@
 			isa = PBXGroup;
 			children = (
 				2C9416792A2BC09500F572AC /* Color+extensions.swift */,
+				2C00FAC22A2CBB0B00483799 /* EventModifiers+extensions.swift */,
+				2C00FAC02A2CBAE200483799 /* KeyEquivalent+extensions.swift */,
 				2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */,
 				2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */,
 				2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */,
@@ -399,12 +408,15 @@
 			files = (
 				2CD9ED652A253CD1006F5566 /* LocaleSelectorTypes.swift in Sources */,
 				2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */,
+				2C00FAC52A2CBBAB00483799 /* KeyboardShortcutView.swift in Sources */,
+				2C00FAC12A2CBAE200483799 /* KeyEquivalent+extensions.swift in Sources */,
 				2C9416782A2BA0E100F572AC /* UserDefaults+extensions.swift in Sources */,
 				2CE0E61D2A25112C00BD09A3 /* LocaleSelector.swift in Sources */,
 				2CD9ED632A253869006F5566 /* LocaleSelectorSheet.swift in Sources */,
 				2C6BAC0329FD5D8500009E19 /* Screens.swift in Sources */,
 				2C94167A2A2BC09500F572AC /* Color+extensions.swift in Sources */,
 				2C6BAC1829FD63B900009E19 /* PhrasesScreen.swift in Sources */,
+				2C00FAC32A2CBB0B00483799 /* EventModifiers+extensions.swift in Sources */,
 				2C6BAC1329FD62D600009E19 /* MainView.swift in Sources */,
 				2CE62EFE29FED5C10063BE1D /* AppSettingsScreen.swift in Sources */,
 				2CE62EFC29FED0E10063BE1D /* JSONUnpacker.swift in Sources */,
