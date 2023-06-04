@@ -12,4 +12,7 @@ module.exports = {
     SEARCH: 'Search',
     NO_LOCALE_SEARCH_MATCH: 'Nothing found matching \'%@\'',
     CLEAR_SEARCH: 'Clear search',
+    NOT_SET: 'Not set',
+    PHRASE_CREATION_FAILURE_TITLE: 'Creation failure',
+    PHRASE_CREATION_FAILURE_DESCRIPTION: 'Failed to create phrase',
 }

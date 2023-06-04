@@ -10,6 +10,7 @@
 		2C00FAC12A2CBAE200483799 /* KeyEquivalent+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C00FAC02A2CBAE200483799 /* KeyEquivalent+extensions.swift */; };
 		2C00FAC32A2CBB0B00483799 /* EventModifiers+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C00FAC22A2CBB0B00483799 /* EventModifiers+extensions.swift */; };
 		2C00FAC52A2CBBAB00483799 /* KeyboardShortcutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C00FAC42A2CBBAB00483799 /* KeyboardShortcutView.swift */; };
+		2C41260E2A2D311000CD0ED4 /* PhraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C41260D2A2D311000CD0ED4 /* PhraseView.swift */; };
 		2C440BF62A27EB99002C2602 /* KamaalUtils in Frameworks */ = {isa = PBXBuildFile; productRef = 2C440BF52A27EB99002C2602 /* KamaalUtils */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
@@ -30,10 +31,13 @@
 		2C6BAC2229FD6B9900009E19 /* Text+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */; };
 		2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2329FD6BD300009E19 /* AppSizes.swift */; };
 		2C6BAC2629FD6C0600009E19 /* View+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BAC2529FD6C0600009E19 /* View+extensions.swift */; };
+		2C831E5E2A3647910028BCD8 /* NewPhrasePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C831E5D2A3647910028BCD8 /* NewPhrasePanel.swift */; };
 		2C9416782A2BA0E100F572AC /* UserDefaults+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */; };
 		2C94167A2A2BC09500F572AC /* Color+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9416792A2BC09500F572AC /* Color+extensions.swift */; };
 		2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBA2A23E1DC00D360F5 /* Constants.swift */; };
 		2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */; };
+		2CAF22382A2CD7B900ADEE0B /* AppPhrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAF22372A2CD7B900ADEE0B /* AppPhrase.swift */; };
+		2CAF223A2A2CD81900ADEE0B /* PhrasesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CAF22392A2CD81900ADEE0B /* PhrasesManager.swift */; };
 		2CBC16242A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CBC16232A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift */; };
 		2CD9ED602A252B77006F5566 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED5F2A252B77006F5566 /* Features.swift */; };
 		2CD9ED632A253869006F5566 /* LocaleSelectorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD9ED622A253869006F5566 /* LocaleSelectorSheet.swift */; };
@@ -51,6 +55,7 @@
 		2C00FAC02A2CBAE200483799 /* KeyEquivalent+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyEquivalent+extensions.swift"; sourceTree = "<group>"; };
 		2C00FAC22A2CBB0B00483799 /* EventModifiers+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EventModifiers+extensions.swift"; sourceTree = "<group>"; };
 		2C00FAC42A2CBBAB00483799 /* KeyboardShortcutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcutView.swift; sourceTree = "<group>"; };
+		2C41260D2A2D311000CD0ED4 /* PhraseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhraseView.swift; sourceTree = "<group>"; };
 		2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = PocketSlate.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketSlateApp.swift; sourceTree = "<group>"; };
@@ -70,10 +75,13 @@
 		2C6BAC2129FD6B9900009E19 /* Text+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Text+extensions.swift"; sourceTree = "<group>"; };
 		2C6BAC2329FD6BD300009E19 /* AppSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSizes.swift; sourceTree = "<group>"; };
 		2C6BAC2529FD6C0600009E19 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
+		2C831E5D2A3647910028BCD8 /* NewPhrasePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPhrasePanel.swift; sourceTree = "<group>"; };
 		2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+extensions.swift"; sourceTree = "<group>"; };
 		2C9416792A2BC09500F572AC /* Color+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBA2A23E1DC00D360F5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		2C976BBE2A23FBCF00D360F5 /* Locale+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Locale+extensions.swift"; sourceTree = "<group>"; };
+		2CAF22372A2CD7B900ADEE0B /* AppPhrase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPhrase.swift; sourceTree = "<group>"; };
+		2CAF22392A2CD81900ADEE0B /* PhrasesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhrasesManager.swift; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBC16232A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhrasesScreen+ViewModel.swift"; sourceTree = "<group>"; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -199,6 +207,8 @@
 				2CE0E61C2A25112C00BD09A3 /* LocaleSelector.swift */,
 				2CD9ED662A253E9C006F5566 /* LocaleSelectors.swift */,
 				2C6BAC1229FD62D600009E19 /* MainView.swift */,
+				2C831E5D2A3647910028BCD8 /* NewPhrasePanel.swift */,
+				2C41260D2A2D311000CD0ED4 /* PhraseView.swift */,
 				2C6BAC1929FD643500009E19 /* Sidebar.swift */,
 			);
 			path = SupportingViews;
@@ -267,6 +277,7 @@
 		2CE62EF329FEC5170063BE1D /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2CAF22372A2CD7B900ADEE0B /* AppPhrase.swift */,
 				2CE62EF429FEC5290063BE1D /* Managers */,
 				2CBC16222A2BF03700FEB17E /* ViewModels */,
 			);
@@ -276,6 +287,7 @@
 		2CE62EF429FEC5290063BE1D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				2CAF22392A2CD81900ADEE0B /* PhrasesManager.swift */,
 				2CE62EF529FEC5370063BE1D /* UserData.swift */,
 			);
 			path = Managers;
@@ -406,14 +418,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CAF22382A2CD7B900ADEE0B /* AppPhrase.swift in Sources */,
 				2CD9ED652A253CD1006F5566 /* LocaleSelectorTypes.swift in Sources */,
 				2C6BAC2429FD6BD300009E19 /* AppSizes.swift in Sources */,
 				2C00FAC52A2CBBAB00483799 /* KeyboardShortcutView.swift in Sources */,
+				2C831E5E2A3647910028BCD8 /* NewPhrasePanel.swift in Sources */,
 				2C00FAC12A2CBAE200483799 /* KeyEquivalent+extensions.swift in Sources */,
 				2C9416782A2BA0E100F572AC /* UserDefaults+extensions.swift in Sources */,
 				2CE0E61D2A25112C00BD09A3 /* LocaleSelector.swift in Sources */,
 				2CD9ED632A253869006F5566 /* LocaleSelectorSheet.swift in Sources */,
 				2C6BAC0329FD5D8500009E19 /* Screens.swift in Sources */,
+				2CAF223A2A2CD81900ADEE0B /* PhrasesManager.swift in Sources */,
 				2C94167A2A2BC09500F572AC /* Color+extensions.swift in Sources */,
 				2C6BAC1829FD63B900009E19 /* PhrasesScreen.swift in Sources */,
 				2C00FAC32A2CBB0B00483799 /* EventModifiers+extensions.swift in Sources */,
@@ -425,6 +440,7 @@
 				2C976BBF2A23FBCF00D360F5 /* Locale+extensions.swift in Sources */,
 				2CD9ED672A253E9C006F5566 /* LocaleSelectors.swift in Sources */,
 				2CBC16242A2BF06700FEB17E /* PhrasesScreen+ViewModel.swift in Sources */,
+				2C41260E2A2D311000CD0ED4 /* PhraseView.swift in Sources */,
 				2C976BBB2A23E1DC00D360F5 /* Constants.swift in Sources */,
 				2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */,
 				2C6BAC1A29FD643500009E19 /* Sidebar.swift in Sources */,

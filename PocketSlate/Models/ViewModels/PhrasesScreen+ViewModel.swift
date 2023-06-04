@@ -33,11 +33,19 @@ extension PhrasesScreen {
             didSet { Task { await selectedLocaleSelectorDidSet() } }
         }
 
+        @Published var primaryNewPhraseField = ""
+        @Published var secondaryNewPhraseField = ""
+
         init() {
             let (primaryLocale, secondaryLocale) = Self.getInitialLocales()
             self.primaryLocale = primaryLocale
             self.secondaryLocale = secondaryLocale
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
+        }
+
+        var newPhraseSubmitButtonIsDisabled: Bool {
+            primaryNewPhraseField.trimmingByWhitespacesAndNewLines.isEmpty &&
+                secondaryNewPhraseField.trimmingByWhitespacesAndNewLines.isEmpty
         }
 
         var selectedLocaleSelectorLocales: [Locale] {
@@ -58,6 +66,12 @@ extension PhrasesScreen {
                 .concat(Self.locales)
                 .filter { $0 != currentLocale }
                 .uniques()
+        }
+
+        @MainActor
+        func clearNewPhraseFields() {
+            primaryNewPhraseField = ""
+            secondaryNewPhraseField = ""
         }
 
         @MainActor

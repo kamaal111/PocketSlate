@@ -17,4 +17,7 @@ extension UserDefaults {
 
     @UserDefaultsObject(key: "previously_selected_locales")
     static var previouslySelectedLocales: [Locale]?
+
+    @UserDefaultsObject(key: "phrases")
+    static var phrases: [AppPhrase]?
 }
