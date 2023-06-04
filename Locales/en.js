@@ -9,4 +9,7 @@ module.exports = {
     LANGUAGES: 'Languages',
     DONE: 'Done',
     CLOSE: 'Close',
+    SEARCH: 'Search',
+    NO_LOCALE_SEARCH_MATCH: 'Nothing found matching \'%@\'',
+    CLEAR_SEARCH: 'Clear search',
 }

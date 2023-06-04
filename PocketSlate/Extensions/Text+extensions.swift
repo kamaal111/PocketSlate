@@ -9,8 +9,8 @@ import SwiftUI
 import AppLocales
 
 extension Text {
-    init(localized key: AppLocales.Keys) {
-        self.init(key.localized)
+    init(localized key: AppLocales.Keys, with variables: [CVarArg] = []) {
+        self.init(AppLocales.getText(key, with: variables))
     }
 
     static func empty() -> Text {
