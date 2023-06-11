@@ -76,6 +76,8 @@
 		2C6BAC2329FD6BD300009E19 /* AppSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSizes.swift; sourceTree = "<group>"; };
 		2C6BAC2529FD6C0600009E19 /* View+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+extensions.swift"; sourceTree = "<group>"; };
 		2C831E5D2A3647910028BCD8 /* NewPhrasePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPhrasePanel.swift; sourceTree = "<group>"; };
+		2C831E5F2A3649F30028BCD8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		2C831E602A364A050028BCD8 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		2C9416772A2BA0E100F572AC /* UserDefaults+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+extensions.swift"; sourceTree = "<group>"; };
 		2C9416792A2BC09500F572AC /* Color+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+extensions.swift"; sourceTree = "<group>"; };
 		2C976BBA2A23E1DC00D360F5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -185,8 +187,8 @@
 		2C6BAC0C29FD5F7400009E19 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				2C6BAC1D29FD69D500009E19 /* Backend */,
 				2C6BAC0D29FD5F8E00009E19 /* AppLocales */,
+				2C6BAC1D29FD69D500009E19 /* Backend */,
 				2C6BAC1B29FD662D00009E19 /* CDPersist */,
 				2C6BAC1C29FD665900009E19 /* Models */,
 			);
@@ -241,10 +243,12 @@
 			isa = PBXGroup;
 			children = (
 				2C6BAC0729FD5E2600009E19 /* justfile */,
-				2C6BABEA29FD59B200009E19 /* PocketSlate */,
+				2C831E5F2A3649F30028BCD8 /* LICENSE */,
+				2C831E602A364A050028BCD8 /* package.json */,
 				2C6BAC0E29FD605200009E19 /* Frameworks */,
 				2C6BAC0429FD5D9C00009E19 /* Locales */,
 				2C6BAC0C29FD5F7400009E19 /* Modules */,
+				2C6BABEA29FD59B200009E19 /* PocketSlate */,
 				2CB0272729FD58DF0000F5AD /* Products */,
 				2C6BAC0929FD5E3C00009E19 /* Scripts */,
 			);
@@ -669,7 +673,7 @@
 			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.8.0;
+				minimumVersion = 0.8.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

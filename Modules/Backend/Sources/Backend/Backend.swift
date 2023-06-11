@@ -9,11 +9,7 @@ import CDPersist
 import Foundation
 
 public class Backend {
-    public let itemClient: DataClient<CoreItem>
-
-    private init(preview: Bool) {
-        self.itemClient = .init(context: preview ? .preview : .shared)
-    }
+    private init(preview _: Bool) { }
 
     public static let shared = Backend(preview: false)
 

@@ -16,9 +16,7 @@ public class PersistenceController {
     private init(inMemory: Bool = false) {
         let containerName = "PocketSlate"
         let persistentContainerBuilder = _PersistentContainerBuilder(
-            entities: [
-                CoreItem.entity,
-            ],
+            entities: [],
             relationships: [],
             containerName: containerName,
             preview: inMemory
