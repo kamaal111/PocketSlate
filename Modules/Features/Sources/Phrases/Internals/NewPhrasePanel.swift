@@ -5,8 +5,10 @@
 //  Created by Kamaal M Farah on 11/06/2023.
 //
 
+import Users
 import SwiftUI
 import KamaalUI
+import AppLocales
 
 struct NewPhrasePanel: View {
     @EnvironmentObject private var userData: UserData

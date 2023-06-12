@@ -7,6 +7,7 @@
 
 import SwiftUI
 import KamaalUI
+import AppLocales
 
 struct PhraseView: View {
     let phrase: AppPhrase

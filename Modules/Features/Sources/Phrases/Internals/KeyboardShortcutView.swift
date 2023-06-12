@@ -46,6 +46,20 @@ struct KeyboardShortcutConfiguration: Hashable, Identifiable {
     }
 }
 
+extension EventModifiers: Hashable { }
+
+extension KeyEquivalent: Equatable {
+    public static func == (lhs: KeyEquivalent, rhs: KeyEquivalent) -> Bool {
+        lhs.character == rhs.character
+    }
+}
+
+extension KeyEquivalent: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(character)
+    }
+}
+
 struct KeyboardShortcutView_Previews: PreviewProvider {
     static var previews: some View {
         KeyboardShortcutView(shortcuts: [], onEmit: { _ in }, content: {

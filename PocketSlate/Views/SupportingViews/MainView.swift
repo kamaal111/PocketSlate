@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Phrases
 import KamaalUI
 import KamaalPopUp
 import KamaalSettings

@@ -1,8 +1,8 @@
 //
 //  PhrasesManager.swift
-//  PocketSlate
 //
-//  Created by Kamaal M Farah on 04/06/2023.
+//
+//  Created by Kamaal M Farah on 11/06/2023.
 //
 
 import Foundation
@@ -11,7 +11,7 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: PhrasesManager.self, failOnError: true)
 
-final class PhrasesManager: ObservableObject {
+public final class PhrasesManager: ObservableObject {
     @Published private(set) var phrases: [AppPhrase] = []
 
     enum Errors: Error {

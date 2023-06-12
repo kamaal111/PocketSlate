@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 29/05/2023.
 //
 
+import Users
 import SwiftUI
 import KamaalUI
 import AppLocales
@@ -207,6 +208,6 @@ private struct NumberedLocale: Hashable, Identifiable {
 struct LocaleSelectorSheet_Previews: PreviewProvider {
     static var previews: some View {
         LocaleSelectorSheet(locales: PhrasesScreen.ViewModel.locales, onClose: { }, onLocaleSelect: { _ in })
-            .environmentObject(UserData())
+            .usersEnvironment()
     }
 }

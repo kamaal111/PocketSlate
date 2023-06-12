@@ -5,6 +5,7 @@
 //  Created by Kamaal Farah on 28/05/2023.
 //
 
+import Users
 import SwiftUI
 import KamaalSettings
 

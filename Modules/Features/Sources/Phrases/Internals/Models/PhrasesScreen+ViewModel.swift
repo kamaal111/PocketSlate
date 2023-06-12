@@ -1,6 +1,5 @@
 //
 //  PhrasesScreen+ViewModel.swift
-//  PocketSlate
 //
 //  Created by Kamaal M Farah on 04/06/2023.
 //
@@ -122,7 +121,7 @@ extension PhrasesScreen {
                         return (result.primary.appended(locale), result.sub)
                     }
 
-                    if !Features.showSubLocales {
+                    if !EnabledFeatures.showSubLocales {
                         return result
                     }
 

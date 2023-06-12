@@ -1,8 +1,8 @@
 //
 //  AppPhrase.swift
-//  PocketSlate
 //
-//  Created by Kamaal M Farah on 04/06/2023.
+//
+//  Created by Kamaal M Farah on 11/06/2023.
 //
 
 import Foundation

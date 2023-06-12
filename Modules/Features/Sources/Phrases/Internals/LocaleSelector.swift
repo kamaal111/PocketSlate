@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 29/05/2023.
 //
 
+import Users
 import SwiftUI
 import KamaalUI
 
@@ -30,7 +31,7 @@ struct LocaleSelector: View {
                                 .foregroundColor(.secondary)
                                 .ktakeWidthEagerly()
                                 .lineLimit(1)
-                        } else if Features.showSubLocales {
+                        } else if EnabledFeatures.showSubLocales {
                             Text("k")
                                 .foregroundColor(.white.opacity(0.01))
                                 .ktakeWidthEagerly()
@@ -74,7 +75,7 @@ struct LocaleSelector_Previews: PreviewProvider {
             LocaleSelector(currentLocale: PhrasesScreen.ViewModel.locales.first!, isSelected: false, action: { })
         }
         .padding(.vertical, .large)
-        .environmentObject(UserData())
+        .usersEnvironment()
         .previewLayout(.sizeThatFits)
     }
 }

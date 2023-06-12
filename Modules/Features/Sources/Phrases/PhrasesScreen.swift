@@ -1,16 +1,17 @@
 //
 //  PhrasesScreen.swift
-//  PocketSlate
 //
-//  Created by Kamaal Farah on 28/05/2023.
+//
+//  Created by Kamaal M Farah on 11/06/2023.
 //
 
+import Users
 import SwiftUI
 import KamaalUI
 import AppLocales
 import KamaalPopUp
 
-struct PhrasesScreen: View {
+public struct PhrasesScreen: View {
     @Environment(\.colorScheme) private var colorScheme
 
     @EnvironmentObject private var userData: UserData
@@ -19,7 +20,9 @@ struct PhrasesScreen: View {
 
     @StateObject private var viewModel = ViewModel()
 
-    var body: some View {
+    public init() { }
+
+    public var body: some View {
         VStack {
             LocaleSelectors(
                 primaryLocale: viewModel.primaryLocale,
@@ -101,6 +104,6 @@ struct PhrasesScreen: View {
 struct PhrasesScreen_Previews: PreviewProvider {
     static var previews: some View {
         PhrasesScreen()
-            .environmentObject(UserData())
+            .usersEnvironment()
     }
 }

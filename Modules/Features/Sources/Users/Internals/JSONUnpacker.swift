@@ -16,7 +16,7 @@ class AcknowledgementsJSON {
 
     private init() {
         do {
-            self.content = try JSONFileUnpacker<Acknowledgements>(filename: "Acknowledgements").content
+            self.content = try JSONFileUnpacker<Acknowledgements>(filename: "Acknowledgements", bundle: .module).content
         } catch {
             logger.error(label: "Failed to unpack json file", error: error)
         }
