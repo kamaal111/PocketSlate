@@ -5,14 +5,15 @@
 //  Created by Kamaal Farah on 28/05/2023.
 //
 
-import Users
 import SwiftUI
 import KamaalSettings
 
-struct AppSettingsScreen: View {
+public struct AppSettingsScreen: View {
     @EnvironmentObject private var userData: UserData
 
-    var body: some View {
+    public init() { }
+
+    public var body: some View {
         SettingsScreen(configuration: userData.settingsConfiguration)
     }
 }
