@@ -27,7 +27,6 @@
 		2C6BAC0729FD5E2600009E19 /* justfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = justfile; sourceTree = "<group>"; };
 		2C6BAC0A29FD5E5C00009E19 /* generateLocales.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = generateLocales.js; sourceTree = "<group>"; };
 		2C6BAC0D29FD5F8E00009E19 /* AppLocales */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppLocales; sourceTree = "<group>"; };
-		2C6BAC1B29FD662D00009E19 /* CDPersist */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = CDPersist; sourceTree = "<group>"; };
 		2C6BAC1C29FD665900009E19 /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Models; sourceTree = "<group>"; };
 		2C6BAC1D29FD69D500009E19 /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Backend; sourceTree = "<group>"; };
 		2C831E5F2A3649F30028BCD8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -36,6 +35,7 @@
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2CDF2BF32A3B9A5C007CA8FC /* Navigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Navigation; sourceTree = "<group>"; };
+		2CDF2BF82A3B9EAC007CA8FC /* AppUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppUI; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,12 +93,12 @@
 		2C6BAC0C29FD5F7400009E19 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				2CDF2BF32A3B9A5C007CA8FC /* Navigation */,
 				2C6BAC0D29FD5F8E00009E19 /* AppLocales */,
+				2CDF2BF82A3B9EAC007CA8FC /* AppUI */,
 				2C6BAC1D29FD69D500009E19 /* Backend */,
-				2C6BAC1B29FD662D00009E19 /* CDPersist */,
 				2C831E612A364BDF0028BCD8 /* Features */,
 				2C6BAC1C29FD665900009E19 /* Models */,
+				2CDF2BF32A3B9A5C007CA8FC /* Navigation */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -185,7 +185,6 @@
 			);
 			mainGroup = 2CB0271D29FD58DF0000F5AD;
 			packageReferences = (
-				2C6BABF529FD5CCD00009E19 /* XCRemoteSwiftPackageReference "KamaalSwift" */,
 			);
 			productRefGroup = 2CB0272729FD58DF0000F5AD /* Products */;
 			projectDirPath = "";
@@ -452,17 +451,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		2C6BABF529FD5CCD00009E19 /* XCRemoteSwiftPackageReference "KamaalSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 0.8.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		2C545C762A37AEDB00A672E0 /* Users */ = {

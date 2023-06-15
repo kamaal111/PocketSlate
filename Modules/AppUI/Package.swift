@@ -4,21 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "Models",
+    name: "AppUI",
     platforms: [.macOS(.v12), .iOS(.v15)],
     products: [
         .library(
-            name: "Models",
-            targets: ["Models"]
+            name: "AppUI",
+            targets: ["AppUI"]
         ),
     ],
-    dependencies: [
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.1" ..< "0.10.0"),
-        .package(path: "../AppLocales"),
-    ],
+    dependencies: [],
     targets: [
         .target(
-            name: "Models",
+            name: "AppUI",
             dependencies: []
         ),
     ]

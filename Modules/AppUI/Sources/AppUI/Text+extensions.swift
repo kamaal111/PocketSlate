@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Text {
-    static func empty() -> Text {
+    public static func empty() -> Text {
         Text("")
     }
 }

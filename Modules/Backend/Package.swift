@@ -13,14 +13,12 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(path: "../CDPersist"),
         .package(path: "../Models"),
     ],
     targets: [
         .target(
             name: "Backend",
             dependencies: [
-                "CDPersist",
                 "Models",
             ]
         ),

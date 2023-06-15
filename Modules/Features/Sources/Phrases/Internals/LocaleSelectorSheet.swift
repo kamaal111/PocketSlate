@@ -6,6 +6,7 @@
 //
 
 import Users
+import AppUI
 import SwiftUI
 import KamaalUI
 import AppLocales
@@ -14,15 +15,11 @@ import KamaalAlgorithms
 import KamaalExtensions
 
 private let shortcuts: [KeyboardShortcutEvents: KeyboardShortcutConfiguration] = [
-    .downArrow: .init(id: UUID(uuidString: "b1227523-fa31-4aa5-be4f-c8dfad11d2df")!, key: .downArrow),
-    .upArrow: .init(id: UUID(uuidString: "1c63cd93-9bbd-43a9-bf59-89bfbaeaead7")!, key: .upArrow),
-    .return: .init(id: UUID(uuidString: "d969527a-bd58-49d9-ae43-92db3fd63b13")!, key: .return),
+    .downArrow: .init(key: .downArrow),
+    .upArrow: .init(key: .upArrow),
+    .return: .init(key: .return),
 ].merged(with: (1 ..< 10).reduce([:]) { result, number in
-    let shortcut = KeyboardShortcutConfiguration(
-        id: UUID(),
-        key: KeyEquivalent("\(number)".first!),
-        modifiers: .command
-    )
+    let shortcut = KeyboardShortcutConfiguration(key: KeyEquivalent("\(number)".first!), modifiers: .command)
     return result.merged(with: [.number(value: number): shortcut])
 })
 

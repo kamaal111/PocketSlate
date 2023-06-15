@@ -6,8 +6,6 @@
 //
 
 import Models
-import CoreData
-import CDPersist
 import Foundation
 
 public enum DataClientErrors: Error {

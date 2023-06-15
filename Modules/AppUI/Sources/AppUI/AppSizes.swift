@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum AppSizes: CGFloat {
+public enum AppSizes: CGFloat {
     /// Size of 0
     case nada = 0
     /// Size of 2
@@ -25,11 +25,11 @@ enum AppSizes: CGFloat {
 }
 
 extension View {
-    func padding(_ edges: Edge.Set = .all, _ length: AppSizes) -> some View {
+    public func padding(_ edges: Edge.Set = .all, _ length: AppSizes) -> some View {
         padding(edges, length.rawValue)
     }
 
-    func cornerRadius(_ length: AppSizes) -> some View {
+    public func cornerRadius(_ length: AppSizes) -> some View {
         cornerRadius(length.rawValue)
     }
 }
