@@ -6,16 +6,11 @@
 //
 
 import SwiftUI
-import KamaalNavigation
+import Navigation
 
 struct ContentView: View {
     var body: some View {
-        NavigationStackView(
-            stack: [Screens](),
-            root: { screen in MainView(screen: screen) },
-            subView: { screen in MainView(screen: screen, displayMode: .inline) },
-            sidebar: { Sidebar() }
-        )
+        AppNavigationView()
     }
 }
 

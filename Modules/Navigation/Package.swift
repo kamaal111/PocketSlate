@@ -15,12 +15,18 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.8.1" ..< "0.9.0"),
         .package(path: "../AppLocales"),
+        .package(path: "../Features"),
     ],
     targets: [
         .target(
             name: "Navigation",
             dependencies: [
                 .product(name: "KamaalNavigation", package: "KamaalSwift"),
+                .product(name: "KamaalUI", package: "KamaalSwift"),
+                .product(name: "KamaalPopUp", package: "KamaalSwift"),
+                .product(name: "KamaalSettings", package: "KamaalSwift"),
+                .product(name: "Users", package: "Features"),
+                .product(name: "Phrases", package: "Features"),
                 "AppLocales",
             ]
         ),
