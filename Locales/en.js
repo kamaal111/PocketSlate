@@ -8,6 +8,7 @@ module.exports = {
     DEFAULT_COLOR: 'Default Color',
     LANGUAGES: 'Languages',
     DONE: 'Done',
+    EDIT: 'Edit',
     CLOSE: 'Close',
     SEARCH: 'Search',
     NO_LOCALE_SEARCH_MATCH: 'Nothing found matching \'%@\'',

@@ -23,6 +23,7 @@ struct Sidebar: View {
             }
         }
         #if os(macOS)
+        .frame(minWidth: 160)
         .toolbar(content: {
             Button(action: toggleSidebar) {
                 Label(AppLocales.getText(.TOGGLE_SIDEBAR), systemImage: "sidebar.left")

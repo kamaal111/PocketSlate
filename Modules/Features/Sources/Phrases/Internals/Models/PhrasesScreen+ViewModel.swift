@@ -4,6 +4,7 @@
 //  Created by Kamaal M Farah on 04/06/2023.
 //
 
+import AppUI
 import SwiftUI
 import KamaalLogger
 import KamaalExtensions
@@ -32,14 +33,27 @@ extension PhrasesScreen {
             didSet { Task { await selectedLocaleSelectorDidSet() } }
         }
 
+        @Published var editMode: EditMode = .inactive {
+            didSet { Task { await editModeDidSet() } }
+        }
+
+        @Published private(set) var selectedPhrase: AppPhrase?
         @Published var primaryNewPhraseField = ""
         @Published var secondaryNewPhraseField = ""
+        @Published var editingPrimaryPhraseField = ""
+        @Published var editingSecondaryPhraseField = ""
+        @Published private(set) var editedPhrases: [AppPhrase] = []
 
-        init() {
-            let (primaryLocale, secondaryLocale) = Self.getInitialLocales()
-            self.primaryLocale = primaryLocale
-            self.secondaryLocale = secondaryLocale
+        init(primaryLocale: Locale?, secondaryLocale: Locale?) {
+            let (initialPrimaryLocale, initialSecondaryLocale) = Self.getInitialLocales()
+            self.primaryLocale = primaryLocale ?? initialPrimaryLocale
+            self.secondaryLocale = secondaryLocale ?? initialSecondaryLocale
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
+        }
+
+        convenience init() {
+            let (primaryLocale, secondaryLocale) = Self.getInitialLocales()
+            self.init(primaryLocale: primaryLocale, secondaryLocale: secondaryLocale)
         }
 
         var newPhraseSubmitButtonIsDisabled: Bool {
@@ -67,6 +81,56 @@ extension PhrasesScreen {
                 .uniques()
         }
 
+        func phraseIsSelected(_ phrase: AppPhrase) -> Bool {
+            guard let selectedPhrase else { return false }
+
+            return phrase.id == selectedPhrase.id
+        }
+
+        @MainActor
+        func selectPhrase(_ phrase: AppPhrase) {
+            guard editMode.isEditing else {
+                logger.error("selectPhrase should have only been triggered while editing")
+                return
+            }
+
+            guard phrase.id != selectedPhrase?.id else { return }
+
+            let previouslyEditedPhraseIndex = editedPhrases.findIndex(by: \.id, is: phrase.id)
+            var previouslyEditedPhrase: AppPhrase?
+            if let previouslyEditedPhraseIndex {
+                previouslyEditedPhrase = editedPhrases[previouslyEditedPhraseIndex]
+            }
+
+            let editingPrimaryPhraseField = (previouslyEditedPhrase ?? phrase).translations[primaryLocale]?.first ?? ""
+            let editingSecondaryPhraseField = (previouslyEditedPhrase ?? phrase)
+                .translations[secondaryLocale]?
+                .first ?? ""
+
+            if let selectedPhrase {
+                let selectedPhrasePrimaryTranslation = selectedPhrase.translations[primaryLocale]?.first
+                let selectedPhraseSecondaryTranslation = selectedPhrase.translations[secondaryLocale]?.first
+                if self.editingPrimaryPhraseField != selectedPhrasePrimaryTranslation ||
+                    self.editingSecondaryPhraseField != selectedPhraseSecondaryTranslation {
+                    var translations = selectedPhrase.translations
+                    translations[primaryLocale] = [self.editingPrimaryPhraseField]
+                    translations[secondaryLocale] = [self.editingSecondaryPhraseField]
+                    let editedPhrase = AppPhrase(id: selectedPhrase.id, translations: translations)
+                    if let editedPhraseIndex = editedPhrases.findIndex(by: \.id, is: selectedPhrase.id) {
+                        editedPhrases[editedPhraseIndex] = editedPhrase
+                    } else {
+                        editedPhrases = editedPhrases.appended(editedPhrase)
+                    }
+                }
+            }
+
+            withAnimation {
+                self.editingPrimaryPhraseField = editingPrimaryPhraseField
+                self.editingSecondaryPhraseField = editingSecondaryPhraseField
+                selectedPhrase = phrase
+            }
+        }
+
         @MainActor
         func clearNewPhraseFields() {
             primaryNewPhraseField = ""
@@ -75,10 +139,7 @@ extension PhrasesScreen {
 
         @MainActor
         func swapLocales() {
-            let newPrimaryLocale = secondaryLocale
-            let newSecondaryLocale = primaryLocale
-            primaryLocale = newPrimaryLocale
-            secondaryLocale = newSecondaryLocale
+            (primaryLocale, secondaryLocale) = (secondaryLocale, primaryLocale)
         }
 
         @MainActor
@@ -215,6 +276,17 @@ extension PhrasesScreen {
 
         private func previouslySelectedLocalesDidSet() {
             UserDefaults.previouslySelectedLocales = previouslySelectedLocales
+        }
+
+        @MainActor
+        private func editModeDidSet() {
+            if editMode.isEditing {
+                editedPhrases = []
+                selectedPhrase = nil
+            } else {
+                // Some saving or something
+                print("editedPhrases", editedPhrases)
+            }
         }
 
         private static func getInitialLocales() -> (primary: Locale, secondary: Locale) {

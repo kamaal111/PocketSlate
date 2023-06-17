@@ -6,6 +6,7 @@
 //
 
 import Users
+import AppUI
 import SwiftUI
 import KamaalUI
 import AppLocales
@@ -41,11 +42,15 @@ public struct PhrasesScreen: View {
                     submitNewPhrase: submitNewPhrase
                 )
                 .padding(.horizontal, .small)
-                ForEach(phrasesManager.phrases) { phrase in
+                ForEach(phrases) { phrase in
                     PhraseView(
+                        editingPrimaryField: $viewModel.editingPrimaryPhraseField,
+                        editingSecondaryField: $viewModel.editingSecondaryPhraseField,
                         phrase: phrase,
                         primaryLocale: viewModel.primaryLocale,
-                        secondaryLocale: viewModel.secondaryLocale
+                        secondaryLocale: viewModel.secondaryLocale,
+                        isSelected: viewModel.phraseIsSelected(phrase),
+                        onSelection: { phrase in viewModel.selectPhrase(phrase) }
                     )
                 }
             }
@@ -57,9 +62,24 @@ public struct PhrasesScreen: View {
                 onLocaleSelect: { locale in viewModel.selectLocale(locale) }
             )
         }
+        .toolbar(content: {
+            EditButton()
+        })
+        .environment(\.editMode, $viewModel.editMode)
         .onChange(of: viewModel.primaryLocale, perform: onPrimaryLocaleChange)
         .onChange(of: viewModel.secondaryLocale, perform: onSecondaryLocaleChange)
         .onAppear(perform: handleOnAppear)
+    }
+
+    private var phrases: [AppPhrase] {
+        if viewModel.editMode.isEditing {
+            return phrasesManager.phrases
+                .map { phrase in
+                    viewModel.editedPhrases.find(by: \.id, is: phrase.id) ?? phrase
+                }
+        } else {
+            return phrasesManager.phrases
+        }
     }
 
     private func handleOnAppear() {

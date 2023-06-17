@@ -12,11 +12,15 @@ let package = Package(
             targets: ["AppUI"]
         ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(path: "../AppLocales"),
+    ],
     targets: [
         .target(
             name: "AppUI",
-            dependencies: []
+            dependencies: [
+                "AppLocales",
+            ]
         ),
     ]
 )

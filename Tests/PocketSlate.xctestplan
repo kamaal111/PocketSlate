@@ -1,0 +1,45 @@
+{
+  "configurations" : [
+    {
+      "id" : "82CE3A8B-3F2E-4A74-99E6-7F50A25EC301",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:PocketSlate.xcodeproj",
+      "identifier" : "2CB0272529FD58DF0000F5AD",
+      "name" : "PocketSlate"
+    },
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:Modules\/AppLocales",
+        "identifier" : "AppLocalesTests",
+        "name" : "AppLocalesTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:Modules\/Backend",
+        "identifier" : "BackendTests",
+        "name" : "BackendTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/Features",
+        "identifier" : "PhrasesTests",
+        "name" : "PhrasesTests"
+      }
+    }
+  ],
+  "version" : 1
+}

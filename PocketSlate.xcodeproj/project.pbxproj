@@ -14,6 +14,7 @@
 		2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABF029FD59B200009E19 /* ContentView.swift */; };
 		2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BAC0F29FD605200009E19 /* AppLocales */; };
 		2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */ = {isa = PBXBuildFile; productRef = 2C831E622A364D6D0028BCD8 /* Phrases */; };
+		2CD8784E2A3E1A4B00F21603 /* PocketSlate.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 2CD8784D2A3E1A4B00F21603 /* PocketSlate.xctestplan */; };
 		2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDF2BF42A3B9A9B007CA8FC /* Navigation */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		2C831E612A364BDF0028BCD8 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2CD8784D2A3E1A4B00F21603 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
 		2CDF2BF32A3B9A5C007CA8FC /* Navigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Navigation; sourceTree = "<group>"; };
 		2CDF2BF82A3B9EAC007CA8FC /* AppUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppUI; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +124,7 @@
 				2C6BABEA29FD59B200009E19 /* PocketSlate */,
 				2CB0272729FD58DF0000F5AD /* Products */,
 				2C6BAC0929FD5E3C00009E19 /* Scripts */,
+				2CD8784C2A3E19F800F21603 /* Tests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -131,6 +134,14 @@
 				2CB0272629FD58DF0000F5AD /* PocketSlate.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2CD8784C2A3E19F800F21603 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2CD8784D2A3E1A4B00F21603 /* PocketSlate.xctestplan */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -201,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */,
+				2CD8784E2A3E1A4B00F21603 /* PocketSlate.xctestplan in Resources */,
 				2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

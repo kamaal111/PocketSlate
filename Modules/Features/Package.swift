@@ -36,6 +36,7 @@ let package = Package(
                 "AppUI",
             ]
         ),
+        .testTarget(name: "PhrasesTests", dependencies: ["Phrases"]),
         .target(
             name: "Users",
             dependencies: [
