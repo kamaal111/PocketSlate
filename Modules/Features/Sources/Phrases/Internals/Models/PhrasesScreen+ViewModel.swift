@@ -37,17 +37,16 @@ extension PhrasesScreen {
             didSet { Task { await editModeDidSet() } }
         }
 
-        @Published private(set) var selectedPhrase: AppPhrase?
+        @Published private(set) var textEditingPhrase: AppPhrase?
         @Published var primaryNewPhraseField = ""
         @Published var secondaryNewPhraseField = ""
         @Published var editingPrimaryPhraseField = ""
         @Published var editingSecondaryPhraseField = ""
         @Published private(set) var editedPhrases: [AppPhrase] = []
 
-        init(primaryLocale: Locale?, secondaryLocale: Locale?) {
-            let (initialPrimaryLocale, initialSecondaryLocale) = Self.getInitialLocales()
-            self.primaryLocale = primaryLocale ?? initialPrimaryLocale
-            self.secondaryLocale = secondaryLocale ?? initialSecondaryLocale
+        init(primaryLocale: Locale, secondaryLocale: Locale) {
+            self.primaryLocale = primaryLocale
+            self.secondaryLocale = secondaryLocale
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
         }
 
@@ -81,20 +80,22 @@ extension PhrasesScreen {
                 .uniques()
         }
 
-        func phraseIsSelected(_ phrase: AppPhrase) -> Bool {
-            guard let selectedPhrase else { return false }
+        func phraseTextIsBeingEdited(_ phrase: AppPhrase) -> Bool {
+            guard let textEditingPhrase else { return false }
 
-            return phrase.id == selectedPhrase.id
+            return phrase.id == textEditingPhrase.id
         }
 
         @MainActor
-        func selectPhrase(_ phrase: AppPhrase) {
+        func selectTextEditingPhrase(_ phrase: AppPhrase) {
             guard editMode.isEditing else {
                 logger.error("selectPhrase should have only been triggered while editing")
                 return
             }
 
-            guard phrase.id != selectedPhrase?.id else { return }
+            guard phrase.id != textEditingPhrase?.id else { return }
+
+            updateEditedPhrasesOnChanges()
 
             let previouslyEditedPhraseIndex = editedPhrases.findIndex(by: \.id, is: phrase.id)
             var previouslyEditedPhrase: AppPhrase?
@@ -107,27 +108,10 @@ extension PhrasesScreen {
                 .translations[secondaryLocale]?
                 .first ?? ""
 
-            if let selectedPhrase {
-                let selectedPhrasePrimaryTranslation = selectedPhrase.translations[primaryLocale]?.first
-                let selectedPhraseSecondaryTranslation = selectedPhrase.translations[secondaryLocale]?.first
-                if self.editingPrimaryPhraseField != selectedPhrasePrimaryTranslation ||
-                    self.editingSecondaryPhraseField != selectedPhraseSecondaryTranslation {
-                    var translations = selectedPhrase.translations
-                    translations[primaryLocale] = [self.editingPrimaryPhraseField]
-                    translations[secondaryLocale] = [self.editingSecondaryPhraseField]
-                    let editedPhrase = AppPhrase(id: selectedPhrase.id, translations: translations)
-                    if let editedPhraseIndex = editedPhrases.findIndex(by: \.id, is: selectedPhrase.id) {
-                        editedPhrases[editedPhraseIndex] = editedPhrase
-                    } else {
-                        editedPhrases = editedPhrases.appended(editedPhrase)
-                    }
-                }
-            }
-
             withAnimation {
                 self.editingPrimaryPhraseField = editingPrimaryPhraseField
                 self.editingSecondaryPhraseField = editingSecondaryPhraseField
-                selectedPhrase = phrase
+                textEditingPhrase = phrase
             }
         }
 
@@ -212,6 +196,29 @@ extension PhrasesScreen {
         }()
 
         @MainActor
+        private func updateEditedPhrasesOnChanges() {
+            guard let textEditingPhrase else { return }
+
+            let selectedPhrasePrimaryTranslation = textEditingPhrase.translations[primaryLocale]?.first
+            let selectedPhraseSecondaryTranslation = textEditingPhrase.translations[secondaryLocale]?.first
+
+            guard editingPrimaryPhraseField != selectedPhrasePrimaryTranslation ||
+                editingSecondaryPhraseField != selectedPhraseSecondaryTranslation else { return }
+
+            let translations = textEditingPhrase.translations
+                .merged(with: [
+                    primaryLocale: [editingPrimaryPhraseField],
+                    secondaryLocale: [editingSecondaryPhraseField],
+                ])
+            let editedPhrase = AppPhrase(id: textEditingPhrase.id, translations: translations)
+            if let editedPhraseIndex = editedPhrases.findIndex(by: \.id, is: textEditingPhrase.id) {
+                editedPhrases[editedPhraseIndex] = editedPhrase
+            } else {
+                editedPhrases = editedPhrases.appended(editedPhrase)
+            }
+        }
+
+        @MainActor
         private func setSelectedLocale(_ locale: Locale, localeSelector: LocaleSelectorTypes) {
             var newPrimaryLocale: Locale
             var newSecondaryLocale: Locale
@@ -282,10 +289,9 @@ extension PhrasesScreen {
         private func editModeDidSet() {
             if editMode.isEditing {
                 editedPhrases = []
-                selectedPhrase = nil
+                textEditingPhrase = nil
             } else {
-                // Some saving or something
-                print("editedPhrases", editedPhrases)
+                updateEditedPhrasesOnChanges()
             }
         }
 

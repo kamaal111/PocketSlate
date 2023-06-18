@@ -26,6 +26,15 @@ public final class PhrasesManager: ObservableObject {
     }
 
     @MainActor
+    func updatePhrases(editPhrases: [AppPhrase]) {
+        let groupedEditedPhrases = Dictionary(grouping: editPhrases.map { $0.update() }, by: \.id)
+        phrases = AppPhrase
+            .list()
+            .map { groupedEditedPhrases[$0.id]?.first ?? $0 }
+            .reversed()
+    }
+
+    @MainActor
     func createPhrase(
         primaryTranslation: String,
         primaryLocale: Locale,

@@ -49,8 +49,8 @@ public struct PhrasesScreen: View {
                         phrase: phrase,
                         primaryLocale: viewModel.primaryLocale,
                         secondaryLocale: viewModel.secondaryLocale,
-                        isSelected: viewModel.phraseIsSelected(phrase),
-                        onSelection: { phrase in viewModel.selectPhrase(phrase) }
+                        isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
+                        onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) }
                     )
                 }
             }
@@ -68,6 +68,7 @@ public struct PhrasesScreen: View {
         .environment(\.editMode, $viewModel.editMode)
         .onChange(of: viewModel.primaryLocale, perform: onPrimaryLocaleChange)
         .onChange(of: viewModel.secondaryLocale, perform: onSecondaryLocaleChange)
+        .onChange(of: viewModel.editedPhrases, perform: onEditedPhrasesChange)
         .onAppear(perform: handleOnAppear)
     }
 
@@ -84,6 +85,13 @@ public struct PhrasesScreen: View {
 
     private func handleOnAppear() {
         phrasesManager.fetchPhrasesForLocalePair(primary: viewModel.primaryLocale, secondary: viewModel.secondaryLocale)
+    }
+
+    private func onEditedPhrasesChange(_ newValue: [AppPhrase]) {
+        guard !viewModel.editMode.isEditing else { return }
+        guard !newValue.isEmpty else { return }
+
+        phrasesManager.updatePhrases(editPhrases: newValue)
     }
 
     private func onPrimaryLocaleChange(_ newValue: Locale) {

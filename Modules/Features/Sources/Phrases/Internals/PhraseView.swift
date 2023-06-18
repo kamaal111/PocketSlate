@@ -25,20 +25,29 @@ struct PhraseView: View {
     let phrase: AppPhrase
     let primaryLocale: Locale
     let secondaryLocale: Locale
-    let isSelected: Bool
-    let onSelection: (_ phrase: AppPhrase) -> Void
+    let isEditingText: Bool
+    let onEditText: (_ phrase: AppPhrase) -> Void
 
     var body: some View {
         HStack {
             phraseTextView(primaryLocale, editingText: $editingPrimaryField)
             phraseTextView(secondaryLocale, editingText: $editingSecondaryField)
+            if editMode?.isEditing ?? false, !isEditingText {
+                HStack {
+                    Button(action: { onEditText(phrase) }) {
+                        Image(systemName: "pencil")
+                            .kBold()
+                            .foregroundColor(.accentColor)
+                    }
+                }
+            }
         }
-        .padding(.horizontal, .medium)
+        .padding(.horizontal, .small)
     }
 
     private func phraseTextView(_ locale: Locale, editingText: Binding<String>) -> some View {
         KJustStack {
-            if editMode?.isEditing ?? false, isSelected {
+            if editMode?.isEditing ?? false, isEditingText {
                 KFloatingTextField(
                     text: editingText,
                     title: userData.appLocale.localizedString(forIdentifier: locale.identifier)!
@@ -53,18 +62,6 @@ struct PhraseView: View {
             }
         }
         .ktakeWidthEagerly()
-        .onTapGesture(perform: { handleOnTap() })
-    }
-
-    private func handleOnTap() {
-        guard let editMode else {
-            logger.error("No edit mode environment set")
-            return
-        }
-
-        guard editMode.isEditing else { return }
-
-        onSelection(phrase)
     }
 }
 
@@ -85,8 +82,8 @@ struct PhraseView_Previews: PreviewProvider {
             ),
             primaryLocale: primaryLocale,
             secondaryLocale: secondaryLocale,
-            isSelected: false,
-            onSelection: { _ in }
+            isEditingText: false,
+            onEditText: { _ in }
         )
     }
 }

@@ -20,9 +20,9 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         )
     }
 
-    // - MARK: selectPhrase
+    // - MARK: selectTextEditingPhrase
 
-    func testSelectPhraseAfterEditingButNotChangingAnythingTheSecondTime() async throws {
+    func testSelectTextEditingPhraseAfterEditingButNotChangingAnythingTheSecondTime() async throws {
         await setEditModeToEditing()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "eb0b4785-5892-49df-aaf7-eccaff099a36")!,
@@ -39,14 +39,14 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             ]
         )
 
-        await selectPhrase(phrase: phrase1)
+        await selectTextEditingPhrase(phrase: phrase1)
         viewModel.editingPrimaryPhraseField = "You're welcome"
         viewModel.editingSecondaryPhraseField = "Prego"
-        await selectPhrase(phrase: phrase2)
-        await selectPhrase(phrase: phrase1)
+        await selectTextEditingPhrase(phrase: phrase2)
+        await selectTextEditingPhrase(phrase: phrase1)
         viewModel.editingPrimaryPhraseField = "You're welcome"
         viewModel.editingSecondaryPhraseField = "Prego"
-        await selectPhrase(phrase: phrase2)
+        await selectTextEditingPhrase(phrase: phrase2)
 
         XCTAssertEqual(viewModel.editingPrimaryPhraseField, "Excuse me")
         XCTAssertEqual(viewModel.editingSecondaryPhraseField, "Mi scusi")
@@ -61,7 +61,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         ])
     }
 
-    func testSelectPhraseAfterEditingAndThenReplaceExistingEditedPhrase() async throws {
+    func testSelectTextEditingPhraseAfterEditingAndThenReplaceExistingEditedPhrase() async throws {
         await setEditModeToEditing()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "ac5e046c-f866-4a7d-b49a-91a8a10dcfab")!,
@@ -78,14 +78,14 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             ]
         )
 
-        await selectPhrase(phrase: phrase1)
+        await selectTextEditingPhrase(phrase: phrase1)
         viewModel.editingPrimaryPhraseField = "No"
         viewModel.editingSecondaryPhraseField = "No"
-        await selectPhrase(phrase: phrase2)
-        await selectPhrase(phrase: phrase1)
+        await selectTextEditingPhrase(phrase: phrase2)
+        await selectTextEditingPhrase(phrase: phrase1)
         viewModel.editingPrimaryPhraseField = "Yes"
         viewModel.editingSecondaryPhraseField = "Si"
-        await selectPhrase(phrase: phrase2)
+        await selectTextEditingPhrase(phrase: phrase2)
 
         XCTAssertEqual(viewModel.editingPrimaryPhraseField, "I am sorry")
         XCTAssertEqual(viewModel.editingSecondaryPhraseField, "Mi dispiace")
@@ -100,7 +100,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         ])
     }
 
-    func testSelectPhraseAfterEditingAndThenSwappingLocales() async throws {
+    func testSelectTextEditingPhraseAfterEditingAndThenSwappingLocales() async throws {
         await setEditModeToEditing()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "a6fe9924-8dd5-4cd1-8602-a125fe1448c1")!,
@@ -117,11 +117,11 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             ]
         )
 
-        await selectPhrase(phrase: phrase1)
+        await selectTextEditingPhrase(phrase: phrase1)
         viewModel.editingSecondaryPhraseField = "Good evening"
         viewModel.editingPrimaryPhraseField = "Buona sera"
         await swapLocales()
-        await selectPhrase(phrase: phrase2)
+        await selectTextEditingPhrase(phrase: phrase2)
 
         XCTAssertEqual(viewModel.primaryLocale, Locale(identifier: "it"))
         XCTAssertEqual(viewModel.editingPrimaryPhraseField, "Parla lentamente")
@@ -138,7 +138,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         ])
     }
 
-    func testSelectPhraseAfterEditingAndThenSwitchingPhrases() async throws {
+    func testSelectTextEditingPhraseAfterEditingAndThenSwitchingPhrases() async throws {
         await setEditModeToEditing()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "15cd8073-94fa-444a-a5a4-98b9612fda45")!,
@@ -155,10 +155,10 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             ]
         )
 
-        await selectPhrase(phrase: phrase1)
+        await selectTextEditingPhrase(phrase: phrase1)
         viewModel.editingPrimaryPhraseField = "Thank You"
         viewModel.editingSecondaryPhraseField = "Grazie"
-        await selectPhrase(phrase: phrase2)
+        await selectTextEditingPhrase(phrase: phrase2)
 
         XCTAssertEqual(viewModel.editingPrimaryPhraseField, "Very good")
         XCTAssertEqual(viewModel.editingSecondaryPhraseField, "Molto bene")
@@ -173,7 +173,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         ])
     }
 
-    func testSelectPhrase() async throws {
+    func testSelectTextEditingPhrase() async throws {
         await setEditModeToEditing()
         let phrase = AppPhrase(
             id: UUID(uuidString: "9b1749f4-5eb7-429f-97c3-284750543918")!,
@@ -183,7 +183,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             ]
         )
 
-        await selectPhrase(phrase: phrase)
+        await selectTextEditingPhrase(phrase: phrase)
 
         XCTAssertEqual(viewModel.editingPrimaryPhraseField, "Hello")
         XCTAssertEqual(viewModel.editingSecondaryPhraseField, "Ciao")
@@ -225,19 +225,19 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         XCTAssert(viewModel.editedPhrases.isEmpty)
     }
 
-    private func selectPhrase(phrase: AppPhrase) async {
+    private func selectTextEditingPhrase(phrase: AppPhrase) async {
         let expectation = XCTestExpectation(description: "Selects a phrase")
-        let cancellable = viewModel.$selectedPhrase
+        let cancellable = viewModel.$textEditingPhrase
             .sink(receiveValue: { value in
                 guard value == phrase else { return }
 
                 expectation.fulfill()
             })
 
-        await viewModel.selectPhrase(phrase)
+        await viewModel.selectTextEditingPhrase(phrase)
 
         await fulfillment(of: [expectation], timeout: 3)
-        XCTAssertEqual(viewModel.selectedPhrase?.id, phrase.id)
-        XCTAssert(viewModel.phraseIsSelected(phrase))
+        XCTAssertEqual(viewModel.textEditingPhrase?.id, phrase.id)
+        XCTAssert(viewModel.phraseTextIsBeingEdited(phrase))
     }
 }

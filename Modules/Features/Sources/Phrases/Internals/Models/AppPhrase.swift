@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import KamaalLogger
 import KamaalExtensions
+
+private let logger = KamaalLogger(from: AppPhrase.self, failOnError: true)
 
 struct AppPhrase: Hashable, Codable, Identifiable {
     let id: UUID
@@ -14,6 +17,20 @@ struct AppPhrase: Hashable, Codable, Identifiable {
 
     enum Errors: Error {
         case invalidPayload
+    }
+
+    func update() -> AppPhrase {
+        var allItems = Self.list()
+        if let index = allItems.findIndex(by: \.id, is: id) {
+            allItems[index] = AppPhrase(id: allItems[index].id, translations: translations)
+        } else {
+            allItems = allItems.appended(AppPhrase(id: UUID(), translations: translations))
+            logger.error("There should have been a phrase stored in memory")
+        }
+
+        UserDefaults.phrases = allItems
+
+        return self
     }
 
     static func create(translations: [Locale: [String]]) -> Result<AppPhrase, Errors> {
