@@ -19,6 +19,8 @@ struct PhraseView: View {
 
     @EnvironmentObject private var userData: UserData
 
+    @State private var deletionConfirmation = false
+
     @Binding var editingPrimaryField: String
     @Binding var editingSecondaryField: String
 
@@ -27,6 +29,7 @@ struct PhraseView: View {
     let secondaryLocale: Locale
     let isEditingText: Bool
     let onEditText: (_ phrase: AppPhrase) -> Void
+    let onDeleteTranslation: (_ phrase: AppPhrase) -> Void
 
     var body: some View {
         HStack {
@@ -34,15 +37,29 @@ struct PhraseView: View {
             phraseTextView(secondaryLocale, editingText: $editingSecondaryField)
             if editMode?.isEditing ?? false, !isEditingText {
                 HStack {
-                    Button(action: { onEditText(phrase) }) {
-                        Image(systemName: "pencil")
-                            .kBold()
-                            .foregroundColor(.accentColor)
-                    }
+                    editActionButton(imageSystemName: "pencil", action: { onEditText(phrase) })
+                    editActionButton(imageSystemName: "trash.fill", action: { deletionConfirmation = true })
                 }
             }
         }
         .padding(.horizontal, .small)
+        .confirmationDialog(
+            AppLocales.getText(.PHRASE_DELETION_CONFIRMATION_TITLE),
+            isPresented: $deletionConfirmation,
+            actions: {
+                Button(AppLocales.getText(.SURE), role: .destructive, action: handleDefiniteDeletion)
+                    .foregroundColor(.red)
+            },
+            message: { Text(localized: .PHRASE_DELETION_CONFIRMATION_MESSAGE) }
+        )
+    }
+
+    private func editActionButton(imageSystemName: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: imageSystemName)
+                .kBold()
+                .foregroundColor(.accentColor)
+        }
     }
 
     private func phraseTextView(_ locale: Locale, editingText: Binding<String>) -> some View {
@@ -62,6 +79,11 @@ struct PhraseView: View {
             }
         }
         .ktakeWidthEagerly()
+    }
+
+    private func handleDefiniteDeletion() {
+        onDeleteTranslation(phrase)
+        deletionConfirmation = false
     }
 }
 
@@ -83,7 +105,8 @@ struct PhraseView_Previews: PreviewProvider {
             primaryLocale: primaryLocale,
             secondaryLocale: secondaryLocale,
             isEditingText: false,
-            onEditText: { _ in }
+            onEditText: { _ in },
+            onDeleteTranslation: { _ in }
         )
     }
 }

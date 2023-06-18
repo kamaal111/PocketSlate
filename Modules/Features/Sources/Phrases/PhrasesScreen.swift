@@ -50,7 +50,12 @@ public struct PhrasesScreen: View {
                         primaryLocale: viewModel.primaryLocale,
                         secondaryLocale: viewModel.secondaryLocale,
                         isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
-                        onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) }
+                        onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
+                        onDeleteTranslation: { phrase in phrasesManager.deleteTranslation(
+                            phrase: phrase,
+                            primary: viewModel.primaryLocale,
+                            secondary: viewModel.secondaryLocale
+                        ) }
                     )
                 }
             }
@@ -91,7 +96,7 @@ public struct PhrasesScreen: View {
         guard !viewModel.editMode.isEditing else { return }
         guard !newValue.isEmpty else { return }
 
-        phrasesManager.updatePhrases(editPhrases: newValue)
+        phrasesManager.updatePhrases(editedPhrases: newValue)
     }
 
     private func onPrimaryLocaleChange(_ newValue: Locale) {

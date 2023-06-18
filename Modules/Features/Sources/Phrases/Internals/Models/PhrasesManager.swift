@@ -26,8 +26,24 @@ public final class PhrasesManager: ObservableObject {
     }
 
     @MainActor
-    func updatePhrases(editPhrases: [AppPhrase]) {
-        let groupedEditedPhrases = Dictionary(grouping: editPhrases.map { $0.update() }, by: \.id)
+    func deleteTranslation(phrase: AppPhrase, primary: Locale, secondary: Locale) {
+        guard let index = phrases.findIndex(by: \.id, is: phrase.id) else {
+            logger.error("No phrase foudn to delete")
+            return
+        }
+
+        phrase.deleteTranslations(for: [primary, secondary])
+        phrases = phrases
+            .removed(at: index)
+    }
+
+    @MainActor
+    func updatePhrases(editedPhrases: [AppPhrase]) {
+        let editedPhrases = editedPhrases.map { $0.update(translations: $0.translations) }
+        let groupedEditedPhrases = Dictionary(
+            grouping: editedPhrases,
+            by: \.id
+        )
         phrases = AppPhrase
             .list()
             .map { groupedEditedPhrases[$0.id]?.first ?? $0 }

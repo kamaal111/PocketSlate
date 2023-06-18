@@ -37,7 +37,7 @@ public struct EditButton: View {
             return
         }
 
-        editMode.wrappedValue.toggle()
+        withAnimation { editMode.wrappedValue.toggle() }
     }
 }
 

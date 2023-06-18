@@ -13,13 +13,17 @@ private let logger = KamaalLogger(from: AppPhrase.self, failOnError: true)
 
 struct AppPhrase: Hashable, Codable, Identifiable {
     let id: UUID
-    let translations: [Locale: [String]]
+    private(set) var translations: [Locale: [String]]
 
     enum Errors: Error {
         case invalidPayload
     }
 
-    func update() -> AppPhrase {
+    var translationsAreEmpty: Bool {
+        translations.isEmpty || translations.values.allSatisfy(\.isEmpty)
+    }
+
+    func update(translations: [Locale: [String]]) -> AppPhrase {
         var allItems = Self.list()
         if let index = allItems.findIndex(by: \.id, is: id) {
             allItems[index] = AppPhrase(id: allItems[index].id, translations: translations)
@@ -31,6 +35,27 @@ struct AppPhrase: Hashable, Codable, Identifiable {
         UserDefaults.phrases = allItems
 
         return self
+    }
+
+    func deleteTranslations(for locales: [Locale]) {
+        var allItems = Self.list()
+        guard let index = allItems.findIndex(by: \.id, is: id) else {
+            logger.error("No phrase found to delete")
+            return
+        }
+
+        var item = allItems[index]
+        for locale in locales {
+            item.translations[locale] = []
+        }
+        if item.translationsAreEmpty {
+            UserDefaults.phrases = allItems
+                .removed(at: index)
+            return
+        }
+
+        allItems[index] = item
+        UserDefaults.phrases = allItems
     }
 
     static func create(translations: [Locale: [String]]) -> Result<AppPhrase, Errors> {

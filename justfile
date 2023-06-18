@@ -13,7 +13,7 @@ format:
     swiftformat .
 
 acknowledgements:
-    python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output PocketSlate/Resources
+    python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output Modules/Features/Sources/Users/Internals/Resources
 
 generate: acknowledgements localize
 
