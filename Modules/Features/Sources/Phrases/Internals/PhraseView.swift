@@ -34,15 +34,20 @@ struct PhraseView: View {
     var body: some View {
         HStack {
             phraseTextView(primaryLocale, editingText: $editingPrimaryField)
+            SplitterView()
             phraseTextView(secondaryLocale, editingText: $editingSecondaryField)
             if editMode?.isEditing ?? false, !isEditingText {
                 HStack {
+                    #if os(macOS)
                     editActionButton(imageSystemName: "pencil", action: { onEditText(phrase) })
+                    #endif
                     editActionButton(imageSystemName: "trash.fill", action: { deletionConfirmation = true })
                 }
             }
         }
+        #if os(macOS)
         .padding(.horizontal, .small)
+        #endif
         .confirmationDialog(
             AppLocales.getText(.PHRASE_DELETION_CONFIRMATION_TITLE),
             isPresented: $deletionConfirmation,
@@ -55,16 +60,23 @@ struct PhraseView: View {
     }
 
     private func editActionButton(imageSystemName: String, action: @escaping () -> Void) -> some View {
+        #if os(macOS)
         Button(action: action) {
             Image(systemName: imageSystemName)
                 .kBold()
                 .foregroundColor(.accentColor)
         }
+        #else
+        Image(systemName: imageSystemName)
+            .kBold()
+            .foregroundColor(.accentColor)
+            .onTapGesture(perform: action)
+        #endif
     }
 
     private func phraseTextView(_ locale: Locale, editingText: Binding<String>) -> some View {
         KJustStack {
-            if editMode?.isEditing ?? false, isEditingText {
+            if editMode?.isEditing == true, isEditingText {
                 KFloatingTextField(
                     text: editingText,
                     title: userData.appLocale.localizedString(forIdentifier: locale.identifier)!
@@ -78,7 +90,14 @@ struct PhraseView: View {
                 }
             }
         }
-        .ktakeWidthEagerly()
+        .ktakeWidthEagerly(alignment: .leading)
+        #if os(iOS)
+            .onTapGesture(perform: {
+                if editMode?.isEditing == true {
+                    onEditText(phrase)
+                }
+            })
+        #endif
     }
 
     private func handleDefiniteDeletion() {

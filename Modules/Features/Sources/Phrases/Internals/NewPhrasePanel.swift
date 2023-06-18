@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 11/06/2023.
 //
 
+import AppUI
 import Users
 import SwiftUI
 import KamaalUI
@@ -28,17 +29,30 @@ struct NewPhrasePanel: View {
                 title: userData.appLocale.localizedString(forIdentifier: primaryLocale.identifier)!
             )
             .onSubmit(submitNewPhrase)
+            #if os(iOS)
+            SplitterView()
+            #endif
             KFloatingTextField(
                 text: $secondaryPhrase,
                 title: userData.appLocale.localizedString(forIdentifier: secondaryLocale.identifier)!
             )
             .onSubmit(submitNewPhrase)
+            #if os(macOS)
             Button(action: submitNewPhrase) {
                 Text(localized: .DONE)
                     .foregroundColor(submitButtonIsDisabled ? .secondary : .accentColor)
             }
             .disabled(submitButtonIsDisabled)
             .padding(.top, 12)
+            #else
+            if !submitButtonIsDisabled {
+                SplitterView()
+                Button(action: submitNewPhrase) {
+                    Text(localized: .DONE)
+                        .foregroundColor(submitButtonIsDisabled ? .secondary : .accentColor)
+                }
+            }
+            #endif
         }
     }
 }

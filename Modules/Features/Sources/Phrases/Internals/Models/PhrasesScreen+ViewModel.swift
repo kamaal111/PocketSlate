@@ -87,6 +87,19 @@ extension PhrasesScreen {
         }
 
         @MainActor
+        func deselectTextEditingPhrase() {
+            guard editMode.isEditing else {
+                logger.error("selectPhrase should have only been triggered while editing")
+                return
+            }
+
+            updateEditedPhrasesOnChanges()
+            withAnimation {
+                textEditingPhrase = nil
+            }
+        }
+
+        @MainActor
         func selectTextEditingPhrase(_ phrase: AppPhrase) {
             guard editMode.isEditing else {
                 logger.error("selectPhrase should have only been triggered while editing")

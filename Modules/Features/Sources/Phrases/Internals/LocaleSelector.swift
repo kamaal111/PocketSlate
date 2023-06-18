@@ -39,10 +39,7 @@ struct LocaleSelector: View {
                         }
                     }
                     .kBindToFrameSize($textSize)
-                    Capsule()
-                        .foregroundColor(.secondary)
-                        .frame(width: 1)
-                        .padding(.vertical, .extraSmall)
+                    SplitterView()
                     Image(systemName: "chevron.down")
                         .font(Font.headline.bold())
                         .foregroundColor(.accentColor)

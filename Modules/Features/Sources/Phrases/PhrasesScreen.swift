@@ -11,6 +11,11 @@ import SwiftUI
 import KamaalUI
 import AppLocales
 import KamaalPopUp
+import KamaalLogger
+
+private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
+
+#error("NOT SAVING IF MULTIPLE ITEMS HAVE SET")
 
 public struct PhrasesScreen: View {
     @Environment(\.colorScheme) private var colorScheme
@@ -33,30 +38,44 @@ public struct PhrasesScreen: View {
                 selectLocaleSelector: { viewModel.selectLocaleSelector($0) }
             )
             KScrollableForm {
-                NewPhrasePanel(
-                    primaryPhrase: $viewModel.primaryNewPhraseField,
-                    secondaryPhrase: $viewModel.secondaryNewPhraseField,
-                    primaryLocale: viewModel.primaryLocale,
-                    secondaryLocale: viewModel.secondaryLocale,
-                    submitButtonIsDisabled: viewModel.newPhraseSubmitButtonIsDisabled,
-                    submitNewPhrase: submitNewPhrase
-                )
-                .padding(.horizontal, .small)
-                ForEach(phrases) { phrase in
-                    PhraseView(
-                        editingPrimaryField: $viewModel.editingPrimaryPhraseField,
-                        editingSecondaryField: $viewModel.editingSecondaryPhraseField,
-                        phrase: phrase,
+                KSection(header: AppLocales.getText(.NEW_TRANSLATION)) {
+                    NewPhrasePanel(
+                        primaryPhrase: $viewModel.primaryNewPhraseField,
+                        secondaryPhrase: $viewModel.secondaryNewPhraseField,
                         primaryLocale: viewModel.primaryLocale,
                         secondaryLocale: viewModel.secondaryLocale,
-                        isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
-                        onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
-                        onDeleteTranslation: { phrase in phrasesManager.deleteTranslation(
-                            phrase: phrase,
-                            primary: viewModel.primaryLocale,
-                            secondary: viewModel.secondaryLocale
-                        ) }
+                        submitButtonIsDisabled: viewModel.newPhraseSubmitButtonIsDisabled,
+                        submitNewPhrase: submitNewPhrase
                     )
+                }
+                #if os(macOS)
+                .padding(.horizontal, .small)
+                #endif
+                if !phrases.isEmpty {
+                    KSection(header: AppLocales.getText(.TRANSLATIONS)) {
+                        ForEach(phrases) { phrase in
+                            PhraseView(
+                                editingPrimaryField: $viewModel.editingPrimaryPhraseField,
+                                editingSecondaryField: $viewModel.editingSecondaryPhraseField,
+                                phrase: phrase,
+                                primaryLocale: viewModel.primaryLocale,
+                                secondaryLocale: viewModel.secondaryLocale,
+                                isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
+                                onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
+                                onDeleteTranslation: { phrase in phrasesManager.deleteTranslation(
+                                    phrase: phrase,
+                                    primary: viewModel.primaryLocale,
+                                    secondary: viewModel.secondaryLocale
+                                ) }
+                            )
+                            #if os(iOS)
+                            .onSubmit { viewModel.deselectTextEditingPhrase() }
+                            #endif
+                        }
+                    }
+                    #if os(macOS)
+                    .padding(.horizontal, .small)
+                    #endif
                 }
             }
         }
@@ -96,6 +115,7 @@ public struct PhrasesScreen: View {
         guard !viewModel.editMode.isEditing else { return }
         guard !newValue.isEmpty else { return }
 
+        logger.debug("Updating phrases from edited phrases change")
         phrasesManager.updatePhrases(editedPhrases: newValue)
     }
 

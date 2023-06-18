@@ -16,8 +16,10 @@ module.exports = {
     NO_LOCALE_SEARCH_MATCH: 'Nothing found matching \'%@\'',
     CLEAR_SEARCH: 'Clear search',
     NOT_SET: 'Not set',
+    NEW_TRANSLATION: 'New translation',
     PHRASE_CREATION_FAILURE_TITLE: 'Creation failure',
     PHRASE_CREATION_FAILURE_DESCRIPTION: 'Failed to create phrase',
     PHRASE_DELETION_CONFIRMATION_TITLE: 'Delete phrase',
     PHRASE_DELETION_CONFIRMATION_MESSAGE: 'Are you sure want to delete these phrases?',
+    TRANSLATIONS: 'Translations',
 }

@@ -12,10 +12,7 @@ let package = Package(
             targets: ["Models"]
         ),
     ],
-    dependencies: [
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.1" ..< "0.10.0"),
-        .package(path: "../AppLocales"),
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "Models",

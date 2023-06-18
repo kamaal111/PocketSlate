@@ -29,7 +29,6 @@
 		2C6BAC0A29FD5E5C00009E19 /* generateLocales.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = generateLocales.js; sourceTree = "<group>"; };
 		2C6BAC0D29FD5F8E00009E19 /* AppLocales */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppLocales; sourceTree = "<group>"; };
 		2C6BAC1C29FD665900009E19 /* Models */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Models; sourceTree = "<group>"; };
-		2C6BAC1D29FD69D500009E19 /* Backend */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Backend; sourceTree = "<group>"; };
 		2C831E5F2A3649F30028BCD8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2C831E602A364A050028BCD8 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		2C831E612A364BDF0028BCD8 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
@@ -97,7 +96,6 @@
 			children = (
 				2C6BAC0D29FD5F8E00009E19 /* AppLocales */,
 				2CDF2BF82A3B9EAC007CA8FC /* AppUI */,
-				2C6BAC1D29FD69D500009E19 /* Backend */,
 				2C831E612A364BDF0028BCD8 /* Features */,
 				2C6BAC1C29FD665900009E19 /* Models */,
 				2CDF2BF32A3B9A5C007CA8FC /* Navigation */,

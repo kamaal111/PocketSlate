@@ -94,11 +94,13 @@ struct LocaleSelectorSheet: View {
                     .foregroundColor(.accentColor)
                     .bold()
                     .ktakeWidthEagerly(alignment: .leading)
+                #if os(macOS)
                 if numberedLocale.number < 9 {
                     Spacer()
                     Text("􀆔\(numberedLocale.number + 1)")
                         .foregroundColor(.secondary)
                 }
+                #endif
             }
             .padding(.vertical, .extraExtraSmall)
             .padding(.horizontal, .small)
