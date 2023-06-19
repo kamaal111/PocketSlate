@@ -69,6 +69,11 @@ public struct PhrasesScreen: View {
                             #if os(iOS)
                             .onSubmit { viewModel.deselectTextEditingPhrase() }
                             #endif
+                            #if os(macOS)
+                            if phrase != phrases.last {
+                                Divider()
+                            }
+                            #endif
                         }
                     }
                     #if os(macOS)
