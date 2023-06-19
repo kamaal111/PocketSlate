@@ -15,8 +15,6 @@ import KamaalLogger
 
 private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
 
-#error("NOT SAVING IF MULTIPLE ITEMS HAVE SET")
-
 public struct PhrasesScreen: View {
     @Environment(\.colorScheme) private var colorScheme
 
@@ -93,6 +91,7 @@ public struct PhrasesScreen: View {
         .onChange(of: viewModel.primaryLocale, perform: onPrimaryLocaleChange)
         .onChange(of: viewModel.secondaryLocale, perform: onSecondaryLocaleChange)
         .onChange(of: viewModel.editedPhrases, perform: onEditedPhrasesChange)
+        .onChange(of: viewModel.editMode, perform: onEditModeChange)
         .onAppear(perform: handleOnAppear)
     }
 
@@ -111,11 +110,21 @@ public struct PhrasesScreen: View {
         phrasesManager.fetchPhrasesForLocalePair(primary: viewModel.primaryLocale, secondary: viewModel.secondaryLocale)
     }
 
+    private func onEditModeChange(_ newValue: EditMode) {
+        guard !newValue.isEditing else { return }
+        guard !viewModel.editedPhrases.isEmpty else { return }
+        guard viewModel.textEditingPhrase == nil else { return }
+
+        logger.debug("Updating phrases")
+        phrasesManager.updatePhrases(editedPhrases: viewModel.editedPhrases)
+    }
+
     private func onEditedPhrasesChange(_ newValue: [AppPhrase]) {
         guard !viewModel.editMode.isEditing else { return }
         guard !newValue.isEmpty else { return }
+        guard viewModel.textEditingPhrase != nil else { return }
 
-        logger.debug("Updating phrases from edited phrases change")
+        logger.debug("Updating phrases")
         phrasesManager.updatePhrases(editedPhrases: newValue)
     }
 

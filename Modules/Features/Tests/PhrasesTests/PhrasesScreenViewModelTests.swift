@@ -20,9 +20,54 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         )
     }
 
+    // - MARK: deselectTextEditingPhrase
+
+    func testDeselectTextEditingPhraseAfterEditing() async {
+        await setEditModeToEditing()
+        let phrase1 = AppPhrase(
+            id: UUID(uuidString: "e480ad03-3874-408f-9dff-3dc92bb2f0c5")!,
+            translations: [
+                Locale(identifier: "en"): ["Cheers"],
+                Locale(identifier: "it"): ["Salute"],
+            ]
+        )
+        let phrase2 = AppPhrase(
+            id: UUID(uuidString: "36f6ab5f-5d2a-4107-846a-702697ed771f")!,
+            translations: [
+                Locale(identifier: "en"): ["Do you speak English"],
+                Locale(identifier: "it"): ["Parla Inglese"],
+            ]
+        )
+
+        await selectTextEditingPhrase(phrase: phrase1)
+        viewModel.editingPrimaryPhraseField = "Cheers!"
+        viewModel.editingSecondaryPhraseField = "Salute!"
+        await selectTextEditingPhrase(phrase: phrase2)
+        viewModel.editingPrimaryPhraseField = "Do you speak English?"
+        viewModel.editingSecondaryPhraseField = "Parla Inglese?"
+        await deselectTextEditingPhrase()
+
+        XCTAssertEqual(viewModel.editedPhrases, [
+            AppPhrase(
+                id: phrase1.id,
+                translations: [
+                    Locale(identifier: "en"): ["Cheers!"],
+                    Locale(identifier: "it"): ["Salute!"],
+                ]
+            ),
+            AppPhrase(
+                id: phrase2.id,
+                translations: [
+                    Locale(identifier: "en"): ["Do you speak English?"],
+                    Locale(identifier: "it"): ["Parla Inglese?"],
+                ]
+            ),
+        ])
+    }
+
     // - MARK: selectTextEditingPhrase
 
-    func testSelectTextEditingPhraseAfterEditingButNotChangingAnythingTheSecondTime() async throws {
+    func testSelectTextEditingPhraseAfterEditingButNotChangingAnythingTheSecondTime() async {
         await setEditModeToEditing()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "eb0b4785-5892-49df-aaf7-eccaff099a36")!,
@@ -191,6 +236,22 @@ final class PhrasesScreenViewModelTests: XCTestCase {
     }
 
     // - MARK: Utils
+
+    private func deselectTextEditingPhrase() async {
+        guard viewModel.textEditingPhrase != nil else { return }
+
+        let expectation = XCTestExpectation(description: "Deselects locales")
+        let cancellable = viewModel.$textEditingPhrase
+            .sink(receiveValue: { value in
+                guard value == nil else { return }
+                expectation.fulfill()
+            })
+
+        await viewModel.deselectTextEditingPhrase()
+
+        await fulfillment(of: [expectation], timeout: 3)
+        XCTAssertNil(viewModel.textEditingPhrase)
+    }
 
     private func swapLocales() async {
         let expectation = XCTestExpectation(description: "Swaps locales")
