@@ -10,7 +10,7 @@ import KamaalUtils
 
 extension UserDefaults {
     @UserDefaultsObject(key: "phrases")
-    static var phrases: [AppPhrase]?
+    static var phrases: [InternalUserDefaultsPhrase]?
 
     @UserDefaultsObject(key: "previously_selected_locales")
     static var previouslySelectedLocales: [Locale]?

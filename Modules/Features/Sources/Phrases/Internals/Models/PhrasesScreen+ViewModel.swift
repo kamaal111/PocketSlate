@@ -223,7 +223,13 @@ extension PhrasesScreen {
                     primaryLocale: [editingPrimaryPhraseField],
                     secondaryLocale: [editingSecondaryPhraseField],
                 ])
-            let editedPhrase = AppPhrase(id: textEditingPhrase.id, translations: translations)
+            let editedPhrase = AppPhrase(
+                id: textEditingPhrase.id,
+                creationDate: textEditingPhrase.creationDate,
+                updatedDate: textEditingPhrase.updatedDate,
+                translations: translations,
+                source: textEditingPhrase.source
+            )
             if let editedPhraseIndex = editedPhrases.findIndex(by: \.id, is: textEditingPhrase.id) {
                 editedPhrases[editedPhraseIndex] = editedPhrase
             } else {

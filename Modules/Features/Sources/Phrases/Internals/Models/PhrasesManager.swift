@@ -20,34 +20,51 @@ public final class PhrasesManager: ObservableObject {
 
     @MainActor
     func fetchPhrasesForLocalePair(primary: Locale, secondary: Locale) {
-        phrases = AppPhrase
-            .listForLocalePair(primary: primary, secondary: secondary)
-            .reversed()
+        let listResult = AppPhrase.listForLocalePair(primary: primary, secondary: secondary)
+        let phrases: [AppPhrase]
+        switch listResult {
+        case let .failure(failure):
+            logger.error(label: "failed to list locale pair", error: failure)
+            return
+        case let .success(success):
+            phrases = success
+        }
+        self.phrases = phrases
     }
 
     @MainActor
     func deleteTranslation(phrase: AppPhrase, primary: Locale, secondary: Locale) {
         guard let index = phrases.findIndex(by: \.id, is: phrase.id) else {
-            logger.error("No phrase foudn to delete")
+            logger.error("No phrase found to delete")
             return
         }
 
-        phrase.deleteTranslations(for: [primary, secondary])
+        try? phrase.deleteTranslations(for: [primary, secondary]).get()
         phrases = phrases
             .removed(at: index)
     }
 
     @MainActor
     func updatePhrases(editedPhrases: [AppPhrase]) {
-        let editedPhrases = editedPhrases.map { $0.update(translations: $0.translations) }
+        let editedPhrases = editedPhrases.compactMap { try? $0.update(translations: $0.translations).get() }
         let groupedEditedPhrases = Dictionary(
             grouping: editedPhrases,
             by: \.id
         )
-        phrases = AppPhrase
+        let listResult = AppPhrase
             .list()
-            .map { groupedEditedPhrases[$0.id]?.first ?? $0 }
-            .reversed()
+            .map {
+                $0.map { groupedEditedPhrases[$0.id]?.first ?? $0 }
+            }
+        let phrases: [AppPhrase]
+        switch listResult {
+        case let .failure(failure):
+            logger.error(label: "failed to list phrases", error: failure)
+            return
+        case let .success(success):
+            phrases = success
+        }
+        self.phrases = phrases
     }
 
     @MainActor

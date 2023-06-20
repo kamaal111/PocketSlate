@@ -116,10 +116,13 @@ struct PhraseView_Previews: PreviewProvider {
             editingSecondaryField: .constant("Ciao"),
             phrase: AppPhrase(
                 id: UUID(uuidString: "d5b8c209-e65b-497f-a9e7-f121995ff13d")!,
+                creationDate: Date(timeIntervalSince1970: 1_687_286_860),
+                updatedDate: Date(timeIntervalSince1970: 1_687_286_860),
                 translations: [
                     primaryLocale: ["Hello"],
                     secondaryLocale: ["Ciao"],
-                ]
+                ],
+                source: .userDefaults
             ),
             primaryLocale: primaryLocale,
             secondaryLocale: secondaryLocale,
