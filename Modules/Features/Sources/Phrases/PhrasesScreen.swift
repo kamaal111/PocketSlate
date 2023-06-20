@@ -60,11 +60,19 @@ public struct PhrasesScreen: View {
                                 secondaryLocale: viewModel.secondaryLocale,
                                 isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
                                 onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
-                                onDeleteTranslation: { phrase in phrasesManager.deleteTranslation(
-                                    phrase: phrase,
-                                    primary: viewModel.primaryLocale,
-                                    secondary: viewModel.secondaryLocale
-                                ) }
+                                onDeleteTranslation: { phrase in
+                                    let result = phrasesManager.deleteTranslation(
+                                        phrase: phrase,
+                                        primary: viewModel.primaryLocale,
+                                        secondary: viewModel.secondaryLocale
+                                    )
+                                    switch result {
+                                    case let .failure(failure):
+                                        handlePhrasesManagerFailures(failure)
+                                    case .success:
+                                        break
+                                    }
+                                }
                             )
                             #if os(iOS)
                             .onSubmit { viewModel.deselectTextEditingPhrase() }
@@ -112,7 +120,16 @@ public struct PhrasesScreen: View {
     }
 
     private func handleOnAppear() {
-        phrasesManager.fetchPhrasesForLocalePair(primary: viewModel.primaryLocale, secondary: viewModel.secondaryLocale)
+        let result = phrasesManager.fetchPhrasesForLocalePair(
+            primary: viewModel.primaryLocale,
+            secondary: viewModel.secondaryLocale
+        )
+        switch result {
+        case let .failure(failure):
+            handlePhrasesManagerFailures(failure)
+        case .success:
+            break
+        }
     }
 
     private func onEditModeChange(_ newValue: EditMode) {
@@ -121,7 +138,13 @@ public struct PhrasesScreen: View {
         guard viewModel.textEditingPhrase == nil else { return }
 
         logger.debug("Updating phrases")
-        phrasesManager.updatePhrases(editedPhrases: viewModel.editedPhrases)
+        let result = phrasesManager.updatePhrases(editedPhrases: viewModel.editedPhrases)
+        switch result {
+        case let .failure(failure):
+            handlePhrasesManagerFailures(failure)
+        case .success:
+            break
+        }
     }
 
     private func onEditedPhrasesChange(_ newValue: [AppPhrase]) {
@@ -130,15 +153,33 @@ public struct PhrasesScreen: View {
         guard viewModel.textEditingPhrase != nil else { return }
 
         logger.debug("Updating phrases")
-        phrasesManager.updatePhrases(editedPhrases: newValue)
+        let result = phrasesManager.updatePhrases(editedPhrases: newValue)
+        switch result {
+        case let .failure(failure):
+            handlePhrasesManagerFailures(failure)
+        case .success:
+            break
+        }
     }
 
     private func onPrimaryLocaleChange(_ newValue: Locale) {
-        phrasesManager.fetchPhrasesForLocalePair(primary: newValue, secondary: viewModel.secondaryLocale)
+        let result = phrasesManager.fetchPhrasesForLocalePair(primary: newValue, secondary: viewModel.secondaryLocale)
+        switch result {
+        case let .failure(failure):
+            handlePhrasesManagerFailures(failure)
+        case .success:
+            break
+        }
     }
 
     private func onSecondaryLocaleChange(_ newValue: Locale) {
-        phrasesManager.fetchPhrasesForLocalePair(primary: viewModel.primaryLocale, secondary: newValue)
+        let result = phrasesManager.fetchPhrasesForLocalePair(primary: viewModel.primaryLocale, secondary: newValue)
+        switch result {
+        case let .failure(failure):
+            handlePhrasesManagerFailures(failure)
+        case .success:
+            break
+        }
     }
 
     private func submitNewPhrase() {
@@ -152,19 +193,36 @@ public struct PhrasesScreen: View {
         )
         switch result {
         case let .failure(failure):
-            switch failure {
-            case .creationFailure:
-                popUpManager.showPopUp(style: .bottom(
-                    title: AppLocales.getText(.PHRASE_CREATION_FAILURE_TITLE),
-                    type: .error,
-                    description: AppLocales.getText(.PHRASE_CREATION_FAILURE_DESCRIPTION)
-                ), timeout: 3)
-            }
+            handlePhrasesManagerFailures(failure)
         case .success:
             break
         }
 
         viewModel.clearNewPhraseFields()
+    }
+
+    private func handlePhrasesManagerFailures(_ error: PhrasesManager.Errors) {
+        logger.error(label: "handling failure in phrase screen", error: error)
+        switch error {
+        case .creationFailure:
+            popUpManager.showPopUp(style: .bottom(
+                title: AppLocales.getText(.PHRASE_CREATION_FAILURE_TITLE),
+                type: .error,
+                description: AppLocales.getText(.PHRASE_CREATION_FAILURE_DESCRIPTION)
+            ), timeout: 3)
+        case .fetchFailure:
+            popUpManager.showPopUp(style: .bottom(
+                title: AppLocales.getText(.PHRASE_FETCH_FAILURE_TITLE),
+                type: .error,
+                description: AppLocales.getText(.PHRASE_FETCH_FAILURE_DESCRIPTION)
+            ), timeout: 3)
+        case .invalidPayload:
+            popUpManager.showPopUp(style: .bottom(
+                title: AppLocales.getText(.PHRASE_INVALID_PAYLOAD_WARNING_TITLE),
+                type: .warning,
+                description: AppLocales.getText(.PHRASE_INVALID_PAYLOAD_WARNING_DESCRIPTION)
+            ), timeout: 3)
+        }
     }
 }
 
