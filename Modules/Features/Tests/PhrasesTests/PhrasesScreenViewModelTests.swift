@@ -24,19 +24,26 @@ final class PhrasesScreenViewModelTests: XCTestCase {
 
     func testDeselectTextEditingPhraseAfterEditing() async {
         await setEditModeToEditing()
+        let now = Date()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "e480ad03-3874-408f-9dff-3dc92bb2f0c5")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Cheers"],
                 Locale(identifier: "it"): ["Salute"],
-            ]
+            ],
+            source: .userDefaults
         )
         let phrase2 = AppPhrase(
             id: UUID(uuidString: "36f6ab5f-5d2a-4107-846a-702697ed771f")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Do you speak English"],
                 Locale(identifier: "it"): ["Parla Inglese"],
-            ]
+            ],
+            source: .userDefaults
         )
 
         await selectTextEditingPhrase(phrase: phrase1)
@@ -50,17 +57,23 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.editedPhrases, [
             AppPhrase(
                 id: phrase1.id,
+                creationDate: now,
+                updatedDate: now,
                 translations: [
                     Locale(identifier: "en"): ["Cheers!"],
                     Locale(identifier: "it"): ["Salute!"],
-                ]
+                ],
+                source: .userDefaults
             ),
             AppPhrase(
                 id: phrase2.id,
+                creationDate: now,
+                updatedDate: now,
                 translations: [
                     Locale(identifier: "en"): ["Do you speak English?"],
                     Locale(identifier: "it"): ["Parla Inglese?"],
-                ]
+                ],
+                source: .userDefaults
             ),
         ])
     }
@@ -69,19 +82,26 @@ final class PhrasesScreenViewModelTests: XCTestCase {
 
     func testSelectTextEditingPhraseAfterEditingButNotChangingAnythingTheSecondTime() async {
         await setEditModeToEditing()
+        let now = Date()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "eb0b4785-5892-49df-aaf7-eccaff099a36")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Your welcome"],
                 Locale(identifier: "it"): ["Prgo"],
-            ]
+            ],
+            source: .userDefaults
         )
         let phrase2 = AppPhrase(
             id: UUID(uuidString: "91b0a57c-d9ec-49e5-9d86-3d9eefbf5338")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Excuse me"],
                 Locale(identifier: "it"): ["Mi scusi"],
-            ]
+            ],
+            source: .userDefaults
         )
 
         await selectTextEditingPhrase(phrase: phrase1)
@@ -98,29 +118,39 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.editedPhrases, [
             AppPhrase(
                 id: phrase1.id,
+                creationDate: now,
+                updatedDate: now,
                 translations: [
                     Locale(identifier: "en"): ["You're welcome"],
                     Locale(identifier: "it"): ["Prego"],
-                ]
+                ],
+                source: .userDefaults
             ),
         ])
     }
 
     func testSelectTextEditingPhraseAfterEditingAndThenReplaceExistingEditedPhrase() async throws {
         await setEditModeToEditing()
+        let now = Date()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "ac5e046c-f866-4a7d-b49a-91a8a10dcfab")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["N"],
                 Locale(identifier: "it"): ["o"],
-            ]
+            ],
+            source: .userDefaults
         )
         let phrase2 = AppPhrase(
             id: UUID(uuidString: "bbe31172-2bb7-41e9-a865-ee61906c2bf3")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["I am sorry"],
                 Locale(identifier: "it"): ["Mi dispiace"],
-            ]
+            ],
+            source: .userDefaults
         )
 
         await selectTextEditingPhrase(phrase: phrase1)
@@ -137,29 +167,39 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.editedPhrases, [
             AppPhrase(
                 id: phrase1.id,
+                creationDate: now,
+                updatedDate: now,
                 translations: [
                     Locale(identifier: "en"): ["Yes"],
                     Locale(identifier: "it"): ["Si"],
-                ]
+                ],
+                source: .userDefaults
             ),
         ])
     }
 
     func testSelectTextEditingPhraseAfterEditingAndThenSwappingLocales() async throws {
         await setEditModeToEditing()
+        let now = Date()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "a6fe9924-8dd5-4cd1-8602-a125fe1448c1")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Good veefening"],
                 Locale(identifier: "it"): ["Buona pera"],
-            ]
+            ],
+            source: .userDefaults
         )
         let phrase2 = AppPhrase(
             id: UUID(uuidString: "128dd843-6b05-4669-b1b1-d6551732d4f3")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Speak slowly"],
                 Locale(identifier: "it"): ["Parla lentamente"],
-            ]
+            ],
+            source: .userDefaults
         )
 
         await selectTextEditingPhrase(phrase: phrase1)
@@ -175,29 +215,39 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.editedPhrases, [
             AppPhrase(
                 id: phrase1.id,
+                creationDate: now,
+                updatedDate: now,
                 translations: [
                     Locale(identifier: "en"): ["Good evening"],
                     Locale(identifier: "it"): ["Buona sera"],
-                ]
+                ],
+                source: .userDefaults
             ),
         ])
     }
 
     func testSelectTextEditingPhraseAfterEditingAndThenSwitchingPhrases() async throws {
         await setEditModeToEditing()
+        let now = Date()
         let phrase1 = AppPhrase(
             id: UUID(uuidString: "15cd8073-94fa-444a-a5a4-98b9612fda45")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Thank u"],
                 Locale(identifier: "it"): ["Graze"],
-            ]
+            ],
+            source: .userDefaults
         )
         let phrase2 = AppPhrase(
             id: UUID(uuidString: "075f4818-3ab6-42ec-a2a4-8d8adf7300cf")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Very good"],
                 Locale(identifier: "it"): ["Molto bene"],
-            ]
+            ],
+            source: .userDefaults
         )
 
         await selectTextEditingPhrase(phrase: phrase1)
@@ -210,22 +260,29 @@ final class PhrasesScreenViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.editedPhrases, [
             AppPhrase(
                 id: phrase1.id,
+                creationDate: now,
+                updatedDate: now,
                 translations: [
                     Locale(identifier: "en"): ["Thank You"],
                     Locale(identifier: "it"): ["Grazie"],
-                ]
+                ],
+                source: .userDefaults
             ),
         ])
     }
 
     func testSelectTextEditingPhrase() async throws {
         await setEditModeToEditing()
+        let now = Date()
         let phrase = AppPhrase(
             id: UUID(uuidString: "9b1749f4-5eb7-429f-97c3-284750543918")!,
+            creationDate: now,
+            updatedDate: now,
             translations: [
                 Locale(identifier: "en"): ["Hello"],
                 Locale(identifier: "it"): ["Ciao"],
-            ]
+            ],
+            source: .userDefaults
         )
 
         await selectTextEditingPhrase(phrase: phrase)
