@@ -16,60 +16,60 @@ struct AppPhrase: Hashable, Identifiable {
 
     enum Errors: Error {
         case invalidPayload
-
-        static func fromUserDefaults(_ error: InternalUserDefaultsPhrase.Errors) -> Errors {
-            switch error {
-            case .invalidPayload:
-                return .invalidPayload
-            }
-        }
     }
 
     func update(translations: [Locale: [String]]) -> Result<AppPhrase, Errors> {
-        InternalUserDefaultsPhrase(
-            id: id,
-            kCreationDate: creationDate,
-            updatedDate: updatedDate,
-            translations: self.translations
-        )
-        .update(translations: translations)
-        .mapError { Errors.fromUserDefaults($0) }
-        .map { AppPhrase.fromUserDefaults($0) }
+        switch source {
+        case .userDefaults:
+            return Self.mapErrors(InternalUserDefaultsPhrase.update(id, translations: translations), of: source)
+                .map(\.asAppPhrase)
+        }
     }
 
     func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors> {
-        InternalUserDefaultsPhrase(
-            id: id,
-            kCreationDate: creationDate,
-            updatedDate: updatedDate,
-            translations: translations
-        )
-        .deleteTranslations(for: locales)
-        .mapError { Errors.fromUserDefaults($0) }
+        switch source {
+        case .userDefaults:
+            return Self.mapErrors(InternalUserDefaultsPhrase(
+                id: id,
+                kCreationDate: creationDate,
+                updatedDate: updatedDate,
+                translations: translations
+            ).deleteTranslations(for: locales), of: source)
+        }
     }
 
-    static func create(translations: [Locale: [String]]) -> Result<AppPhrase, Errors> {
-        InternalUserDefaultsPhrase
-            .create(translations: translations)
-            .mapError { Errors.fromUserDefaults($0) }
-            .map { AppPhrase.fromUserDefaults($0) }
+    static func create(
+        onSource source: PhraseStorageSources,
+        translations: [Locale: [String]]
+    ) -> Result<AppPhrase, Errors> {
+        switch source {
+        case .userDefaults:
+            return Self.mapErrors(InternalUserDefaultsPhrase.create(translations: translations), of: source)
+                .map(\.asAppPhrase)
+        }
     }
 
-    static func list() -> Result<[AppPhrase], Errors> {
-        InternalUserDefaultsPhrase
-            .list()
-            .mapError { Errors.fromUserDefaults($0) }
-            .map { $0.map { AppPhrase.fromUserDefaults($0) } }
+    static func list(from source: PhraseStorageSources) -> Result<[AppPhrase], Errors> {
+        switch source {
+        case .userDefaults:
+            return Self.mapErrors(InternalUserDefaultsPhrase.list(), of: source)
+                .map { success in success.map(\.asAppPhrase) }
+        }
     }
 
-    static func listForLocalePair(primary: Locale, secondary: Locale) -> Result<[AppPhrase], Errors> {
-        InternalUserDefaultsPhrase
-            .listForLocale([primary, secondary])
-            .mapError { Errors.fromUserDefaults($0) }
-            .map { $0.map { AppPhrase.fromUserDefaults($0) } }
+    static func listForLocalePair(
+        from source: PhraseStorageSources,
+        primary: Locale,
+        secondary: Locale
+    ) -> Result<[AppPhrase], Errors> {
+        switch source {
+        case .userDefaults:
+            return Self.mapErrors(InternalUserDefaultsPhrase.listForLocale([primary, secondary]), of: source)
+                .map { success in success.map(\.asAppPhrase) }
+        }
     }
 
-    static func fromUserDefaults(_ phrase: InternalUserDefaultsPhrase) -> AppPhrase {
+    private static func fromStorablePhrase(_ phrase: some StorablePhrase) -> AppPhrase {
         AppPhrase(
             id: phrase.id,
             creationDate: phrase.kCreationDate,
@@ -77,5 +77,24 @@ struct AppPhrase: Hashable, Identifiable {
             translations: phrase.translations,
             source: .userDefaults
         )
+    }
+
+    private static func mapErrors<T>(
+        _ result: Result<T, some Error>,
+        of source: PhraseStorageSources
+    ) -> Result<T, Errors> {
+        result
+            .mapError { error in
+                switch source {
+                case .userDefaults:
+                    switch error as? InternalUserDefaultsPhrase.Errors {
+                    case .invalidPayload:
+                        return .invalidPayload
+                    case .none:
+                        assertionFailure("Should have handled all errors")
+                        return .invalidPayload
+                    }
+                }
+            }
     }
 }

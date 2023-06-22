@@ -29,7 +29,11 @@ public final class PhrasesManager: ObservableObject {
 
     @MainActor
     func fetchPhrasesForLocalePair(primary: Locale, secondary: Locale) -> Result<Void, Errors> {
-        let listResult = AppPhrase.listForLocalePair(primary: primary, secondary: secondary)
+        let listResult = AppPhrase.listForLocalePair(
+            from: Constants.defaultSource,
+            primary: primary,
+            secondary: secondary
+        )
         let phrases: [AppPhrase]
         switch listResult {
         case let .failure(failure):
@@ -79,7 +83,7 @@ public final class PhrasesManager: ObservableObject {
         }
         guard updateErrors.isEmpty else { return .failure(.fromAppPhrase(updateErrors[0])) }
 
-        let listResult = AppPhrase.list()
+        let listResult = AppPhrase.list(from: Constants.defaultSource)
         let phrases: [AppPhrase]
         switch listResult {
         case let .failure(failure):
@@ -101,10 +105,13 @@ public final class PhrasesManager: ObservableObject {
         secondaryTranslation: String,
         secondaryLocale: Locale
     ) -> Result<Void, Errors> {
-        let result = AppPhrase.create(translations: [
-            primaryLocale: [primaryTranslation],
-            secondaryLocale: [secondaryTranslation],
-        ])
+        let result = AppPhrase.create(
+            onSource: Constants.defaultSource,
+            translations: [
+                primaryLocale: [primaryTranslation],
+                secondaryLocale: [secondaryTranslation],
+            ]
+        )
         let newPhrase: AppPhrase
         switch result {
         case let .failure(failure):

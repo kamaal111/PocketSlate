@@ -21,44 +21,6 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         case invalidPayload
     }
 
-    func update(translations: [Locale: [String]]) -> Result<InternalUserDefaultsPhrase, Errors> {
-        if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
-            return .failure(.invalidPayload)
-        }
-
-        let listResult = Self.list()
-        var allItems: [InternalUserDefaultsPhrase]
-        switch listResult {
-        case let .failure(failure):
-            return .failure(failure)
-        case let .success(success):
-            allItems = success
-        }
-        let updatedPhrase: InternalUserDefaultsPhrase
-        let now = Date()
-        if let index = allItems.findIndex(by: \.id, is: id) {
-            updatedPhrase = InternalUserDefaultsPhrase(
-                id: allItems[index].id,
-                kCreationDate: allItems[index].kCreationDate,
-                updatedDate: now,
-                translations: translations
-            )
-            allItems[index] = updatedPhrase
-        } else {
-            updatedPhrase = InternalUserDefaultsPhrase(
-                id: UUID(),
-                kCreationDate: now,
-                updatedDate: now,
-                translations: translations
-            )
-            allItems = allItems.appended(updatedPhrase)
-            logger.error("There should have been a phrase stored in memory")
-        }
-        UserDefaults.phrases = allItems
-
-        return .success(updatedPhrase)
-    }
-
     func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors> {
         let listResult = Self.list()
         var allItems: [InternalUserDefaultsPhrase]
@@ -116,6 +78,44 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         return .success(newPhrase)
     }
 
+    static func update(_ id: UUID, translations: [Locale: [String]]) -> Result<InternalUserDefaultsPhrase, Errors> {
+        if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
+            return .failure(.invalidPayload)
+        }
+
+        let listResult = Self.list()
+        var allItems: [InternalUserDefaultsPhrase]
+        switch listResult {
+        case let .failure(failure):
+            return .failure(failure)
+        case let .success(success):
+            allItems = success
+        }
+        let updatedPhrase: InternalUserDefaultsPhrase
+        let now = Date()
+        if let index = allItems.findIndex(by: \.id, is: id) {
+            updatedPhrase = InternalUserDefaultsPhrase(
+                id: allItems[index].id,
+                kCreationDate: allItems[index].kCreationDate,
+                updatedDate: now,
+                translations: translations
+            )
+            allItems[index] = updatedPhrase
+        } else {
+            updatedPhrase = InternalUserDefaultsPhrase(
+                id: UUID(),
+                kCreationDate: now,
+                updatedDate: now,
+                translations: translations
+            )
+            allItems = allItems.appended(updatedPhrase)
+            logger.error("There should have been a phrase stored in memory")
+        }
+        UserDefaults.phrases = allItems
+
+        return .success(updatedPhrase)
+    }
+
     static func listForLocale(_ locales: [Locale]) -> Result<[InternalUserDefaultsPhrase], Errors> {
         list()
             .map {
@@ -127,5 +127,12 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
                         return !locales.allSatisfy { translations[$0]?.isEmpty ?? true }
                     }
             }
+    }
+
+    static func internalErrorToAppPhraseError(_ error: Errors) -> AppPhrase.Errors {
+        switch error {
+        case .invalidPayload:
+            return .invalidPayload
+        }
     }
 }
