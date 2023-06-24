@@ -23,6 +23,8 @@ public final class PhrasesManager: ObservableObject {
             switch error {
             case .invalidPayload:
                 return .invalidPayload(context: error)
+            case .fetchFailure:
+                return .fetchFailure(context: error)
             }
         }
     }

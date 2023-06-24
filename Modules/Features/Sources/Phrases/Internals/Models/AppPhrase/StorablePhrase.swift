@@ -12,7 +12,7 @@ enum PhraseStorageSources {
     case cloud
 }
 
-protocol StorablePhrase: Codable, Identifiable {
+protocol StorablePhrase: Identifiable {
     associatedtype Errors: Error
 
     var id: UUID { get }

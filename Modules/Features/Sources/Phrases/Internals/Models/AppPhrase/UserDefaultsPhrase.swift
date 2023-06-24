@@ -11,7 +11,7 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: UserDefaultsPhrase.self, failOnError: true)
 
-struct UserDefaultsPhrase: StorablePhrase {
+struct UserDefaultsPhrase: Codable, StorablePhrase {
     let id: UUID
     let kCreationDate: Date
     let updatedDate: Date
