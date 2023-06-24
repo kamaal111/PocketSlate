@@ -25,6 +25,8 @@ public final class PhrasesManager: ObservableObject {
                 return .invalidPayload(context: error)
             case .fetchFailure:
                 return .fetchFailure(context: error)
+            case .creationFailure:
+                return .creationFailure(context: error)
             }
         }
     }

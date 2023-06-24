@@ -29,6 +29,7 @@ struct CloudPhrase: StorablePhrase, Cloudable {
 
     enum Errors: Error {
         case fetchFailure(context: Error)
+        case creationFailure(context: Error?)
     }
 
     func deleteTranslations(for _: [Locale]) async -> Result<Void, Errors> {
@@ -46,8 +47,20 @@ struct CloudPhrase: StorablePhrase, Cloudable {
         return .success(items)
     }
 
-    static func create(translations _: [Locale: [String]]) async -> Result<Self, Errors> {
-        fatalError()
+    static func create(translations: [Locale: [String]]) async -> Result<Self, Errors> {
+        let now = Date()
+        let newItem = CloudPhrase(id: UUID(), kCreationDate: now, updatedDate: now, translations: translations)
+        let createdItem: Self?
+        do {
+            createdItem = try await create(newItem, on: .shared)
+        } catch {
+            logger.error(label: "failed to create cloud phrase", error: error)
+            return .failure(.creationFailure(context: error))
+        }
+
+        guard let createdItem else { return .failure(.creationFailure(context: nil)) }
+
+        return .success(createdItem)
     }
 
     static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {

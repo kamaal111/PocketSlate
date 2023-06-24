@@ -36,6 +36,11 @@ extension Cloudable {
         try await context.delete(record)
     }
 
+    static func create(_ object: Object, on context: Skypiea) async throws -> Object? {
+        await findAndDeleteDuplicate(object, onContext: context)
+        return try await save(object, on: context)
+    }
+
     static func list(from context: Skypiea) async throws -> [Object] {
         let records: [CKRecord]
 
@@ -100,6 +105,17 @@ extension Cloudable {
 
         logger.warning("found duplicate item; \(duplicateItem)")
         assertionFailure()
+    }
+
+    private static func save(_ object: Object, on context: Skypiea) async throws -> Object? {
+        guard let record = object.record else {
+            logger.error("expected to save this object of \(object)")
+            return nil
+        }
+
+        guard let savedRecord = try await context.save(record) else { return nil }
+
+        return Self.fromRecord(savedRecord)
     }
 
     private static func handleFetchErrors(_ error: Error) throws {

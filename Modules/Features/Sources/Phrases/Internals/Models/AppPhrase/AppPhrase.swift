@@ -17,6 +17,7 @@ struct AppPhrase: Hashable, Identifiable {
     enum Errors: Error {
         case invalidPayload
         case fetchFailure(context: Error)
+        case creationFailure(context: Error)
     }
 
     func update(translations: [Locale: [String]]) async -> Result<AppPhrase, Errors> {

@@ -28,6 +28,10 @@ class Skypiea {
         didSet { logger.info("subscribed iCloud subscriptions; \(subscriptions)") }
     }
 
+    func save(_ record: CKRecord) async throws -> CKRecord? {
+        try await iCloutKit.save(record)
+    }
+
     func list(ofType objectType: String) async throws -> [CKRecord] {
         let predicate = NSPredicate(value: true)
         return try await filter(ofType: objectType, by: predicate)
