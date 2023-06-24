@@ -21,7 +21,7 @@ struct AppPhrase: Hashable, Identifiable {
     func update(translations: [Locale: [String]]) -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(InternalUserDefaultsPhrase.update(id, translations: translations), of: source)
+            return Self.mapErrors(UserDefaultsPhrase.update(id, translations: translations), of: source)
                 .map(\.asAppPhrase)
         }
     }
@@ -29,7 +29,7 @@ struct AppPhrase: Hashable, Identifiable {
     func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(InternalUserDefaultsPhrase(
+            return Self.mapErrors(UserDefaultsPhrase(
                 id: id,
                 kCreationDate: creationDate,
                 updatedDate: updatedDate,
@@ -44,7 +44,7 @@ struct AppPhrase: Hashable, Identifiable {
     ) -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(InternalUserDefaultsPhrase.create(translations: translations), of: source)
+            return Self.mapErrors(UserDefaultsPhrase.create(translations: translations), of: source)
                 .map(\.asAppPhrase)
         }
     }
@@ -52,7 +52,7 @@ struct AppPhrase: Hashable, Identifiable {
     static func list(from source: PhraseStorageSources) -> Result<[AppPhrase], Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(InternalUserDefaultsPhrase.list(), of: source)
+            return Self.mapErrors(UserDefaultsPhrase.list(), of: source)
                 .map { success in success.map(\.asAppPhrase) }
         }
     }
@@ -64,7 +64,7 @@ struct AppPhrase: Hashable, Identifiable {
     ) -> Result<[AppPhrase], Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(InternalUserDefaultsPhrase.listForLocale([primary, secondary]), of: source)
+            return Self.mapErrors(UserDefaultsPhrase.listForLocale([primary, secondary]), of: source)
                 .map { success in success.map(\.asAppPhrase) }
         }
     }
@@ -87,7 +87,7 @@ struct AppPhrase: Hashable, Identifiable {
             .mapError { error in
                 switch source {
                 case .userDefaults:
-                    switch error as? InternalUserDefaultsPhrase.Errors {
+                    switch error as? UserDefaultsPhrase.Errors {
                     case .invalidPayload:
                         return .invalidPayload
                     case .none:

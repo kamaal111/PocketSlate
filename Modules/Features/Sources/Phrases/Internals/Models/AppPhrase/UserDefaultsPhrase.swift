@@ -1,5 +1,5 @@
 //
-//  InternalUserDefaultsPhrase.swift
+//  UserDefaultsPhrase.swift
 //
 //
 //  Created by Kamaal M Farah on 20/06/2023.
@@ -9,9 +9,9 @@ import Foundation
 import KamaalLogger
 import KamaalExtensions
 
-private let logger = KamaalLogger(from: InternalUserDefaultsPhrase.self, failOnError: true)
+private let logger = KamaalLogger(from: UserDefaultsPhrase.self, failOnError: true)
 
-struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
+struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
     let id: UUID
     let kCreationDate: Date
     let updatedDate: Date
@@ -23,7 +23,7 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
 
     func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors> {
         let listResult = Self.list()
-        var allItems: [InternalUserDefaultsPhrase]
+        var allItems: [Self]
         switch listResult {
         case let .failure(failure):
             return .failure(failure)
@@ -52,17 +52,17 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
 
     static let source: PhraseStorageSources = .userDefaults
 
-    static func list() -> Result<[InternalUserDefaultsPhrase], Errors> {
+    static func list() -> Result<[Self], Errors> {
         .success(UserDefaults.phrases?.reversed() ?? [])
     }
 
-    static func create(translations: [Locale: [String]]) -> Result<InternalUserDefaultsPhrase, Errors> {
+    static func create(translations: [Locale: [String]]) -> Result<Self, Errors> {
         if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
             return .failure(.invalidPayload)
         }
 
         let now = Date()
-        let newPhrase = InternalUserDefaultsPhrase(
+        let newPhrase = Self(
             id: UUID(),
             kCreationDate: now,
             updatedDate: now,
@@ -78,23 +78,23 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         return .success(newPhrase)
     }
 
-    static func update(_ id: UUID, translations: [Locale: [String]]) -> Result<InternalUserDefaultsPhrase, Errors> {
+    static func update(_ id: UUID, translations: [Locale: [String]]) -> Result<Self, Errors> {
         if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
             return .failure(.invalidPayload)
         }
 
         let listResult = Self.list()
-        var allItems: [InternalUserDefaultsPhrase]
+        var allItems: [Self]
         switch listResult {
         case let .failure(failure):
             return .failure(failure)
         case let .success(success):
             allItems = success
         }
-        let updatedPhrase: InternalUserDefaultsPhrase
+        let updatedPhrase: Self
         let now = Date()
         if let index = allItems.findIndex(by: \.id, is: id) {
-            updatedPhrase = InternalUserDefaultsPhrase(
+            updatedPhrase = Self(
                 id: allItems[index].id,
                 kCreationDate: allItems[index].kCreationDate,
                 updatedDate: now,
@@ -102,7 +102,7 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
             )
             allItems[index] = updatedPhrase
         } else {
-            updatedPhrase = InternalUserDefaultsPhrase(
+            updatedPhrase = Self(
                 id: UUID(),
                 kCreationDate: now,
                 updatedDate: now,
@@ -116,7 +116,7 @@ struct InternalUserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         return .success(updatedPhrase)
     }
 
-    static func listForLocale(_ locales: [Locale]) -> Result<[InternalUserDefaultsPhrase], Errors> {
+    static func listForLocale(_ locales: [Locale]) -> Result<[Self], Errors> {
         list()
             .map {
                 $0

@@ -11,6 +11,8 @@ enum PhraseStorageSources {
     case userDefaults
 }
 
+// struct
+
 protocol StorablePhrase: Codable, Identifiable {
     associatedtype Errors: Error
 
