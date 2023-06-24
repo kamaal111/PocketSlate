@@ -60,19 +60,7 @@ public struct PhrasesScreen: View {
                                 secondaryLocale: viewModel.secondaryLocale,
                                 isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
                                 onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
-                                onDeleteTranslation: { phrase in
-                                    let result = phrasesManager.deleteTranslation(
-                                        phrase: phrase,
-                                        primary: viewModel.primaryLocale,
-                                        secondary: viewModel.secondaryLocale
-                                    )
-                                    switch result {
-                                    case let .failure(failure):
-                                        handlePhrasesManagerFailures(failure)
-                                    case .success:
-                                        break
-                                    }
-                                }
+                                onDeleteTranslation: handleDeleteTranslation
                             )
                             #if os(iOS)
                             .onSubmit { viewModel.deselectTextEditingPhrase() }
@@ -119,16 +107,34 @@ public struct PhrasesScreen: View {
         }
     }
 
+    private func handleDeleteTranslation(_ phrase: AppPhrase) {
+        Task {
+            let result = await phrasesManager.deleteTranslation(
+                phrase: phrase,
+                primary: viewModel.primaryLocale,
+                secondary: viewModel.secondaryLocale
+            )
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
+        }
+    }
+
     private func handleOnAppear() {
-        let result = phrasesManager.fetchPhrasesForLocalePair(
-            primary: viewModel.primaryLocale,
-            secondary: viewModel.secondaryLocale
-        )
-        switch result {
-        case let .failure(failure):
-            handlePhrasesManagerFailures(failure)
-        case .success:
-            break
+        Task {
+            let result = await phrasesManager.fetchPhrasesForLocalePair(
+                primary: viewModel.primaryLocale,
+                secondary: viewModel.secondaryLocale
+            )
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
         }
     }
 
@@ -138,12 +144,14 @@ public struct PhrasesScreen: View {
         guard viewModel.textEditingPhrase == nil else { return }
 
         logger.debug("Updating phrases")
-        let result = phrasesManager.updatePhrases(editedPhrases: viewModel.editedPhrases)
-        switch result {
-        case let .failure(failure):
-            handlePhrasesManagerFailures(failure)
-        case .success:
-            break
+        Task {
+            let result = await phrasesManager.updatePhrases(editedPhrases: viewModel.editedPhrases)
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
         }
     }
 
@@ -153,52 +161,66 @@ public struct PhrasesScreen: View {
         guard viewModel.textEditingPhrase != nil else { return }
 
         logger.debug("Updating phrases")
-        let result = phrasesManager.updatePhrases(editedPhrases: newValue)
-        switch result {
-        case let .failure(failure):
-            handlePhrasesManagerFailures(failure)
-        case .success:
-            break
+        Task {
+            let result = await phrasesManager.updatePhrases(editedPhrases: newValue)
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
         }
     }
 
     private func onPrimaryLocaleChange(_ newValue: Locale) {
-        let result = phrasesManager.fetchPhrasesForLocalePair(primary: newValue, secondary: viewModel.secondaryLocale)
-        switch result {
-        case let .failure(failure):
-            handlePhrasesManagerFailures(failure)
-        case .success:
-            break
+        Task {
+            let result = await phrasesManager.fetchPhrasesForLocalePair(
+                primary: newValue,
+                secondary: viewModel.secondaryLocale
+            )
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
         }
     }
 
     private func onSecondaryLocaleChange(_ newValue: Locale) {
-        let result = phrasesManager.fetchPhrasesForLocalePair(primary: viewModel.primaryLocale, secondary: newValue)
-        switch result {
-        case let .failure(failure):
-            handlePhrasesManagerFailures(failure)
-        case .success:
-            break
+        Task {
+            let result = await phrasesManager.fetchPhrasesForLocalePair(
+                primary: viewModel.primaryLocale,
+                secondary: newValue
+            )
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
         }
     }
 
     private func submitNewPhrase() {
         guard !viewModel.newPhraseSubmitButtonIsDisabled else { return }
 
-        let result = phrasesManager.createPhrase(
-            primaryTranslation: viewModel.primaryNewPhraseField,
-            primaryLocale: viewModel.primaryLocale,
-            secondaryTranslation: viewModel.secondaryNewPhraseField,
-            secondaryLocale: viewModel.secondaryLocale
-        )
-        switch result {
-        case let .failure(failure):
-            handlePhrasesManagerFailures(failure)
-        case .success:
-            break
-        }
+        Task {
+            let result = await phrasesManager.createPhrase(
+                primaryTranslation: viewModel.primaryNewPhraseField,
+                primaryLocale: viewModel.primaryLocale,
+                secondaryTranslation: viewModel.secondaryNewPhraseField,
+                secondaryLocale: viewModel.secondaryLocale
+            )
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
 
-        viewModel.clearNewPhraseFields()
+            viewModel.clearNewPhraseFields()
+        }
     }
 
     private func handlePhrasesManagerFailures(_ error: PhrasesManager.Errors) {

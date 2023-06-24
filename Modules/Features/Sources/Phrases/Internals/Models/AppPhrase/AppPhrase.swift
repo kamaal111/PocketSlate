@@ -18,41 +18,61 @@ struct AppPhrase: Hashable, Identifiable {
         case invalidPayload
     }
 
-    func update(translations: [Locale: [String]]) -> Result<AppPhrase, Errors> {
+    func update(translations: [Locale: [String]]) async -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(UserDefaultsPhrase.update(id, translations: translations), of: source)
+            return await Self.mapErrors(UserDefaultsPhrase.update(id, translations: translations), of: source)
+                .map(\.asAppPhrase)
+        case .cloud:
+            return await Self.mapErrors(CloudPhrase.update(id, translations: translations), of: source)
                 .map(\.asAppPhrase)
         }
     }
 
-    func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors> {
+    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(UserDefaultsPhrase(
+            return await Self.mapErrors(UserDefaultsPhrase(
                 id: id,
                 kCreationDate: creationDate,
                 updatedDate: updatedDate,
                 translations: translations
             ).deleteTranslations(for: locales), of: source)
+        case .cloud:
+            return await Self.mapErrors(
+                CloudPhrase(
+                    id: id,
+                    kCreationDate: creationDate,
+                    updatedDate: updatedDate,
+                    translations: translations
+                )
+                .deleteTranslations(for: locales),
+                of: source
+            )
         }
     }
 
     static func create(
         onSource source: PhraseStorageSources,
         translations: [Locale: [String]]
-    ) -> Result<AppPhrase, Errors> {
+    ) async -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(UserDefaultsPhrase.create(translations: translations), of: source)
+            return await Self.mapErrors(UserDefaultsPhrase.create(translations: translations), of: source)
+                .map(\.asAppPhrase)
+        case .cloud:
+            return await Self.mapErrors(CloudPhrase.create(translations: translations), of: source)
                 .map(\.asAppPhrase)
         }
     }
 
-    static func list(from source: PhraseStorageSources) -> Result<[AppPhrase], Errors> {
+    static func list(from source: PhraseStorageSources) async -> Result<[AppPhrase], Errors> {
         switch source {
         case .userDefaults:
-            return Self.mapErrors(UserDefaultsPhrase.list(), of: source)
+            return await Self.mapErrors(UserDefaultsPhrase.list(), of: source)
+                .map { success in success.map(\.asAppPhrase) }
+        case .cloud:
+            return await Self.mapErrors(CloudPhrase.list(), of: source)
                 .map { success in success.map(\.asAppPhrase) }
         }
     }
@@ -61,10 +81,14 @@ struct AppPhrase: Hashable, Identifiable {
         from source: PhraseStorageSources,
         primary: Locale,
         secondary: Locale
-    ) -> Result<[AppPhrase], Errors> {
+    ) async -> Result<[AppPhrase], Errors> {
+        let locales = [primary, secondary]
         switch source {
         case .userDefaults:
-            return Self.mapErrors(UserDefaultsPhrase.listForLocale([primary, secondary]), of: source)
+            return await Self.mapErrors(UserDefaultsPhrase.listForLocale(locales), of: source)
+                .map { success in success.map(\.asAppPhrase) }
+        case .cloud:
+            return await Self.mapErrors(CloudPhrase.listForLocale(locales), of: source)
                 .map { success in success.map(\.asAppPhrase) }
         }
     }
@@ -87,13 +111,9 @@ struct AppPhrase: Hashable, Identifiable {
             .mapError { error in
                 switch source {
                 case .userDefaults:
-                    switch error as? UserDefaultsPhrase.Errors {
-                    case .invalidPayload:
-                        return .invalidPayload
-                    case .none:
-                        assertionFailure("Should have handled all errors")
-                        return .invalidPayload
-                    }
+                    return UserDefaultsPhrase.internalErrorToAppPhraseError(error as! UserDefaultsPhrase.Errors)
+                case .cloud:
+                    return CloudPhrase.internalErrorToAppPhraseError(error as! CloudPhrase.Errors)
                 }
             }
     }

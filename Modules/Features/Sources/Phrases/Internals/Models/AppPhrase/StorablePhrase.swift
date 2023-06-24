@@ -9,9 +9,8 @@ import Foundation
 
 enum PhraseStorageSources {
     case userDefaults
+    case cloud
 }
-
-// struct
 
 protocol StorablePhrase: Codable, Identifiable {
     associatedtype Errors: Error
@@ -21,14 +20,14 @@ protocol StorablePhrase: Codable, Identifiable {
     var kCreationDate: Date { get }
     var updatedDate: Date { get }
 
-    func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors>
+    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors>
 
     static var source: PhraseStorageSources { get }
 
-    static func list() -> Result<[Self], Errors>
-    static func create(translations: [Locale: [String]]) -> Result<Self, Errors>
-    static func listForLocale(_ locales: [Locale]) -> Result<[Self], Errors>
-    static func update(_ id: UUID, translations: [Locale: [String]]) -> Result<Self, Errors>
+    static func list() async -> Result<[Self], Errors>
+    static func create(translations: [Locale: [String]]) async -> Result<Self, Errors>
+    static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors>
+    static func update(_ id: UUID, translations: [Locale: [String]]) async -> Result<Self, Errors>
 
     static func internalErrorToAppPhraseError(_ error: Errors) -> AppPhrase.Errors
 }

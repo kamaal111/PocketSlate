@@ -27,9 +27,8 @@ public final class PhrasesManager: ObservableObject {
         }
     }
 
-    @MainActor
-    func fetchPhrasesForLocalePair(primary: Locale, secondary: Locale) -> Result<Void, Errors> {
-        let listResult = AppPhrase.listForLocalePair(
+    func fetchPhrasesForLocalePair(primary: Locale, secondary: Locale) async -> Result<Void, Errors> {
+        let listResult = await AppPhrase.listForLocalePair(
             from: Constants.defaultSource,
             primary: primary,
             secondary: secondary
@@ -42,18 +41,18 @@ public final class PhrasesManager: ObservableObject {
         case let .success(success):
             phrases = success
         }
-        self.phrases = phrases
+        await setPhrases(phrases)
+
         return .success(())
     }
 
-    @MainActor
-    func deleteTranslation(phrase: AppPhrase, primary: Locale, secondary: Locale) -> Result<Void, Errors> {
+    func deleteTranslation(phrase: AppPhrase, primary: Locale, secondary: Locale) async -> Result<Void, Errors> {
         guard let index = phrases.findIndex(by: \.id, is: phrase.id) else {
             logger.error("No phrase found to delete")
             return .success(())
         }
 
-        let result = phrase.deleteTranslations(for: [primary, secondary])
+        let result = await phrase.deleteTranslations(for: [primary, secondary])
         switch result {
         case let .failure(failure):
             logger.error(label: "failed to delete translations", error: failure)
@@ -61,18 +60,17 @@ public final class PhrasesManager: ObservableObject {
         case .success:
             break
         }
+        await setPhrases(phrases.removed(at: index))
 
-        phrases = phrases
-            .removed(at: index)
         return .success(())
     }
 
-    @MainActor
-    func updatePhrases(editedPhrases: [AppPhrase]) -> Result<Void, Errors> {
+    func updatePhrases(editedPhrases: [AppPhrase]) async -> Result<Void, Errors> {
         var updatedPhrases: [UUID: AppPhrase] = [:]
         var updateErrors: [AppPhrase.Errors] = []
         for phrase in editedPhrases {
-            let result = phrase.update(translations: phrase.translations)
+            // How do I do this asyncronous?
+            let result = await phrase.update(translations: phrase.translations)
             switch result {
             case let .failure(failure):
                 logger.error(label: "failed to update a phrase", error: failure)
@@ -83,7 +81,7 @@ public final class PhrasesManager: ObservableObject {
         }
         guard updateErrors.isEmpty else { return .failure(.fromAppPhrase(updateErrors[0])) }
 
-        let listResult = AppPhrase.list(from: Constants.defaultSource)
+        let listResult = await AppPhrase.list(from: Constants.defaultSource)
         let phrases: [AppPhrase]
         switch listResult {
         case let .failure(failure):
@@ -92,20 +90,18 @@ public final class PhrasesManager: ObservableObject {
         case let .success(success):
             phrases = success
         }
-        self.phrases = phrases
-            .map { updatedPhrases[$0.id] ?? $0 }
+        await setPhrases(phrases.map { updatedPhrases[$0.id] ?? $0 })
 
         return .success(())
     }
 
-    @MainActor
     func createPhrase(
         primaryTranslation: String,
         primaryLocale: Locale,
         secondaryTranslation: String,
         secondaryLocale: Locale
-    ) -> Result<Void, Errors> {
-        let result = AppPhrase.create(
+    ) async -> Result<Void, Errors> {
+        let result = await AppPhrase.create(
             onSource: Constants.defaultSource,
             translations: [
                 primaryLocale: [primaryTranslation],
@@ -120,8 +116,13 @@ public final class PhrasesManager: ObservableObject {
         case let .success(success):
             newPhrase = success
         }
-        phrases = phrases.prepended(newPhrase)
+        await setPhrases(phrases.prepended(newPhrase))
 
         return .success(())
+    }
+
+    @MainActor
+    private func setPhrases(_ phrases: [AppPhrase]) {
+        self.phrases = phrases
     }
 }

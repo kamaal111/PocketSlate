@@ -18,6 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.2" ..< "0.10.0"),
+        .package(url: "https://github.com/kamaal111/ICloutKit.git", "3.0.0" ..< "4.0.0"),
         .package(path: "../AppLocales"),
         .package(path: "../AppUI"),
     ],
@@ -31,6 +32,7 @@ let package = Package(
                 .product(name: "KamaalLogger", package: "KamaalSwift"),
                 .product(name: "KamaalUI", package: "KamaalSwift"),
                 .product(name: "KamaalAlgorithms", package: "KamaalSwift"),
+                "ICloutKit",
                 "AppLocales",
                 "Users",
                 "AppUI",

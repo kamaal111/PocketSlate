@@ -11,7 +11,7 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: UserDefaultsPhrase.self, failOnError: true)
 
-struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
+struct UserDefaultsPhrase: StorablePhrase {
     let id: UUID
     let kCreationDate: Date
     let updatedDate: Date
@@ -21,10 +21,9 @@ struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         case invalidPayload
     }
 
-    func deleteTranslations(for locales: [Locale]) -> Result<Void, Errors> {
-        let listResult = Self.list()
+    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors> {
         var allItems: [Self]
-        switch listResult {
+        switch await Self.list() {
         case let .failure(failure):
             return .failure(failure)
         case let .success(success):
@@ -52,11 +51,11 @@ struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
 
     static let source: PhraseStorageSources = .userDefaults
 
-    static func list() -> Result<[Self], Errors> {
+    static func list() async -> Result<[Self], Errors> {
         .success(UserDefaults.phrases?.reversed() ?? [])
     }
 
-    static func create(translations: [Locale: [String]]) -> Result<Self, Errors> {
+    static func create(translations: [Locale: [String]]) async -> Result<Self, Errors> {
         if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
             return .failure(.invalidPayload)
         }
@@ -68,7 +67,7 @@ struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
             updatedDate: now,
             translations: translations
         )
-        let listResult = list().map { $0.appended(newPhrase) }
+        let listResult = await list().map { $0.appended(newPhrase) }
         switch listResult {
         case let .failure(failure):
             return .failure(failure)
@@ -78,14 +77,13 @@ struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         return .success(newPhrase)
     }
 
-    static func update(_ id: UUID, translations: [Locale: [String]]) -> Result<Self, Errors> {
+    static func update(_ id: UUID, translations: [Locale: [String]]) async -> Result<Self, Errors> {
         if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
             return .failure(.invalidPayload)
         }
 
-        let listResult = Self.list()
         var allItems: [Self]
-        switch listResult {
+        switch await Self.list() {
         case let .failure(failure):
             return .failure(failure)
         case let .success(success):
@@ -116,8 +114,8 @@ struct UserDefaultsPhrase: Codable, Identifiable, StorablePhrase {
         return .success(updatedPhrase)
     }
 
-    static func listForLocale(_ locales: [Locale]) -> Result<[Self], Errors> {
-        list()
+    static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {
+        await list()
             .map {
                 $0
                     .filter {

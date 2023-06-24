@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "icloutkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kamaal111/ICloutKit.git",
+      "state" : {
+        "revision" : "4e1a6a0e830bd67077520987915d95a77b8bef46",
+        "version" : "3.0.0"
+      }
+    },
+    {
       "identity" : "kamaalswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Kamaalio/KamaalSwift.git",
