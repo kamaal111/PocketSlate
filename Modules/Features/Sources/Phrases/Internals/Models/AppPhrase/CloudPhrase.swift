@@ -12,12 +12,12 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: CloudPhrase.self, failOnError: true)
 
-struct CloudPhrase: StorablePhrase {
+struct CloudPhrase: StorablePhrase, Cloudable {
     let id: UUID
     let kCreationDate: Date
     let updatedDate: Date
     private(set) var translations: [Locale: [String]]
-    private var record: CKRecord?
+    let record: CKRecord?
 
     init(id: UUID, kCreationDate: Date, updatedDate: Date, translations: [Locale: [String]], record: CKRecord? = nil) {
         self.id = id
@@ -36,15 +36,12 @@ struct CloudPhrase: StorablePhrase {
     }
 
     static func list() async -> Result<[Self], Errors> {
-        let records: [CKRecord]
+        let items: [Self]
         do {
-            records = try await Skypiea.shared.list(ofType: recordType)
+            items = try await list(from: .shared)
         } catch {
             return .failure(.fetchFailure(context: error))
         }
-        let items = records
-            .compactMap(Self.fromRecord(_:))
-        assert(items.count == records.count)
 
         return .success(items)
     }
@@ -53,8 +50,17 @@ struct CloudPhrase: StorablePhrase {
         fatalError()
     }
 
-    static func listForLocale(_: [Locale]) async -> Result<[Self], Errors> {
-        fatalError()
+    static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {
+        await list()
+            .map { success in
+                success
+                    .filter { phrase in
+                        let translations = phrase.translations
+                        guard !translations.isEmpty else { return false }
+
+                        return !locales.allSatisfy { locale in translations[locale]?.isEmpty ?? true }
+                    }
+            }
     }
 
     static func update(_: UUID, translations _: [Locale: [String]]) async -> Result<Self, Errors> {
@@ -65,11 +71,11 @@ struct CloudPhrase: StorablePhrase {
         fatalError()
     }
 
-    static let source: PhraseStorageSources = .userDefaults
+    static let source: PhraseStorageSources = .cloud
 
     static let recordType = "CloudPhrase"
 
-    private static func fromRecord(_ record: CKRecord) -> CloudPhrase? {
+    static func fromRecord(_ record: CKRecord) -> CloudPhrase? {
         guard let id = (record["id"] as? NSString)?.uuid,
               let creationDate = record["kCreationDate"] as? Date,
               let updatedDate = record["updatedDate"] as? Date,

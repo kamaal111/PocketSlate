@@ -54,4 +54,8 @@ class Skypiea {
 
         return recordsMappedByID.values.asArray()
     }
+
+    func delete(_ record: CKRecord) async throws {
+        _ = try await iCloutKit.delete(record)
+    }
 }

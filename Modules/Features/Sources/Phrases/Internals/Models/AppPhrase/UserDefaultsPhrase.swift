@@ -116,13 +116,13 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
 
     static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {
         await list()
-            .map {
-                $0
-                    .filter {
-                        let translations = $0.translations
+            .map { success in
+                success
+                    .filter { phrase in
+                        let translations = phrase.translations
                         guard !translations.isEmpty else { return false }
 
-                        return !locales.allSatisfy { translations[$0]?.isEmpty ?? true }
+                        return !locales.allSatisfy { locale in translations[locale]?.isEmpty ?? true }
                     }
             }
     }
