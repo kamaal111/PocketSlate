@@ -17,7 +17,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.1" ..< "0.10.0"),
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.2" ..< "0.10.0"),
         .package(path: "../AppLocales"),
         .package(path: "../AppUI"),
     ],

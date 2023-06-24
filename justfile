@@ -26,6 +26,14 @@ build: generate
 
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
+bootstrap: install_system_dependencies generate
+
 [private]
 install-node-modules:
-    yarn
+    yarn || exit 1
+
+[private]
+install_system_dependencies:
+    npm i -g yarn
+    brew install swiftformat
+    brew install swiftlint
