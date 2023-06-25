@@ -40,6 +40,10 @@ extension Cloudable {
         try await Self.save(object, on: context)
     }
 
+    func update(on context: Skypiea) async throws -> Object? {
+        try await Self.save(self as! Object, on: context)
+    }
+
     static func create(_ object: Object, on context: Skypiea) async throws -> Object? {
         await findAndDeleteDuplicate(object, onContext: context)
         return try await save(object, on: context)

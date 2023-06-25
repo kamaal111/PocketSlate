@@ -250,6 +250,12 @@ public struct PhrasesScreen: View {
                 type: .error,
                 description: AppLocales.getText(.PHRASE_DELETION_FAILURE_DESCRIPTION)
             ), timeout: 3)
+        case .updateFailure:
+            popUpManager.showPopUp(style: .bottom(
+                title: AppLocales.getText(.PHRASE_UPDATE_FAILURE_TITLE),
+                type: .error,
+                description: AppLocales.getText(.PHRASE_UPDATE_FAILURE_DESCRIPTION)
+            ), timeout: 3)
         }
     }
 }

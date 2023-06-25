@@ -1,20 +1,15 @@
 {
   "configurations" : [
     {
-      "id" : "82CE3A8B-3F2E-4A74-99E6-7F50A25EC301",
-      "name" : "Test Scheme Action",
+      "id" : "799740BB-6F51-4B90-A8BA-890B7045EB3C",
+      "name" : "Configuration 1",
       "options" : {
 
       }
     }
   ],
   "defaultOptions" : {
-    "targetForVariableExpansion" : {
-      "containerPath" : "container:PocketSlate.xcodeproj",
-      "identifier" : "2CB0272529FD58DF0000F5AD",
-      "name" : "PocketSlate"
-    },
-    "testTimeoutsEnabled" : true
+
   },
   "testTargets" : [
     {

@@ -14,14 +14,14 @@ private let logger = KamaalLogger(from: UserDefaultsPhrase.self, failOnError: tr
 struct UserDefaultsPhrase: Codable, StorablePhrase {
     let id: UUID
     let kCreationDate: Date
-    let updatedDate: Date
+    private(set) var updatedDate: Date
     private(set) var translations: [Locale: [String]]
 
     enum Errors: Error {
         case invalidPayload
     }
 
-    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors> {
+    func deleteTranslations(for locales: [Locale]) async -> Result<Self?, Errors> {
         var allItems: [Self]
         switch await Self.list() {
         case let .failure(failure):
@@ -31,22 +31,62 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         }
         guard let index = allItems.findIndex(by: \.id, is: id) else {
             logger.error("No phrase found to delete")
-            return .success(())
+            return .success(self)
         }
 
         var item = allItems[index]
         for locale in locales {
             item.translations[locale] = []
+            item.updatedDate = Date()
         }
         if item.translationsAreEmpty {
             UserDefaults.phrases = allItems
                 .removed(at: index)
-            return .success(())
+            return .success(nil)
         }
 
         allItems[index] = item
         UserDefaults.phrases = allItems
-        return .success(())
+        return .success(item)
+    }
+
+    func update(translations: [Locale: [String]]) async -> Result<Self, Errors> {
+        if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
+            return .failure(.invalidPayload)
+        }
+
+        var allItems: [Self]
+        switch await Self.list() {
+        case let .failure(failure):
+            return .failure(failure)
+        case let .success(success):
+            allItems = success
+        }
+        var updatedPhrase: Self
+        let now = Date()
+        if let index = allItems.findIndex(by: \.id, is: id) {
+            updatedPhrase = Self(
+                id: allItems[index].id,
+                kCreationDate: allItems[index].kCreationDate,
+                updatedDate: now,
+                translations: translations
+            )
+            updatedPhrase.updatedDate = Date()
+            allItems[index] = updatedPhrase
+        } else {
+            updatedPhrase = Self(
+                id: UUID(),
+                kCreationDate: now,
+                updatedDate: now,
+                translations: translations
+            )
+            updatedPhrase.updatedDate = Date()
+            allItems = allItems.appended(updatedPhrase)
+            logger.error("There should have been a phrase stored in memory")
+        }
+        UserDefaults.phrases = allItems
+
+        return .success(updatedPhrase)
     }
 
     static let source: PhraseStorageSources = .userDefaults
@@ -77,43 +117,6 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         return .success(newPhrase)
     }
 
-    static func update(_ id: UUID, translations: [Locale: [String]]) async -> Result<Self, Errors> {
-        if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
-            return .failure(.invalidPayload)
-        }
-
-        var allItems: [Self]
-        switch await Self.list() {
-        case let .failure(failure):
-            return .failure(failure)
-        case let .success(success):
-            allItems = success
-        }
-        let updatedPhrase: Self
-        let now = Date()
-        if let index = allItems.findIndex(by: \.id, is: id) {
-            updatedPhrase = Self(
-                id: allItems[index].id,
-                kCreationDate: allItems[index].kCreationDate,
-                updatedDate: now,
-                translations: translations
-            )
-            allItems[index] = updatedPhrase
-        } else {
-            updatedPhrase = Self(
-                id: UUID(),
-                kCreationDate: now,
-                updatedDate: now,
-                translations: translations
-            )
-            allItems = allItems.appended(updatedPhrase)
-            logger.error("There should have been a phrase stored in memory")
-        }
-        UserDefaults.phrases = allItems
-
-        return .success(updatedPhrase)
-    }
-
     static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {
         await list()
             .map { success in
@@ -132,5 +135,14 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         case .invalidPayload:
             return .invalidPayload
         }
+    }
+
+    static func fromAppPhrase(_ phrase: AppPhrase) -> UserDefaultsPhrase {
+        UserDefaultsPhrase(
+            id: phrase.id,
+            kCreationDate: phrase.creationDate,
+            updatedDate: phrase.updatedDate,
+            translations: phrase.translations
+        )
     }
 }

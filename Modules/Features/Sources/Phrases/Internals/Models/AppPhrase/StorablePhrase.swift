@@ -20,16 +20,17 @@ protocol StorablePhrase: Identifiable {
     var kCreationDate: Date { get }
     var updatedDate: Date { get }
 
-    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors>
+    func update(translations: [Locale: [String]]) async -> Result<Self, Errors>
+    func deleteTranslations(for locales: [Locale]) async -> Result<Self?, Errors>
 
     static var source: PhraseStorageSources { get }
 
     static func list() async -> Result<[Self], Errors>
     static func create(translations: [Locale: [String]]) async -> Result<Self, Errors>
     static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors>
-    static func update(_ id: UUID, translations: [Locale: [String]]) async -> Result<Self, Errors>
 
     static func internalErrorToAppPhraseError(_ error: Errors) -> AppPhrase.Errors
+    static func fromAppPhrase(_ phrase: AppPhrase) -> Self
 }
 
 extension StorablePhrase {

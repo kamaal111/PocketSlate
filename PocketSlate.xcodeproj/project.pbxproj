@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C46904E2A4851D3006A8730 /* PocketSlate.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */; };
 		2C545C772A37AEDB00A672E0 /* Users in Frameworks */ = {isa = PBXBuildFile; productRef = 2C545C762A37AEDB00A672E0 /* Users */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
@@ -14,11 +15,11 @@
 		2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABF029FD59B200009E19 /* ContentView.swift */; };
 		2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BAC0F29FD605200009E19 /* AppLocales */; };
 		2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */ = {isa = PBXBuildFile; productRef = 2C831E622A364D6D0028BCD8 /* Phrases */; };
-		2CD8784E2A3E1A4B00F21603 /* PocketSlate.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 2CD8784D2A3E1A4B00F21603 /* PocketSlate.xctestplan */; };
 		2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDF2BF42A3B9A9B007CA8FC /* Navigation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
 		2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = PocketSlate.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketSlateApp.swift; sourceTree = "<group>"; };
@@ -34,7 +35,6 @@
 		2C831E612A364BDF0028BCD8 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		2CD8784D2A3E1A4B00F21603 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
 		2CDF2BF32A3B9A5C007CA8FC /* Navigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Navigation; sourceTree = "<group>"; };
 		2CDF2BF82A3B9EAC007CA8FC /* AppUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppUI; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,7 +137,7 @@
 		2CD8784C2A3E19F800F21603 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				2CD8784D2A3E1A4B00F21603 /* PocketSlate.xctestplan */,
+				2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -177,7 +177,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					2CB0272529FD58DF0000F5AD = {
 						CreatedOnToolsVersion = 14.3;
@@ -210,7 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */,
-				2CD8784E2A3E1A4B00F21603 /* PocketSlate.xctestplan in Resources */,
+				2C46904E2A4851D3006A8730 /* PocketSlate.xctestplan in Resources */,
 				2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -285,9 +285,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -302,6 +304,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -343,9 +347,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -354,6 +360,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -369,6 +377,7 @@
 				CODE_SIGN_ENTITLEMENTS = PocketSlate/PocketSlate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PocketSlate/Preview Content\"";
 				DEVELOPMENT_TEAM = DXUKH9VF73;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -408,6 +417,7 @@
 				CODE_SIGN_ENTITLEMENTS = PocketSlate/PocketSlate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PocketSlate/Preview Content\"";
 				DEVELOPMENT_TEAM = DXUKH9VF73;
 				ENABLE_HARDENED_RUNTIME = YES;

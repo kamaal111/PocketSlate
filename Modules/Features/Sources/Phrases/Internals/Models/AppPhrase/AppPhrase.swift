@@ -19,20 +19,24 @@ struct AppPhrase: Hashable, Identifiable {
         case fetchFailure(context: Error)
         case creationFailure(context: Error)
         case deletionFailure(context: Error)
+        case updateFailure(context: Error)
     }
 
     func update(translations: [Locale: [String]]) async -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
-            return await Self.mapErrors(UserDefaultsPhrase.update(id, translations: translations), of: source)
-                .map(\.asAppPhrase)
+            return await Self.mapErrors(
+                UserDefaultsPhrase.fromAppPhrase(self).update(translations: translations),
+                of: source
+            )
+            .map(\.asAppPhrase)
         case .cloud:
-            return await Self.mapErrors(CloudPhrase.update(id, translations: translations), of: source)
+            return await Self.mapErrors(CloudPhrase.fromAppPhrase(self).update(translations: translations), of: source)
                 .map(\.asAppPhrase)
         }
     }
 
-    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors> {
+    func deleteTranslations(for locales: [Locale]) async -> Result<AppPhrase?, Errors> {
         switch source {
         case .userDefaults:
             return await Self.mapErrors(UserDefaultsPhrase(
@@ -41,6 +45,7 @@ struct AppPhrase: Hashable, Identifiable {
                 updatedDate: updatedDate,
                 translations: translations
             ).deleteTranslations(for: locales), of: source)
+                .map { success in success?.asAppPhrase }
         case .cloud:
             return await Self.mapErrors(
                 CloudPhrase(
@@ -52,6 +57,7 @@ struct AppPhrase: Hashable, Identifiable {
                 .deleteTranslations(for: locales),
                 of: source
             )
+            .map { success in success?.asAppPhrase }
         }
     }
 

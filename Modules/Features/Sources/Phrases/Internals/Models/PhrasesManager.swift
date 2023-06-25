@@ -19,6 +19,7 @@ public final class PhrasesManager: ObservableObject {
         case fetchFailure(context: Error)
         case invalidPayload(context: Error)
         case deletionFailure(context: Error)
+        case updateFailure(context: Error)
 
         static func fromAppPhrase(_ error: AppPhrase.Errors) -> Errors {
             switch error {
@@ -30,6 +31,8 @@ public final class PhrasesManager: ObservableObject {
                 return .creationFailure(context: error)
             case .deletionFailure:
                 return .deletionFailure(context: error)
+            case .updateFailure:
+                return .updateFailure(context: error)
             }
         }
     }
@@ -76,7 +79,9 @@ public final class PhrasesManager: ObservableObject {
         var updatedPhrases: [UUID: AppPhrase] = [:]
         var updateErrors: [AppPhrase.Errors] = []
         for phrase in editedPhrases {
+            #warning("Handle these comments")
             // How do I do this asyncronous?
+            // Maybe even better just a batch update
             let result = await phrase.update(translations: phrase.translations)
             switch result {
             case let .failure(failure):
