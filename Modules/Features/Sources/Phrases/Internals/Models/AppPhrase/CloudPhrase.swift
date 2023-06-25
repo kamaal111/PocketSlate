@@ -12,7 +12,7 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: CloudPhrase.self, failOnError: true)
 
-struct CloudPhrase: StorablePhrase, Cloudable {
+struct CloudPhrase {
     let id: UUID
     let kCreationDate: Date
     private(set) var updatedDate: Date
@@ -26,7 +26,34 @@ struct CloudPhrase: StorablePhrase, Cloudable {
         self.translations = translations
         self.record = record
     }
+}
 
+// MARK: Cloudable
+
+extension CloudPhrase: Cloudable {
+    static let recordType = "CloudPhrase"
+
+    static func fromRecord(_ record: CKRecord) -> CloudPhrase? {
+        guard let id = (record["id"] as? NSString)?.uuid,
+              let creationDate = record["kCreationDate"] as? Date,
+              let updatedDate = record["updatedDate"] as? Date,
+              let translationsNSData = record["translations"] as? NSData else { return nil }
+
+        let translationsData = Data(referencing: translationsNSData)
+        let translations = try? JSONDecoder().decode([Locale: [String]].self, from: translationsData)
+        return CloudPhrase(
+            id: id,
+            kCreationDate: creationDate,
+            updatedDate: updatedDate,
+            translations: translations ?? [:],
+            record: record
+        )
+    }
+}
+
+// MARK: StorablePhrase
+
+extension CloudPhrase: StorablePhrase {
     enum Errors: Error {
         case fetchFailure(context: Error?)
         case creationFailure(context: Error?)
@@ -53,7 +80,7 @@ struct CloudPhrase: StorablePhrase, Cloudable {
 
         return await item.update(translations: item.translations)
             .map { success in success }
-            .mapError { error in Errors.deletionFailure(context: error) }
+            .mapError { error in .deletionFailure(context: error) }
     }
 
     func update(translations: [Locale: [String]]) async -> Result<Self, Errors> {
@@ -118,35 +145,34 @@ struct CloudPhrase: StorablePhrase, Cloudable {
             }
     }
 
-    static func internalErrorToAppPhraseError(_: Errors) -> AppPhrase.Errors {
-        fatalError()
+    static func internalErrorToAppPhraseError(_ error: Errors) -> AppPhrase.Errors {
+        switch error {
+        case .fetchFailure:
+            return .fetchFailure(context: error)
+        case .creationFailure:
+            return .creationFailure(context: error)
+        case .deletionFailure:
+            return .deletionFailure(context: error)
+        case .updateFailure:
+            return .updateFailure(context: error)
+        }
     }
 
-    static func fromAppPhrase(_: AppPhrase) -> CloudPhrase {
-        fatalError()
-    }
-
-    static let source: PhraseStorageSources = .cloud
-
-    static let recordType = "CloudPhrase"
-
-    static func fromRecord(_ record: CKRecord) -> CloudPhrase? {
-        guard let id = (record["id"] as? NSString)?.uuid,
-              let creationDate = record["kCreationDate"] as? Date,
-              let updatedDate = record["updatedDate"] as? Date,
-              let translationsNSData = record["translations"] as? NSData else { return nil }
-
-        let translationsData = Data(referencing: translationsNSData)
-        let translations = try? JSONDecoder().decode([Locale: [String]].self, from: translationsData)
-        return CloudPhrase(
-            id: id,
-            kCreationDate: creationDate,
-            updatedDate: updatedDate,
-            translations: translations ?? [:],
-            record: record
+    static func fromAppPhrase(_ phrase: AppPhrase) -> CloudPhrase {
+        CloudPhrase(
+            id: phrase.id,
+            kCreationDate: phrase.creationDate,
+            updatedDate: phrase.updatedDate,
+            translations: phrase.translations
         )
     }
 
+    static let source: PhraseStorageSources = .cloud
+}
+
+// MARK: Privates
+
+extension CloudPhrase {
     private func delete() async -> Result<Void, Errors> {
         var item: Self
         switch await fetchIfRecordIsEmpty() {

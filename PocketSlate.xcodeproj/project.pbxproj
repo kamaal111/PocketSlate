@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C46904E2A4851D3006A8730 /* PocketSlate.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */; };
 		2C545C772A37AEDB00A672E0 /* Users in Frameworks */ = {isa = PBXBuildFile; productRef = 2C545C762A37AEDB00A672E0 /* Users */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
@@ -210,7 +209,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */,
-				2C46904E2A4851D3006A8730 /* PocketSlate.xctestplan in Resources */,
 				2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
