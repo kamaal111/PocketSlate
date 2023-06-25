@@ -12,7 +12,7 @@ import KamaalLogger
 
 private let logger = KamaalLogger(from: (any Cloudable).self, failOnError: true)
 
-protocol Cloudable {
+public protocol Cloudable {
     associatedtype Object: Cloudable
 
     var record: CKRecord? { get }
@@ -22,12 +22,12 @@ protocol Cloudable {
     static var recordType: String { get }
 }
 
-enum CloudableErrors: Error {
+public enum CloudableErrors: Error {
     case iCloudDisabledByUser
 }
 
 extension Cloudable {
-    func delete(onContext context: Skypiea) async throws {
+    public func delete(onContext context: Skypiea) async throws {
         guard let record else {
             logger.error("failed to find a record to delete")
             return
@@ -36,20 +36,20 @@ extension Cloudable {
         try await context.delete(record)
     }
 
-    func update(_ object: Object, on context: Skypiea) async throws -> Object? {
+    public func update(_ object: Object, on context: Skypiea) async throws -> Object? {
         try await Self.save(object, on: context)
     }
 
-    func update(on context: Skypiea) async throws -> Object? {
+    public func update(on context: Skypiea) async throws -> Object? {
         try await Self.save(self as! Object, on: context)
     }
 
-    static func create(_ object: Object, on context: Skypiea) async throws -> Object? {
+    public static func create(_ object: Object, on context: Skypiea) async throws -> Object? {
         await findAndDeleteDuplicate(object, onContext: context)
         return try await save(object, on: context)
     }
 
-    static func list(from context: Skypiea) async throws -> [Object] {
+    public static func list(from context: Skypiea) async throws -> [Object] {
         let records: [CKRecord]
 
         do {
@@ -65,14 +65,14 @@ extension Cloudable {
         return items
     }
 
-    static func find(by predicate: NSPredicate, from context: Skypiea) async throws -> Object? {
+    public static func find(by predicate: NSPredicate, from context: Skypiea) async throws -> Object? {
         try await filter(by: predicate, limit: 1, from: context)
             .first
     }
 
-    static func filter(by predicate: NSPredicate,
-                       limit: Int? = nil,
-                       from context: Skypiea) async throws -> [Object] {
+    public static func filter(by predicate: NSPredicate,
+                              limit: Int? = nil,
+                              from context: Skypiea) async throws -> [Object] {
         let items: [CKRecord]
 
         do {
@@ -101,17 +101,19 @@ extension Cloudable {
 
     private static func findAndDeleteDuplicate(_ object: Object, onContext context: Skypiea) async {
         guard let id = (object.record?["id"] as? NSString),
-              let duplicateItem = try? await find(by: NSPredicate(format: "id == %@", id), from: context) else {
+              let duplicateItems = try? await filter(by: NSPredicate(format: "id == %@", id), from: context) else {
             return
         }
 
+        let items = duplicateItems.compactMap(\.record)
+        assert(items.count == duplicateItems.count)
         do {
-            try await duplicateItem.delete(onContext: context)
+            try await context.batchDelete(items)
         } catch {
             logger.error(label: "failed to delete the duplicate item", error: error)
         }
 
-        logger.warning("found duplicate item; \(duplicateItem)")
+        logger.warning("found duplicate items; \(items)")
         assertionFailure()
     }
 

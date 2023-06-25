@@ -8,6 +8,7 @@
 import CloudKit
 import Foundation
 import KamaalLogger
+import CloudSyncing
 import KamaalExtensions
 
 private let logger = KamaalLogger(from: CloudPhrase.self, failOnError: true)
@@ -25,6 +26,7 @@ struct CloudPhrase {
         self.updatedDate = updatedDate
         self.translations = translations
         self.record = record
+        assert(Skypiea.shared.subscriptionsWanted.contains(Self.recordType))
     }
 }
 
@@ -34,10 +36,10 @@ extension CloudPhrase: Cloudable {
     static let recordType = "CloudPhrase"
 
     static func fromRecord(_ record: CKRecord) -> CloudPhrase? {
-        guard let id = (record["id"] as? NSString)?.uuid,
-              let creationDate = record["kCreationDate"] as? Date,
-              let updatedDate = record["updatedDate"] as? Date,
-              let translationsNSData = record["translations"] as? NSData else { return nil }
+        guard let id = (record[.id] as? NSString)?.uuid,
+              let creationDate = record[.creationDate] as? Date,
+              let updatedDate = record[.updatedDate] as? Date,
+              let translationsNSData = record[.translations] as? NSData else { return nil }
 
         let translationsData = Data(referencing: translationsNSData)
         let translations = try? JSONDecoder().decode([Locale: [String]].self, from: translationsData)
@@ -48,6 +50,20 @@ extension CloudPhrase: Cloudable {
             translations: translations ?? [:],
             record: record
         )
+    }
+
+    enum RecordKeys: String {
+        case id
+        case creationDate = "kCreationDate"
+        case updatedDate
+        case translations
+    }
+}
+
+extension CKRecord {
+    fileprivate subscript(key: CloudPhrase.RecordKeys) -> Any? {
+        get { self[key.rawValue] }
+        set { self[key.rawValue] = newValue as? CKRecordValue }
     }
 }
 

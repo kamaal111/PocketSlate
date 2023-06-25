@@ -7,14 +7,9 @@ let package = Package(
     name: "Features",
     platforms: [.macOS(.v12), .iOS(.v15)],
     products: [
-        .library(
-            name: "Phrases",
-            targets: ["Phrases"]
-        ),
-        .library(
-            name: "Users",
-            targets: ["Users"]
-        ),
+        .library(name: "CloudSyncing", targets: ["CloudSyncing"]),
+        .library(name: "Phrases", targets: ["Phrases"]),
+        .library(name: "Users", targets: ["Users"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.2" ..< "0.10.0"),
@@ -24,6 +19,14 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "CloudSyncing",
+            dependencies: [
+                .product(name: "KamaalLogger", package: "KamaalSwift"),
+                .product(name: "KamaalExtensions", package: "KamaalSwift"),
+                "ICloutKit",
+            ]
+        ),
+        .target(
             name: "Phrases",
             dependencies: [
                 .product(name: "KamaalPopUp", package: "KamaalSwift"),
@@ -32,10 +35,10 @@ let package = Package(
                 .product(name: "KamaalLogger", package: "KamaalSwift"),
                 .product(name: "KamaalUI", package: "KamaalSwift"),
                 .product(name: "KamaalAlgorithms", package: "KamaalSwift"),
-                "ICloutKit",
                 "AppLocales",
                 "Users",
                 "AppUI",
+                "CloudSyncing",
             ]
         ),
         .testTarget(name: "PhrasesTests", dependencies: ["Phrases"]),

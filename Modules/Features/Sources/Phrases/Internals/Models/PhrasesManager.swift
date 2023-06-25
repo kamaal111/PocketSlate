@@ -12,7 +12,11 @@ import KamaalExtensions
 private let logger = KamaalLogger(from: PhrasesManager.self, failOnError: true)
 
 public final class PhrasesManager: ObservableObject {
-    @Published private(set) var phrases: [AppPhrase] = []
+    @Published private(set) var phrases: [AppPhrase]
+
+    init() {
+        self.phrases = []
+    }
 
     enum Errors: Error {
         case creationFailure(context: Error)
