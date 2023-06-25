@@ -29,11 +29,15 @@ enum CloudableErrors: Error {
 extension Cloudable {
     func delete(onContext context: Skypiea) async throws {
         guard let record else {
-            assertionFailure("There should be a record to delete")
+            logger.error("failed to find a record to delete")
             return
         }
 
         try await context.delete(record)
+    }
+
+    func update(_ object: Object, on context: Skypiea) async throws -> Object? {
+        try await Self.save(object, on: context)
     }
 
     static func create(_ object: Object, on context: Skypiea) async throws -> Object? {

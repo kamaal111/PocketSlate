@@ -28,12 +28,36 @@ struct CloudPhrase: StorablePhrase, Cloudable {
     }
 
     enum Errors: Error {
-        case fetchFailure(context: Error)
+        case fetchFailure(context: Error?)
         case creationFailure(context: Error?)
+        case deletionFailure(context: Error?)
     }
 
-    func deleteTranslations(for _: [Locale]) async -> Result<Void, Errors> {
-        fatalError()
+    func deleteTranslations(for locales: [Locale]) async -> Result<Void, Errors> {
+        let findPredicate = NSPredicate(format: "id == %@", id.nsString)
+        let item: Self?
+        do {
+            item = try await Self.find(by: findPredicate, from: .shared)
+        } catch {
+            return .failure(.deletionFailure(context: error))
+        }
+        guard var item else { return .failure(.deletionFailure(context: nil)) }
+
+        for locale in locales {
+            item.translations[locale] = []
+        }
+        if item.translationsAreEmpty {
+            do {
+                try await item.delete(onContext: .shared)
+            } catch {
+                return .failure(.deletionFailure(context: error))
+            }
+            return .success(())
+        }
+
+        return await Self.update(id, translations: item.translations)
+            .map { _ in () }
+            .mapError { error in Errors.deletionFailure(context: error) }
     }
 
     static func list() async -> Result<[Self], Errors> {

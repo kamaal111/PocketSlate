@@ -18,6 +18,7 @@ public final class PhrasesManager: ObservableObject {
         case creationFailure(context: Error)
         case fetchFailure(context: Error)
         case invalidPayload(context: Error)
+        case deletionFailure(context: Error)
 
         static func fromAppPhrase(_ error: AppPhrase.Errors) -> Errors {
             switch error {
@@ -27,6 +28,8 @@ public final class PhrasesManager: ObservableObject {
                 return .fetchFailure(context: error)
             case .creationFailure:
                 return .creationFailure(context: error)
+            case .deletionFailure:
+                return .deletionFailure(context: error)
             }
         }
     }

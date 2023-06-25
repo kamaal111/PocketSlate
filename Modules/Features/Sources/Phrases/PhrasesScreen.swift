@@ -244,6 +244,12 @@ public struct PhrasesScreen: View {
                 type: .warning,
                 description: AppLocales.getText(.PHRASE_INVALID_PAYLOAD_WARNING_DESCRIPTION)
             ), timeout: 3)
+        case .deletionFailure:
+            popUpManager.showPopUp(style: .bottom(
+                title: AppLocales.getText(.PHRASE_DELETION_FAILURE_TITLE),
+                type: .error,
+                description: AppLocales.getText(.PHRASE_DELETION_FAILURE_DESCRIPTION)
+            ), timeout: 3)
         }
     }
 }

@@ -21,6 +21,8 @@ module.exports = {
     PHRASE_CREATION_FAILURE_DESCRIPTION: 'Failed to create phrase',
     PHRASE_FETCH_FAILURE_TITLE: 'Fetch failure',
     PHRASE_FETCH_FAILURE_DESCRIPTION: 'Failed to fetch phrases',
+    PHRASE_DELETION_FAILURE_TITLE: 'Deletion failure',
+    PHRASE_DELETION_FAILURE_DESCRIPTION: 'Failed to delete phrase',
     PHRASE_INVALID_PAYLOAD_WARNING_TITLE: 'Invalid payload',
     PHRASE_INVALID_PAYLOAD_WARNING_DESCRIPTION: 'Can\'t create/update a phrase with these values',
     PHRASE_DELETION_CONFIRMATION_TITLE: 'Delete phrase',
