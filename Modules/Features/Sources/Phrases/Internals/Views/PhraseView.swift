@@ -11,6 +11,7 @@ import SwiftUI
 import KamaalUI
 import AppLocales
 import KamaalLogger
+import AVFoundation
 
 private let logger = KamaalLogger(from: PhraseView.self, failOnError: true)
 
@@ -83,7 +84,18 @@ struct PhraseView: View {
                 )
             } else {
                 if let text = phrase.translations[locale]?.first {
-                    Text(text)
+                    HStack {
+                        Text(text)
+                        Spacer()
+                        if editMode?.isEditing == false {
+                            Image(systemName: "speaker.wave.3")
+                                .kBold()
+                                .foregroundColor(.accentColor)
+                                .onTapGesture {
+                                    speakOut(text: text, with: locale)
+                                }
+                        }
+                    }
                 } else {
                     Text(localized: .NOT_SET)
                         .foregroundColor(.secondary)
@@ -98,6 +110,16 @@ struct PhraseView: View {
                 }
             })
         #endif
+    }
+
+    private func speakOut(text: String, with locale: Locale) {
+        let utterance = AVSpeechUtterance(string: text)
+        let voice = AVSpeechSynthesisVoice(language: locale.identifier)
+        utterance.voice = voice
+        utterance.rate = 0.2
+
+        let synthesizer = AVSpeechSynthesizer()
+        synthesizer.speak(utterance)
     }
 
     private func handleDefiniteDeletion() {

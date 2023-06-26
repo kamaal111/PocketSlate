@@ -8,7 +8,11 @@
 import Foundation
 
 enum Constants {
+    #if targetEnvironment(simulator)
+    static let defaultSource: PhraseStorageSources = .userDefaults
+    #else
     static let defaultSource: PhraseStorageSources = .cloud
+    #endif
 
     static let priorityLanguages = [
         Locale(identifier: "en"),
