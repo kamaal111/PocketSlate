@@ -83,9 +83,6 @@ public final class PhrasesManager: ObservableObject {
         var updatedPhrases: [UUID: AppPhrase] = [:]
         var updateErrors: [AppPhrase.Errors] = []
         for phrase in editedPhrases {
-            #warning("Handle these comments")
-            // How do I do this asyncronous?
-            // Maybe even better just a batch update
             let result = await phrase.update(translations: phrase.translations)
             switch result {
             case let .failure(failure):

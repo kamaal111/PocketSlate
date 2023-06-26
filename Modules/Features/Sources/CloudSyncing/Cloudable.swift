@@ -13,11 +13,9 @@ import KamaalLogger
 private let logger = KamaalLogger(from: (any Cloudable).self, failOnError: true)
 
 public protocol Cloudable {
-    associatedtype Object: Cloudable
+    func toRecord() -> CKRecord
 
-    var record: CKRecord? { get }
-
-    static func fromRecord(_ record: CKRecord) -> Object?
+    static func fromRecord(_ record: CKRecord) -> Self?
 
     static var recordType: String { get }
 }
@@ -28,28 +26,23 @@ public enum CloudableErrors: Error {
 
 extension Cloudable {
     public func delete(onContext context: Skypiea) async throws {
-        guard let record else {
-            logger.error("failed to find a record to delete")
-            return
-        }
-
-        try await context.delete(record)
+        try await context.delete(toRecord())
     }
 
-    public func update(_ object: Object, on context: Skypiea) async throws -> Object? {
-        try await Self.save(object, on: context)
+    public func update(_ record: CKRecord, on context: Skypiea) async throws -> Self? {
+        try await Self.save(record, on: context)
     }
 
-    public func update(on context: Skypiea) async throws -> Object? {
-        try await Self.save(self as! Object, on: context)
+    public func update(on context: Skypiea) async throws -> Self? {
+        try await Self.save(toRecord(), on: context)
     }
 
-    public static func create(_ object: Object, on context: Skypiea) async throws -> Object? {
-        await findAndDeleteDuplicate(object, onContext: context)
-        return try await save(object, on: context)
+    public static func create(_ record: CKRecord, on context: Skypiea) async throws -> Self? {
+        await findAndDeleteDuplicate(record, onContext: context)
+        return try await save(record, on: context)
     }
 
-    public static func list(from context: Skypiea) async throws -> [Object] {
+    public static func list(from context: Skypiea) async throws -> [Self] {
         let records: [CKRecord]
 
         do {
@@ -65,16 +58,15 @@ extension Cloudable {
         return items
     }
 
-    public static func find(by predicate: NSPredicate, from context: Skypiea) async throws -> Object? {
+    public static func find(by predicate: NSPredicate, from context: Skypiea) async throws -> Self? {
         try await filter(by: predicate, limit: 1, from: context)
             .first
     }
 
     public static func filter(by predicate: NSPredicate,
                               limit: Int? = nil,
-                              from context: Skypiea) async throws -> [Object] {
+                              from context: Skypiea) async throws -> [Self] {
         let items: [CKRecord]
-
         do {
             items = try await context.filter(ofType: recordType, by: predicate)
         } catch {
@@ -99,30 +91,26 @@ extension Cloudable {
         return decodedItems
     }
 
-    private static func findAndDeleteDuplicate(_ object: Object, onContext context: Skypiea) async {
-        guard let id = (object.record?["id"] as? NSString),
-              let duplicateItems = try? await filter(by: NSPredicate(format: "id == %@", id), from: context) else {
-            return
-        }
+    private static func findAndDeleteDuplicate(_ record: CKRecord, onContext context: Skypiea) async {
+        guard let id = (record["id"] as? NSString) else { return }
 
-        let items = duplicateItems.compactMap(\.record)
-        assert(items.count == duplicateItems.count)
+        let filterPredicate = NSPredicate(format: "id == %@", id)
+        guard let duplicateItems = try? await filter(by: filterPredicate, from: context) else { return }
+        guard !duplicateItems.isEmpty else { return }
+
+        logger.warning("found duplicate items; \(duplicateItems)")
+        let items = duplicateItems.map { item in item.toRecord() }
         do {
             try await context.batchDelete(items)
         } catch {
             logger.error(label: "failed to delete the duplicate item", error: error)
         }
 
-        logger.warning("found duplicate items; \(items)")
+        logger.warning("deleted duplicate items; \(items)")
         assertionFailure()
     }
 
-    private static func save(_ object: Object, on context: Skypiea) async throws -> Object? {
-        guard let record = object.record else {
-            logger.error("expected to save this object of \(object)")
-            return nil
-        }
-
+    private static func save(_ record: CKRecord, on context: Skypiea) async throws -> Self? {
         guard let savedRecord = try await context.save(record) else { return nil }
 
         return Self.fromRecord(savedRecord)

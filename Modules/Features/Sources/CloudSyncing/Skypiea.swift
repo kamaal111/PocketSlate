@@ -25,8 +25,36 @@ public class Skypiea {
         "CloudPhrase",
     ]
 
-    public private(set) var subscriptions: [CKSubscription] = [] {
+    private var subscriptions: [CKSubscription] = [] {
         didSet { logger.info("subscribed iCloud subscriptions; \(subscriptions)") }
+    }
+
+    public func subscripeToAll() async throws {
+        let fetchedSubscriptions = try await fetchAllSubcriptions()
+        let fetchedSubscriptionsAsRecordTypes: [CKRecord.RecordType] = fetchedSubscriptions.compactMap {
+            guard let query = $0 as? CKQuerySubscription else { return nil }
+            return query.recordType
+        }
+
+        let subscriptionsToSubscribeTo = subscriptionsWanted.filter { !fetchedSubscriptionsAsRecordTypes.contains($0) }
+
+        var subscribedSubsctiptions: [CKSubscription] = []
+        for subscriptionToSubscribeTo in subscriptionsToSubscribeTo {
+            let subscribedSubscription: CKSubscription
+            do {
+                subscribedSubscription = try await subscribeAll(toType: subscriptionToSubscribeTo)
+            } catch {
+                logger.error(
+                    label: "failed to subscribe to \(subscriptionToSubscribeTo) iCloud subscription",
+                    error: error
+                )
+                continue
+            }
+
+            subscribedSubsctiptions.append(subscribedSubscription)
+        }
+
+        subscriptions = fetchedSubscriptions + subscribedSubsctiptions
     }
 
     func save(_ record: CKRecord) async throws -> CKRecord? {
@@ -78,5 +106,15 @@ public class Skypiea {
         }
 
         return (deletedTasks, recordsMappedByID.values.asArray())
+    }
+
+    private func fetchAllSubcriptions() async throws -> [CKSubscription] {
+        try await iCloutKit.fetchAllSubscriptions()
+    }
+
+    private func subscribeAll(toType objectType: String) async throws -> CKSubscription {
+        let predicate = NSPredicate(value: true)
+        logger.info("subscribing to all \(objectType) iCloud subscriptions")
+        return try await iCloutKit.subscribe(toType: objectType, by: predicate)
     }
 }

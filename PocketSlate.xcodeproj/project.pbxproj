@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
+		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
+		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
+		2C3333EB2A48C95C00990E4E /* AppDelegate_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */; };
 		2C545C772A37AEDB00A672E0 /* Users in Frameworks */ = {isa = PBXBuildFile; productRef = 2C545C762A37AEDB00A672E0 /* Users */; };
 		2C6BABF129FD59B300009E19 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
@@ -21,6 +24,7 @@
 /* Begin PBXFileReference section */
 		2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_iOS.swift; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_macOS.swift; sourceTree = "<group>"; };
 		2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
 		2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = PocketSlate.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -46,10 +50,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */,
 				2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */,
 				2C545C772A37AEDB00A672E0 /* Users in Frameworks */,
 				2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */,
 				2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */,
+				2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +68,7 @@
 				2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */,
 				2CD49BC32A24C6D70085DD83 /* Info.plist */,
 				2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */,
+				2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */,
 				2C6BABF029FD59B200009E19 /* ContentView.swift */,
 				2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */,
 				2C6BABEC29FD59B200009E19 /* Assets.xcassets */,
@@ -168,6 +175,8 @@
 				2C831E622A364D6D0028BCD8 /* Phrases */,
 				2C545C762A37AEDB00A672E0 /* Users */,
 				2CDF2BF42A3B9A9B007CA8FC /* Navigation */,
+				2C3333E52A48C7BB00990E4E /* CloudSyncing */,
+				2C3333E82A48C85A00990E4E /* KamaalLogger */,
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* PocketSlate.app */;
@@ -198,6 +207,7 @@
 			);
 			mainGroup = 2CB0271D29FD58DF0000F5AD;
 			packageReferences = (
+				2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */,
 			);
 			productRefGroup = 2CB0272729FD58DF0000F5AD /* Products */;
 			projectDirPath = "";
@@ -247,6 +257,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C3333EB2A48C95C00990E4E /* AppDelegate_macOS.swift in Sources */,
 				2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */,
 				2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */,
 				2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */,
@@ -476,7 +487,27 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.9.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		2C3333E52A48C7BB00990E4E /* CloudSyncing */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CloudSyncing;
+		};
+		2C3333E82A48C85A00990E4E /* KamaalLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalLogger;
+		};
 		2C545C762A37AEDB00A672E0 /* Users */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Users;

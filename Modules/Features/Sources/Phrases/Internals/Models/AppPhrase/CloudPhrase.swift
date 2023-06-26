@@ -18,14 +18,12 @@ struct CloudPhrase {
     let kCreationDate: Date
     private(set) var updatedDate: Date
     private(set) var translations: [Locale: [String]]
-    let record: CKRecord?
 
-    init(id: UUID, kCreationDate: Date, updatedDate: Date, translations: [Locale: [String]], record: CKRecord? = nil) {
+    init(id: UUID, kCreationDate: Date, updatedDate: Date, translations: [Locale: [String]]) {
         self.id = id
         self.kCreationDate = kCreationDate
         self.updatedDate = updatedDate
         self.translations = translations
-        self.record = record
         assert(Skypiea.shared.subscriptionsWanted.contains(Self.recordType))
     }
 }
@@ -35,11 +33,36 @@ struct CloudPhrase {
 extension CloudPhrase: Cloudable {
     static let recordType = "CloudPhrase"
 
-    static func fromRecord(_ record: CKRecord) -> CloudPhrase? {
-        guard let id = (record[.id] as? NSString)?.uuid,
-              let creationDate = record[.creationDate] as? Date,
-              let updatedDate = record[.updatedDate] as? Date,
-              let translationsNSData = record[.translations] as? NSData else { return nil }
+    func toRecord() -> CKRecord {
+        RecordKeys.allCases.reduce(CKRecord(recordType: Self.recordType)) { result, key in
+            switch key {
+            case .id:
+                result[key] = id.nsString
+            case .creationDate:
+                result[key] = kCreationDate
+            case .updatedDate:
+                result[key] = updatedDate
+            case .translations:
+                let translationsData: Data
+                do {
+                    translationsData = try JSONEncoder().encode(translations)
+                } catch {
+                    logger.error(label: "failed to encode translations", error: error)
+                    return result
+                }
+                result[key] = NSData(data: translationsData)
+            }
+
+            return result
+        }
+    }
+
+    static func fromRecord(_ record: CKRecord) -> Self? {
+        assert(RecordKeys.allCases.allSatisfy { key in record[key] != nil })
+        guard let id = (record[.id] as? NSString)?.uuid else { return nil }
+        guard let creationDate = record[.creationDate] as? Date else { return nil }
+        guard let updatedDate = record[.updatedDate] as? Date else { return nil }
+        guard let translationsNSData = record[.translations] as? NSData else { return nil }
 
         let translationsData = Data(referencing: translationsNSData)
         let translations = try? JSONDecoder().decode([Locale: [String]].self, from: translationsData)
@@ -47,12 +70,11 @@ extension CloudPhrase: Cloudable {
             id: id,
             kCreationDate: creationDate,
             updatedDate: updatedDate,
-            translations: translations ?? [:],
-            record: record
+            translations: translations ?? [:]
         )
     }
 
-    enum RecordKeys: String {
+    enum RecordKeys: String, CaseIterable {
         case id
         case creationDate = "kCreationDate"
         case updatedDate
@@ -78,13 +100,7 @@ extension CloudPhrase: StorablePhrase {
     }
 
     func deleteTranslations(for locales: [Locale]) async -> Result<Self?, Errors> {
-        var item: Self
-        switch await fetchIfRecordIsEmpty() {
-        case let .failure(failure):
-            return .failure(.deletionFailure(context: failure))
-        case let .success(success):
-            item = success
-        }
+        var item = self
 
         for locale in locales {
             item.translations[locale] = []
@@ -100,14 +116,7 @@ extension CloudPhrase: StorablePhrase {
     }
 
     func update(translations: [Locale: [String]]) async -> Result<Self, Errors> {
-        var item: Self
-        switch await fetchIfRecordIsEmpty() {
-        case let .failure(failure):
-            return .failure(.deletionFailure(context: failure))
-        case let .success(success):
-            item = success
-        }
-
+        var item = self
         item.translations = translations
         item.updatedDate = Date()
 
@@ -136,6 +145,7 @@ extension CloudPhrase: StorablePhrase {
     static func create(translations: [Locale: [String]]) async -> Result<Self, Errors> {
         let now = Date()
         let newItem = CloudPhrase(id: UUID(), kCreationDate: now, updatedDate: now, translations: translations)
+            .toRecord()
         let createdItem: Self?
         do {
             createdItem = try await create(newItem, on: .shared)
@@ -190,37 +200,11 @@ extension CloudPhrase: StorablePhrase {
 
 extension CloudPhrase {
     private func delete() async -> Result<Void, Errors> {
-        var item: Self
-        switch await fetchIfRecordIsEmpty() {
-        case let .failure(failure):
-            return .failure(.deletionFailure(context: failure))
-        case let .success(success):
-            item = success
-        }
-
         do {
-            try await item.delete(onContext: .shared)
+            try await delete(onContext: .shared)
         } catch {
             return .failure(.deletionFailure(context: error))
         }
         return .success(())
-    }
-
-    private func fetchIfRecordIsEmpty() async -> Result<Self, Errors> {
-        if record != nil {
-            return .success(self)
-        }
-
-        logger.info("fetching item with id \(id.uuidString), because record is empty")
-        let item: Self?
-        let predicate = NSPredicate(format: "id == %@", id.nsString)
-        do {
-            item = try await Self.find(by: predicate, from: .shared)
-        } catch {
-            return .failure(.fetchFailure(context: error))
-        }
-        guard let item else { return .failure(.fetchFailure(context: nil)) }
-
-        return .success(item)
     }
 }

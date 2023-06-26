@@ -8,7 +8,7 @@
 import Foundation
 
 enum Constants {
-    static let defaultSource: PhraseStorageSources = .userDefaults
+    static let defaultSource: PhraseStorageSources = .cloud
 
     static let priorityLanguages = [
         Locale(identifier: "en"),
