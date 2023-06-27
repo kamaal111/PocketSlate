@@ -49,6 +49,9 @@ public struct PhrasesScreen: View {
                 #if os(macOS)
                 .padding(.horizontal, .small)
                 #endif
+                if phrasesManager.isLoadingPhrase {
+                    KLoading()
+                }
                 if !phrases.isEmpty {
                     KSection(header: AppLocales.getText(.TRANSLATIONS)) {
                         ForEach(phrases) { phrase in
@@ -62,8 +65,9 @@ public struct PhrasesScreen: View {
                                 onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
                                 onDeleteTranslation: handleDeleteTranslation
                             )
+                            .disabled(phrasesManager.isLoadingPhrase)
                             #if os(iOS)
-                            .onSubmit { viewModel.deselectTextEditingPhrase() }
+                                .onSubmit { viewModel.deselectTextEditingPhrase() }
                             #endif
                             #if os(macOS)
                             if phrase != phrases.last {

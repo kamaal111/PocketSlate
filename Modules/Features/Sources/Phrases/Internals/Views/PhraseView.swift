@@ -17,6 +17,7 @@ private let logger = KamaalLogger(from: PhraseView.self, failOnError: true)
 
 struct PhraseView: View {
     @Environment(\.editMode) var editMode
+    @Environment(\.isEnabled) var isEnabled
 
     @EnvironmentObject private var userData: UserData
 
@@ -90,7 +91,7 @@ struct PhraseView: View {
                         if editMode?.isEditing == false {
                             Image(systemName: "speaker.wave.3")
                                 .kBold()
-                                .foregroundColor(.accentColor)
+                                .foregroundColor(isEnabled ? .accentColor : .secondary)
                                 .onTapGesture {
                                     speakOut(text: text, with: locale)
                                 }
