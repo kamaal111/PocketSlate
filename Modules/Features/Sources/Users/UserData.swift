@@ -26,7 +26,7 @@ public final class UserData: ObservableObject {
 
     public var settingsConfiguration: SettingsConfiguration {
         .init(
-            feedback: .none,
+            feedback: nil,
             color: colorConfiguration,
             acknowledgements: AcknowledgementsJSON.shared.content,
             showLogs: showLogs

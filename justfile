@@ -1,5 +1,7 @@
 set export
 
+DEFAULT_SECRETS_PATH := "Modules/Features/Sources/Users/Internals/Resources/Secrets.json"
+
 localize: install-node-modules
     node Scripts/generateLocales.js
 
@@ -15,7 +17,7 @@ format:
 acknowledgements:
     python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output Modules/Features/Sources/Users/Internals/Resources
 
-generate: acknowledgements localize
+generate: acknowledgements localize make-secrets
 
 build: generate
     #!/bin/sh
@@ -27,6 +29,9 @@ build: generate
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
 bootstrap: install_system_dependencies generate
+
+make-secrets output=DEFAULT_SECRETS_PATH:
+    python3 Scripts/make_secrets.py --output {{output}} --github_token ${GITHUB_TOKEN:-""}
 
 [private]
 install-node-modules:
