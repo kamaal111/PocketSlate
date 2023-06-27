@@ -44,6 +44,7 @@ extension AppDelegate: UIApplicationDelegate {
     ) {
         if let notification = CKNotification(fromRemoteNotificationDictionary: userInfo) {
             logger.info("notification received; \(notification)")
+            NotificationCenter.default.post(name: .iCloudChanges, object: notification)
             completionHandler(.newData)
         }
     }

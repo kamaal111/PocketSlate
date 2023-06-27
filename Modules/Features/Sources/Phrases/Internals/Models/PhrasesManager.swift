@@ -5,8 +5,10 @@
 //  Created by Kamaal M Farah on 11/06/2023.
 //
 
+import CloudKit
 import Foundation
 import KamaalLogger
+import CloudSyncing
 import KamaalExtensions
 
 private let logger = KamaalLogger(from: PhrasesManager.self, failOnError: true)
@@ -15,8 +17,20 @@ public final class PhrasesManager: ObservableObject {
     @Published private(set) var phrases: [AppPhrase]
     @Published var isLoadingPhrase = false
 
+    private var lastLocalePair: (primary: Locale, secondary: Locale)?
+
+    private let notifications: [Notification.Name] = [
+        .iCloudChanges,
+    ]
+
     init() {
         self.phrases = []
+
+        setupObservers()
+    }
+
+    deinit {
+        setupObservers()
     }
 
     enum Errors: Error {
@@ -60,6 +74,7 @@ public final class PhrasesManager: ObservableObject {
 
             logger.info("Loaded phrases for locale pair of \(primary.identifier) and \(secondary.identifier)")
             await setPhrases(phrases)
+            lastLocalePair = (primary, secondary)
 
             return .success(())
         }
@@ -104,7 +119,18 @@ public final class PhrasesManager: ObservableObject {
             }
             guard updateErrors.isEmpty else { return .failure(.fromAppPhrase(updateErrors[0])) }
 
-            let listResult = await AppPhrase.list(from: Constants.defaultSource)
+            let listResult: Result<[AppPhrase], AppPhrase.Errors>
+            if let lastLocalePair {
+                listResult = await AppPhrase.listForLocalePair(
+                    from: Constants.defaultSource,
+                    primary: lastLocalePair.primary,
+                    secondary: lastLocalePair.secondary
+                )
+            } else {
+                logger.error("Should have had last locale pair here")
+                listResult = await AppPhrase.list(from: Constants.defaultSource)
+            }
+
             let phrases: [AppPhrase]
             switch listResult {
             case let .failure(failure):
@@ -163,5 +189,41 @@ public final class PhrasesManager: ObservableObject {
     @MainActor
     private func setLoading(_ state: Bool) {
         isLoadingPhrase = state
+    }
+
+    private func setupObservers() {
+        for notification in notifications {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleNotification),
+                name: notification,
+                object: .none
+            )
+        }
+    }
+
+    private func removeObservers() {
+        for notification in notifications {
+            NotificationCenter.default.removeObserver(self, name: notification, object: .none)
+        }
+    }
+
+    @objc
+    private func handleNotification(_ notification: Notification) {
+        switch notification.name {
+        case .iCloudChanges:
+            guard let lastLocalePair else {
+                logger.error("Last locale pair should have been provided")
+                return
+            }
+
+            let notificationObject = notification.object as? CKNotification
+            logger.info("recieved iCloud changes notification; \(notificationObject as Any)")
+            Task {
+                await fetchPhrasesForLocalePair(primary: lastLocalePair.primary, secondary: lastLocalePair.secondary)
+            }
+        default:
+            break
+        }
     }
 }

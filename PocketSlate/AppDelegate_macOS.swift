@@ -33,6 +33,7 @@ extension AppDelegate: NSApplicationDelegate {
     func application(_: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
         if let notification = CKNotification(fromRemoteNotificationDictionary: userInfo) {
             logger.info("notification received; \(notification)")
+            NotificationCenter.default.post(name: .iCloudChanges, object: notification)
         }
     }
 }
