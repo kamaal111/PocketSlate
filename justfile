@@ -28,10 +28,13 @@ build: generate
 
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
-bootstrap: install_system_dependencies generate
+bootstrap: install_system_dependencies pull-modules generate
 
 make-secrets output=DEFAULT_SECRETS_PATH:
     python3 Scripts/make_secrets.py --output {{output}} --github_token ${GITHUB_TOKEN:-""}
+
+pull-modules:
+    python3 Scripts/pull_gitmodules.py
 
 [private]
 install-node-modules:
