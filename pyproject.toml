@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pocketslate"
+version = "0.1.0"
+description = ""
+authors = ["Kamaal Farah <kamaal.f1@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyyaml = "^6.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
