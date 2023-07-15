@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
+		2C2F110B2A632C7B0027EAEE /* PocketSlateAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C2F110A2A632C7B0027EAEE /* PocketSlateAPI */; };
 		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
 		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
 		2C3333EB2A48C95C00990E4E /* AppDelegate_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */; };
@@ -23,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_iOS.swift; sourceTree = "<group>"; };
+		2C2F11092A632AD80027EAEE /* PocketSlateAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PocketSlateAPI; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_macOS.swift; sourceTree = "<group>"; };
 		2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
@@ -51,6 +53,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */,
+				2C2F110B2A632C7B0027EAEE /* PocketSlateAPI in Frameworks */,
 				2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */,
 				2C545C772A37AEDB00A672E0 /* Users in Frameworks */,
 				2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */,
@@ -110,6 +113,7 @@
 				2C831E612A364BDF0028BCD8 /* Features */,
 				2C6BAC1C29FD665900009E19 /* Models */,
 				2CDF2BF32A3B9A5C007CA8FC /* Navigation */,
+				2C2F11092A632AD80027EAEE /* PocketSlateAPI */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -177,6 +181,7 @@
 				2CDF2BF42A3B9A9B007CA8FC /* Navigation */,
 				2C3333E52A48C7BB00990E4E /* CloudSyncing */,
 				2C3333E82A48C85A00990E4E /* KamaalLogger */,
+				2C2F110A2A632C7B0027EAEE /* PocketSlateAPI */,
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* PocketSlate.app */;
@@ -499,6 +504,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2C2F110A2A632C7B0027EAEE /* PocketSlateAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PocketSlateAPI;
+		};
 		2C3333E52A48C7BB00990E4E /* CloudSyncing */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CloudSyncing;

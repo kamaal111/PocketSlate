@@ -1,0 +1,34 @@
+openapi: "3.0.3"
+
+info:
+  contact: {}
+  description: API for pocket slate
+  license:
+    name: MIT
+    url: https://github.com/kamaal111/pocket-slate-api/blob/main/LICENSE
+  title: Pocket slate API
+  version: "1.0"
+
+paths:
+  /health/ping:
+    get:
+      operationId: healthPing
+      description: Pings the server
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PingResponse"
+      summary: Checks if server is up or down
+      tags:
+        - health
+
+components:
+  schemas:
+    PingResponse:
+      type: object
+      properties:
+        message:
+          type: string

@@ -7,10 +7,16 @@
 
 import SwiftUI
 import Navigation
+import PocketSlateAPI
 
 struct ContentView: View {
     var body: some View {
         AppNavigationView()
+            .onAppear(perform: {
+                Task {
+                    try! await healthPing()
+                }
+            })
     }
 }
 
