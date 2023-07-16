@@ -15,8 +15,7 @@ struct ContentView: View {
             .onAppear(perform: {
                 Task {
                     let pocketSlateAPI = PocketSlateAPI()
-                    let message = try! await pocketSlateAPI.health.ping().get()
-                    print(message)
+                    try! await pocketSlateAPI.translation.getSupportedLocales()
                 }
             })
     }

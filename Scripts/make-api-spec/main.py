@@ -9,6 +9,7 @@ if TYPE_CHECKING:
         SwaggerPathMethod,
         SwaggerResponse,
         SwaggerDefinition,
+        SwaggerParameter,
     )
     from enums import SwaggerPaths, SwaggerPathMethods, DefinitionNames
 
@@ -59,6 +60,49 @@ def map_swagger_path_responses_for_xcode(
     return mapped_responses
 
 
+def map_swagger_parameters_for_xcode(parameters: list["SwaggerParameter"] | None):
+    if not parameters:
+        return None
+
+    mapped_parameters = []
+    for parameter in parameters:
+        mapped_parameter = {}
+        if parameter["in"] == "body":
+            continue
+
+        for key, value in parameter.items():
+            if key == "default":
+                continue
+
+            if key == "type":
+                mapped_parameter["schema"] = {key: value}
+            else:
+                mapped_parameter[key] = value
+
+        mapped_parameters.append(mapped_parameter)
+
+    return mapped_parameters
+
+
+def map_swagger_path_request_body(parameters: list["SwaggerParameter"] | None):
+    if not parameters:
+        return None
+
+    for parameter in parameters:
+        if parameter["in"] == "body":
+            return {
+                "description": parameter["description"],
+                "required": parameter["required"],
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": f"#/components/schemas/{make_schema_name(parameter['schema']['$ref'])}"
+                        }
+                    }
+                },
+            }
+
+
 def map_swagger_paths_for_xcode(
     paths: dict["SwaggerPaths", dict["SwaggerPathMethods", "SwaggerPathMethod"]]
 ):
@@ -66,15 +110,23 @@ def map_swagger_paths_for_xcode(
     for path, data in paths.items():
         mapped_path_data = {}
         for key, value in data.items():
-            mapped_path_data[key] = {
-                "description": value["description"],
-                "operationId": value["operationId"],
-                "responses": map_swagger_path_responses_for_xcode(
-                    responses=value["responses"], produces=value["produces"]
-                ),
-                "summary": value["summary"],
-                "tags": value["tags"],
-            }
+            mapped_path_data[key] = omit_empty(
+                {
+                    "description": value["description"],
+                    "operationId": value["operationId"],
+                    "responses": map_swagger_path_responses_for_xcode(
+                        responses=value["responses"], produces=value["produces"]
+                    ),
+                    "summary": value["summary"],
+                    "tags": value["tags"],
+                    "parameters": map_swagger_parameters_for_xcode(
+                        value.get("parameters")
+                    ),
+                    "requestBody": map_swagger_path_request_body(
+                        value.get("parameters")
+                    ),
+                }
+            )
         mapped_paths[path] = mapped_path_data
 
     return mapped_paths

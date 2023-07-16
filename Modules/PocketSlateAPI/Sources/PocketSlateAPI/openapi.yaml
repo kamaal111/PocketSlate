@@ -64,6 +64,35 @@ paths:
       description: Translates the given text in the payload from source locale to
         target locale.
       operationId: makeTranslation
+      parameters:
+      - description: The version of the app.
+        example: 4.2.0
+        in: header
+        name: App-Version
+        required: true
+        schema:
+          type: string
+      - description: The name of the app.
+        example: sup-app
+        in: header
+        name: App-Name
+        required: true
+        schema:
+          type: string
+      - description: API key registered to the app.
+        example: 1234lmao
+        in: header
+        name: Api-Key
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MakeTranslationPayload'
+        description: The text to translate.
+        required: true
       responses:
         '200':
           content:
@@ -102,6 +131,34 @@ paths:
     get:
       description: Gets all the supported locales that can be used to translate.
       operationId: getSupportedLocales
+      parameters:
+      - description: The target language to translate the locales to.
+        example: it
+        in: query
+        name: target
+        schema:
+          type: string
+      - description: The version of the app.
+        example: 4.2.0
+        in: header
+        name: App-Version
+        required: true
+        schema:
+          type: string
+      - description: The name of the app.
+        example: sup-app
+        in: header
+        name: App-Name
+        required: true
+        schema:
+          type: string
+      - description: API key registered to the app.
+        example: 1234lmao
+        in: header
+        name: Api-Key
+        required: true
+        schema:
+          type: string
       responses:
         '200':
           content:
