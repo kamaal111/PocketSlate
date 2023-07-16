@@ -35,7 +35,8 @@ make-api-spec:
 
     . .venv/bin/activate
     time {
-        python3 Scripts/make-api-spec/main.py
+        # python3 Scripts/make-api-spec/main.py
+        node Scripts/make-api-spec/script.js
     }
 
 make-secrets output=DEFAULT_SECRETS_PATH:

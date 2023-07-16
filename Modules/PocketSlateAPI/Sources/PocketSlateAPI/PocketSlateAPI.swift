@@ -32,11 +32,10 @@ public struct PocketSlateTranslationAPI {
     }
 
     public func getSupportedLocales() async throws {
-        let result = try await client.getSupportedLocales(.init(headers: .init(
-            App_Version: "1.0.0",
-            App_Name: "pocket-slate",
-            Api_Key: "xxx"
-        )))
+        let result = try await client.getSupportedLocales(.init(
+            query: .init(target: "en"),
+            headers: .init(App_Version: "1.0.0", App_Name: "pocket-slate", Api_Key: "xxx")
+        ))
         print("result", result)
     }
 }
