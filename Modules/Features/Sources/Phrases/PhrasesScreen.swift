@@ -12,6 +12,7 @@ import KamaalUI
 import AppLocales
 import KamaalPopUp
 import KamaalLogger
+import PocketSlateAPI
 
 private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
 
@@ -139,6 +140,12 @@ public struct PhrasesScreen: View {
             case .success:
                 break
             }
+        }
+
+        Task {
+            let pocketSlateAPI = PocketSlateAPI(apiKey: SecretsJSON.shared.content!.apiKey)
+            let message = await pocketSlateAPI.health.ping()
+            print(message)
         }
     }
 

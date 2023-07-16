@@ -1,11 +1,10 @@
 import json
 import sys
 from getopt import getopt
-from typing import Dict, List
 from pathlib import Path
 
 
-def parse_opts(shortopts: List[str] = [], longopts: List[str] = []) -> Dict[str, str]:
+def parse_opts(shortopts: list[str] = [], longopts: list[str] = []) -> dict[str, str]:
     argv = sys.argv[1:]
     unique_shortopts = set(shortopts)
     unique_longopts = set(longopts)
@@ -30,12 +29,17 @@ def parse_opts(shortopts: List[str] = [], longopts: List[str] = []) -> Dict[str,
 
 
 def main():
-    opts = parse_opts(longopts=["github_token", "output"])
+    opts = parse_opts(longopts=["github_token", "output", "api_key"])
     output = opts.get("output")
     if not output:
         raise Exception("No output provied")
 
-    secrets = json.dumps({"github_token": opts.get("github_token")})
+    secrets = json.dumps(
+        {
+            "github_token": opts.get("github_token"),
+            "api_key": opts.get("api_key"),
+        }
+    )
 
     output_path = Path(output)
     output_path.write_text(secrets)

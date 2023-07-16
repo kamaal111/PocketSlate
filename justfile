@@ -1,4 +1,5 @@
 set export
+set dotenv-load
 
 DEFAULT_SECRETS_PATH := "Modules/Features/Sources/Users/Internals/Resources/Secrets.json"
 
@@ -17,7 +18,7 @@ format:
 acknowledgements:
     python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output Modules/Features/Sources/Users/Internals/Resources
 
-generate: acknowledgements localize make-secrets
+generate: acknowledgements localize make-secrets make-api-spec
 
 build: generate
     #!/bin/sh
@@ -33,14 +34,30 @@ bootstrap: install_system_dependencies pull-modules generate setup-python-enviro
 make-api-spec:
     #!/bin/sh
 
+    if [ ! -d .venv ]
+    then
+        just setup-python-environment
+    fi
+
     . .venv/bin/activate
     time {
         # python3 Scripts/make-api-spec/main.py
         node Scripts/make-api-spec/script.js
     }
 
-make-secrets output=DEFAULT_SECRETS_PATH:
-    python3 Scripts/make_secrets.py --output {{output}} --github_token ${GITHUB_TOKEN:-""}
+make-secrets:
+    #!/bin/sh
+
+    if [ ! -d .venv ]
+    then
+        just setup-python-environment
+    fi
+
+    . .venv/bin/activate
+    time {
+        python3 Scripts/make_secrets.py --output "Modules/Features/Sources/Users/Internals/Resources/Secrets.json" --github_token ${GITHUB_TOKEN:-""}
+        python3 Scripts/make_secrets.py --output "Modules/Features/Sources/Phrases/Internals/Resources/Secrets.json" --api_key ${API_KEY:-""}
+    }
 
 pull-modules:
     . .venv/bin/activate

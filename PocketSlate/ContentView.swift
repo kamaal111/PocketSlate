@@ -7,17 +7,10 @@
 
 import SwiftUI
 import Navigation
-import PocketSlateAPI
 
 struct ContentView: View {
     var body: some View {
         AppNavigationView()
-            .onAppear(perform: {
-                Task {
-                    let pocketSlateAPI = PocketSlateAPI()
-                    try! await pocketSlateAPI.translation.getSupportedLocales()
-                }
-            })
     }
 }
 

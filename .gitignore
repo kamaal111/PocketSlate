@@ -56,3 +56,4 @@ yarn-error.log
 .venv
 __pycache__
 PocketSlate/Resources/Acknowledgements.json
+.env

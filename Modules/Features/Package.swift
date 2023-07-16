@@ -16,6 +16,7 @@ let package = Package(
         .package(url: "https://github.com/kamaal111/ICloutKit.git", "3.0.0" ..< "4.0.0"),
         .package(path: "../AppLocales"),
         .package(path: "../AppUI"),
+        .package(path: "../PocketSlateAPI"),
     ],
     targets: [
         .target(
@@ -39,6 +40,10 @@ let package = Package(
                 "Users",
                 "AppUI",
                 "CloudSyncing",
+                "PocketSlateAPI",
+            ],
+            resources: [
+                .process("Internals/Resources"),
             ]
         ),
         .testTarget(name: "PhrasesTests", dependencies: ["Phrases"]),

@@ -8,3 +8,4 @@ DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
 Sources/Users/Internals/Resources/Secrets.json
+Sources/Phrases/Internals/Resources/Secrets.json

@@ -1,5 +1,5 @@
 //
-//  JSONUnpacker.swift
+//  AcknowledgementsJSON.swift
 //  PocketSlate
 //
 //  Created by Kamaal Farah on 28/05/2023.
@@ -9,7 +9,7 @@ import KamaalUtils
 import KamaalLogger
 import KamaalSettings
 
-private let logger = KamaalLogger(label: "JSONUnpacker", failOnError: true)
+private let logger = KamaalLogger(label: "AcknowledgementsJSON", failOnError: true)
 
 class AcknowledgementsJSON {
     private(set) var content: Acknowledgements?
