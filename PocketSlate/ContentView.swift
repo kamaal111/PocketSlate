@@ -14,7 +14,9 @@ struct ContentView: View {
         AppNavigationView()
             .onAppear(perform: {
                 Task {
-                    try! await healthPing()
+                    let pocketSlateAPI = PocketSlateAPI()
+                    let message = try! await pocketSlateAPI.health.ping().get()
+                    print(message)
                 }
             })
     }

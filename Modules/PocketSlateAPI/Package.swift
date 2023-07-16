@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "PocketSlateAPI",
-    platforms: [.macOS(.v10_15), .iOS(.v13)],
+    platforms: [.macOS(.v12), .iOS(.v15), .watchOS(.v7)],
     products: [
         .library(
             name: "PocketSlateAPI",
@@ -16,6 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-openapi-generator", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMinor(from: "0.1.0")),
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.2" ..< "0.10.0"),
     ],
     targets: [
         .target(
@@ -23,6 +24,7 @@ let package = Package(
             dependencies: [
                 .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
                 .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
+                .product(name: "KamaalExtensions", package: "KamaalSwift"),
             ],
             plugins: [
                 .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator"),
