@@ -41,8 +41,7 @@ make-api-spec:
 
     . .venv/bin/activate
     time {
-        # python3 Scripts/make-api-spec/main.py
-        node Scripts/make-api-spec/script.js
+        python3 Scripts/make-api-spec/main.py
     }
 
 make-secrets:

@@ -7,11 +7,6 @@
   resolved "https://registry.yarnpkg.com/@kamaal111/localize/-/localize-0.1.0.tgz#e84d6ee25c7c5f9e29817b8cf1f0ffd46fbf097c"
   integrity sha512-KBtYbBFFKK6IkkyaCAFDgOaeCAX+cR/qmTZndk2d5aC1Ju2nyE2Qd29dx1G66odmFDQFx4OPlOeOUgDSQjiF5A==
 
-argparse@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
-  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
-
 git-format-staged@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/git-format-staged/-/git-format-staged-3.0.0.tgz#66fe89fcb537f78e8129412dc0b2511b34d49e32"
@@ -21,13 +16,6 @@ husky@^8.0.1:
   version "8.0.3"
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
   integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
-
-js-yaml@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
-  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
-  dependencies:
-    argparse "^2.0.1"
 
 prettier@^3.0.0:
   version "3.0.0"
