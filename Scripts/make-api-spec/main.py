@@ -13,6 +13,14 @@ if TYPE_CHECKING:
     from enums import SwaggerPaths, SwaggerPathMethods, DefinitionNames
 
 
+def make_array_schema_name(name: str):
+    return f"{name}s"
+
+
+def get_original_array_schema_name(name: str):
+    return name[:-1]
+
+
 def get_swagger_data() -> "SwaggerDict":
     swagger_file = Path("Scripts/make-api-spec/swagger.yaml")
     swagger_file_text = swagger_file.read_text()
@@ -34,6 +42,14 @@ def omit_empty(data: dict[str, Any]):
     return omitted_data
 
 
+def omit(data: dict[str, Any], key: str):
+    omitted_data = {}
+    for data_key, value in data.items():
+        if key != data_key:
+            omitted_data[data_key] = value
+    return omitted_data
+
+
 def map_swagger_path_responses_for_xcode(
     responses: dict[str, "SwaggerResponse"], produces: list[str]
 ):
@@ -42,14 +58,16 @@ def map_swagger_path_responses_for_xcode(
         mapped_content = {}
         for content_type in produces:
             schema = response_value["schema"]
-            mapped_content[content_type] = {
-                "schema": omit_empty(
-                    {
-                        "type": schema.get("type"),
-                        "$ref": f"#/components/schemas/{make_schema_name(schema.get('$ref') or schema['items']['$ref'])}",
-                    }
-                ),
+            formatted_schema = {
+                "$ref": f"#/components/schemas/{make_schema_name(schema.get('$ref') or schema['items']['$ref'])}",
+                "type": schema.get("type"),
             }
+            if formatted_schema["type"] == "array":
+                formatted_schema["$ref"] = make_array_schema_name(
+                    formatted_schema["$ref"]
+                )
+
+            mapped_content[content_type] = {"schema": omit_empty(formatted_schema)}
 
         mapped_responses[response_key] = {
             "description": response_value["description"],
@@ -93,6 +111,7 @@ def map_swagger_path_request_body(parameters: list["SwaggerParameter"] | None):
                 "description": parameter["description"],
                 "required": parameter["required"],
                 "content": {
+                    # Get this from produces
                     "application/json": {
                         "schema": {
                             "$ref": f"#/components/schemas/{make_schema_name(parameter['schema']['$ref'])}"
@@ -132,26 +151,79 @@ def map_swagger_paths_for_xcode(
 
 
 def map_swagger_definitions_for_xcode(
-    definitions: dict["DefinitionNames", "SwaggerDefinition"]
+    definitions: dict["DefinitionNames", "SwaggerDefinition"], array_responses=list[str]
 ):
     mapped_definitations = {}
     for name, definition in definitions.items():
-        mapped_definitations[make_schema_name(name)] = definition
+        formatted_name = make_schema_name(name)
+        mapped_definitations[formatted_name] = definition
+        if formatted_name in array_responses:
+            mapped_definitations[make_array_schema_name(formatted_name)] = {
+                "schema": {
+                    "$ref": f"#/components/schemas/{formatted_name}",
+                    "type": "array",
+                }
+            }
 
     return mapped_definitations
 
 
-def map_swagger_data_for_xcode(swagger_dict: "SwaggerDict"):
-    xcode_compatible_dict = {
-        "openapi": "3.0.3",
-        "info": swagger_dict["info"],
-        "paths": map_swagger_paths_for_xcode(swagger_dict["paths"]),
-        "components": {
-            "schemas": map_swagger_definitions_for_xcode(swagger_dict["definitions"])
-        },
-    }
+def extract_array_responses(mapped_paths: dict):
+    array_responses = []
+    for path in mapped_paths.values():
+        for method in path.values():
+            for response in method["responses"].values():
+                # Get content type from produces
+                response_schema = response["content"]["application/json"]["schema"]
+                if response_schema.get("type") == "array":
+                    response_schema_name = response_schema["$ref"]
+                    array_responses.append(
+                        get_original_array_schema_name(
+                            response_schema_name.split("/")[-1]
+                        )
+                    )
 
-    return xcode_compatible_dict
+    return array_responses
+
+
+def remove_types_from_path_schemas(data: dict):
+    mapped_paths = {}
+    for path_key, path in data["paths"].items():
+        mapped_path = path.copy()
+        for method_key, method in path.items():
+            mapped_method = method.copy()
+            for response_key, response in method["responses"].items():
+                mapped_response = response.copy()
+                # Get content type from produces
+                if response["content"]["application/json"]["schema"].get("type"):
+                    del mapped_response["content"]["application/json"]["schema"]["type"]
+
+                mapped_method["responses"][response_key] = mapped_response
+
+            mapped_path[method_key] = mapped_method
+
+        mapped_paths[path_key] = mapped_path
+
+    mapped_data = data.copy()
+    mapped_data["paths"] = mapped_paths
+    return mapped_data
+
+
+def map_swagger_data_for_xcode(swagger_dict: "SwaggerDict"):
+    mapped_paths = map_swagger_paths_for_xcode(swagger_dict["paths"])
+
+    return remove_types_from_path_schemas(
+        {
+            "openapi": "3.0.3",
+            "info": swagger_dict["info"],
+            "paths": mapped_paths,
+            "components": {
+                "schemas": map_swagger_definitions_for_xcode(
+                    swagger_dict["definitions"], extract_array_responses(mapped_paths)
+                )
+            },
+        }
+    )
 
 
 def write_api_spec(spec: str):

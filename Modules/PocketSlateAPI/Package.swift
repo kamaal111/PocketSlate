@@ -13,10 +13,10 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-generator", .upToNextMinor(from: "0.1.0")),
+        .package(url: "https://github.com/apple/swift-openapi-generator", .upToNextMinor(from: "0.1.4")),
         .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMinor(from: "0.1.0")),
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.2" ..< "0.10.0"),
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMinor(from: "0.9.2")),
     ],
     targets: [
         .target(
