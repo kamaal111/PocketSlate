@@ -144,11 +144,8 @@ public struct PhrasesScreen: View {
 
         Task {
             let pocketSlateAPI = PocketSlateAPI(apiKey: SecretsJSON.shared.content!.apiKey)
-            do {
-                try await pocketSlateAPI.translation.getSupportedLocales()
-            } catch {
-                print("error", error)
-            }
+            let result = await pocketSlateAPI.translation.getSupportedLocales(as: userData.appLocale)
+            print("result", result)
         }
     }
 

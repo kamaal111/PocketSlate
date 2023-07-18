@@ -19,7 +19,7 @@ public struct PocketSlateHealthAPI {
         do {
             result = try await client.healthPing(.init())
         } catch {
-            return .failure(.unknownError(statusCode: 500))
+            return .failure(.unknownError(statusCode: 500, message: nil, context: error))
         }
 
         switch result {
@@ -29,7 +29,7 @@ public struct PocketSlateHealthAPI {
                 return .success(jsonResponse.message!)
             }
         case let .undocumented(statusCode: statusCode, _):
-            return .failure(PocketSlateAPIErrors.unknownError(statusCode: statusCode))
+            return .failure(PocketSlateAPIErrors.unknownError(statusCode: statusCode, message: nil, context: nil))
         }
     }
 }

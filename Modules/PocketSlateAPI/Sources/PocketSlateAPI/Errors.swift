@@ -8,5 +8,7 @@
 import Foundation
 
 public enum PocketSlateAPIErrors: Error {
-    case unknownError(statusCode: Int)
+    case badRequest(message: String?)
+    case unauthorized(message: String?)
+    case unknownError(statusCode: Int, message: String?, context: Error?)
 }
