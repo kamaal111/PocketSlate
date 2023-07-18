@@ -30,4 +30,5 @@ module.exports = {
     PHRASE_DELETION_CONFIRMATION_TITLE: 'Delete phrase',
     PHRASE_DELETION_CONFIRMATION_MESSAGE: 'Are you sure want to delete these phrases?',
     TRANSLATIONS: 'Translations',
+    NO_TRANSLATION_FOUND: 'No translation found',
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AppLocales
 
 public struct PocketSlateTranslationAPI {
     private let client: Client
@@ -14,6 +15,29 @@ public struct PocketSlateTranslationAPI {
     init(client: Client, apiKey: String) {
         self.client = client
         self.apiKey = apiKey
+    }
+
+    public func makeTranslation(forText text: String, from sourceLocale: Locale,
+                                to targetLocale: Locale) async -> Result<String, PocketSlateAPIErrors> {
+        let sourceLocaleIdentifier = String(sourceLocale.identifier.prefix(2))
+        let targetLocaleIdentifer = String(targetLocale.identifier.prefix(2))
+        let result: Operations.makeTranslation.Output
+        do {
+            result = try await client.makeTranslation(.init(
+                headers: .init(App_Version: defaultHeaders.appVersion,
+                               App_Name: defaultHeaders.appName,
+                               Api_Key: defaultHeaders.apiKey),
+                body: .json(.init(
+                    source_locale: sourceLocaleIdentifier,
+                    target_locale: targetLocaleIdentifer,
+                    text: text
+                ))
+            ))
+        } catch {
+            return .failure(.unknownError(statusCode: 500, message: nil, context: error))
+        }
+
+        return parseMakeTranslation(result)
     }
 
     public func getSupportedLocales(as target: Locale) async -> Result<[SupportedLocale], PocketSlateAPIErrors> {
@@ -37,6 +61,46 @@ public struct PocketSlateTranslationAPI {
 
     private var defaultHeaders: TranslationAPIHeaders {
         .init(apiKey: apiKey)
+    }
+
+    private func parseMakeTranslation(_ response: Operations.makeTranslation
+        .Output) -> Result<String, PocketSlateAPIErrors> {
+        switch response {
+        case let .ok(okResponse):
+            switch okResponse.body {
+            case let .json(jsonResponse):
+                guard let translatedText = jsonResponse.translated_text else {
+                    return .failure(.unknownError(
+                        statusCode: 404,
+                        message: AppLocales.getText(.NO_TRANSLATION_FOUND),
+                        context: nil
+                    ))
+                }
+                return .success(translatedText)
+            }
+        case let .badRequest(error):
+            switch error.body {
+            case let .json(jsonResponse):
+                return .failure(.badRequest(message: jsonResponse.message))
+            }
+        case let .forbidden(error):
+            switch error.body {
+            case let .json(jsonResponse):
+                return .failure(.unauthorized(message: jsonResponse.message))
+            }
+        case let .unprocessableEntity(error):
+            switch error.body {
+            case let .json(jsonResponse):
+                return .failure(.badRequest(message: jsonResponse.message))
+            }
+        case let .internalServerError(error):
+            switch error.body {
+            case let .json(jsonResponse):
+                return .failure(.unknownError(statusCode: 500, message: jsonResponse.message, context: nil))
+            }
+        case let .undocumented(statusCode: statusCode, _):
+            return .failure(.unknownError(statusCode: statusCode, message: nil, context: nil))
+        }
     }
 
     private func parseGetsupportedLocalesResponse(_ response: Operations.getSupportedLocales
