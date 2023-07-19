@@ -7,6 +7,7 @@
 import AppUI
 import SwiftUI
 import KamaalLogger
+import PocketSlateAPI
 import KamaalExtensions
 
 private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
@@ -44,10 +45,15 @@ extension PhrasesScreen {
         @Published var editingSecondaryPhraseField = ""
         @Published private(set) var editedPhrases: [AppPhrase] = []
 
+        private var pocketSlateAPI: PocketSlateAPI?
+
         init(primaryLocale: Locale, secondaryLocale: Locale) {
             self.primaryLocale = primaryLocale
             self.secondaryLocale = secondaryLocale
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
+            if let apiKey = SecretsJSON.shared.content?.apiKey {
+                self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey)
+            }
         }
 
         convenience init() {
@@ -85,6 +91,8 @@ extension PhrasesScreen {
 
             return phrase.id == textEditingPhrase.id
         }
+
+        func fetchSupportedTranslationLocales(forTargetLocale _: Locale) { }
 
         @MainActor
         func deselectTextEditingPhrase() {

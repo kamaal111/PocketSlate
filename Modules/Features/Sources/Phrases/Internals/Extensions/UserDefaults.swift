@@ -7,6 +7,7 @@
 
 import Foundation
 import KamaalUtils
+import PocketSlateAPI
 
 extension UserDefaults {
     @UserDefaultsObject(key: "phrases")

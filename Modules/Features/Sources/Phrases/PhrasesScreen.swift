@@ -12,7 +12,6 @@ import KamaalUI
 import AppLocales
 import KamaalPopUp
 import KamaalLogger
-import PocketSlateAPI
 
 private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
 
@@ -129,6 +128,7 @@ public struct PhrasesScreen: View {
     }
 
     private func handleOnAppear() {
+        viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale)
         Task {
             let result = await phrasesManager.fetchPhrasesForLocalePair(
                 primary: viewModel.primaryLocale,
@@ -140,16 +140,6 @@ public struct PhrasesScreen: View {
             case .success:
                 break
             }
-        }
-
-        Task {
-            let pocketSlateAPI = PocketSlateAPI(apiKey: SecretsJSON.shared.content!.apiKey)
-            let result = await pocketSlateAPI.translation.makeTranslation(
-                forText: "Hello",
-                from: Locale(identifier: "en"),
-                to: Locale(identifier: "it")
-            )
-            print("result", result)
         }
     }
 

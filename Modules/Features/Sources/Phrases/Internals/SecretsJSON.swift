@@ -12,7 +12,7 @@ import KamaalLogger
 private let logger = KamaalLogger(label: "SecretsJSON", failOnError: true)
 
 struct Secrets: Codable {
-    let apiKey: String
+    let apiKey: String?
 
     enum CodingKeys: String, CodingKey {
         case apiKey = "api_key"
