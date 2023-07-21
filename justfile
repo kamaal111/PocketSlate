@@ -14,6 +14,7 @@ clear-mac-data:
 
 format:
     swiftformat .
+    npx prettier --write .
 
 acknowledgements:
     python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output Modules/Features/Sources/Users/Internals/Resources

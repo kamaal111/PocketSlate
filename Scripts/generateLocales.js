@@ -1,8 +1,8 @@
-const Localize = require('@kamaal111/localize');
+const Localize = require("@kamaal111/localize");
 
-const en = require('../Locales/en');
+const en = require("../Locales/en");
 
-const DEFAULT_LOCALE = 'en';
+const DEFAULT_LOCALE = "en";
 
 const locales = { en };
 
@@ -36,16 +36,15 @@ ${input}`;
 
 const main = () => {
   const localize = new Localize(
-    'Modules/AppLocales/Sources/AppLocales/Resources',
-    'Modules/AppLocales/Sources/AppLocales/Keys.swift',
+    "Modules/AppLocales/Sources/AppLocales/Resources",
+    "Modules/AppLocales/Sources/AppLocales/Keys.swift",
     locales,
     DEFAULT_LOCALE,
     2,
   );
   localize.setKeysTemplate(keysFileTemplate);
   localize.setLocaleFileTemplate(localizableFileTemplate);
-  localize.generateFiles().then(console.log('Done localizing'));
+  localize.generateFiles().then(console.log("Done localizing"));
 };
 
 main();
-
