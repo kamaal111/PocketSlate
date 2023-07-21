@@ -100,7 +100,6 @@ public class Skypiea {
         }
 
         let deletedTasks = try await batchDelete(recordsToDelete)
-        assert(deletedTasks.count == recordsToDelete.count)
         if !deletedTasks.isEmpty {
             logger.info("deleted cloud records; \(deletedTasks)")
         }

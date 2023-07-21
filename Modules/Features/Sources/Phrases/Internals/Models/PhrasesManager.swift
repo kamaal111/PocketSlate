@@ -9,6 +9,7 @@ import CloudKit
 import Foundation
 import KamaalLogger
 import CloudSyncing
+import PocketSlateAPI
 import KamaalExtensions
 
 private let logger = KamaalLogger(from: PhrasesManager.self, failOnError: true)
@@ -18,13 +19,16 @@ public final class PhrasesManager: ObservableObject {
     @Published var isLoadingPhrase = false
 
     private var lastLocalePair: (primary: Locale, secondary: Locale)?
-
+    private var pocketSlateAPI: PocketSlateAPI?
     private let notifications: [Notification.Name] = [
         .iCloudChanges,
     ]
 
     init() {
         self.phrases = []
+        if let apiKey = SecretsJSON.shared.content?.apiKey {
+            self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey)
+        }
 
         setupObservers()
     }
@@ -39,6 +43,8 @@ public final class PhrasesManager: ObservableObject {
         case invalidPayload(context: Error)
         case deletionFailure(context: Error)
         case updateFailure(context: Error)
+        case unknownTranslationFailure
+        case translationFailure(context: PocketSlateAPIErrors)
 
         static func fromAppPhrase(_ error: AppPhrase.Errors) -> Errors {
             switch error {
@@ -53,6 +59,53 @@ public final class PhrasesManager: ObservableObject {
             case .updateFailure:
                 return .updateFailure(context: error)
             }
+        }
+    }
+
+    func translatePhrase(
+        _ phrase: AppPhrase,
+        from sourceLocale: Locale,
+        to targetLocale: Locale
+    ) async -> Result<Void, Errors> {
+        await withLoading {
+            guard let sourceText = phrase.translations[sourceLocale]?.first?.trimmingByWhitespacesAndNewLines,
+                  !sourceText.isEmpty else {
+                logger.error("Failed to get source text")
+                return .failure(.unknownTranslationFailure)
+            }
+
+            guard let pocketSlateAPI else {
+                assertionFailure("Pocket slate api should definitly be available at this point")
+                return .failure(.unknownTranslationFailure)
+            }
+
+            let result = await pocketSlateAPI.translation
+                .makeTranslation(forText: sourceText, from: sourceLocale, to: targetLocale)
+            let translatedText: String
+            switch result {
+            case let .failure(failure):
+                logger.error(label: "Failed to translate text", error: failure)
+                return .failure(.translationFailure(context: failure))
+            case let .success(success):
+                translatedText = success
+            }
+
+            guard let index = phrases.findIndex(by: \.id, is: phrase.id) else {
+                assertionFailure("Index should be present")
+                return .failure(.unknownTranslationFailure)
+            }
+
+            var updatedPhrases = phrases
+            updatedPhrases[index] = AppPhrase(
+                id: phrase.id,
+                creationDate: phrase.creationDate,
+                updatedDate: Date(),
+                translations: phrase.translations.merged(with: [targetLocale: [translatedText]]),
+                source: phrase.source
+            )
+            logger.info("Translation found for \(sourceText)")
+
+            return await updatePhrases(editedPhrases: updatedPhrases)
         }
     }
 
@@ -188,6 +241,8 @@ public final class PhrasesManager: ObservableObject {
 
     @MainActor
     private func setLoading(_ state: Bool) {
+        guard isLoadingPhrase != state else { return }
+
         isLoadingPhrase = state
     }
 

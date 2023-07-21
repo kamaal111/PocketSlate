@@ -66,9 +66,7 @@ public struct PhrasesScreen: View {
                                 onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
                                 onDeleteTranslation: handleDeleteTranslation,
                                 translateText: { phrase, sourceLocale, targetLocale in
-                                    print("phrase", phrase)
-                                    print("sourceLocale", sourceLocale)
-                                    print("targetLocale", targetLocale)
+                                    handlePhraseTranslation(phrase, from: sourceLocale, to: targetLocale)
                                 }
                             )
                             .disabled(phrasesManager.isLoadingPhrase)
@@ -115,6 +113,18 @@ public struct PhrasesScreen: View {
                 }
         } else {
             return phrasesManager.phrases
+        }
+    }
+
+    private func handlePhraseTranslation(_ phrase: AppPhrase, from sourceLocale: Locale, to targetLocale: Locale) {
+        Task {
+            let result = await phrasesManager.translatePhrase(phrase, from: sourceLocale, to: targetLocale)
+            switch result {
+            case let .failure(failure):
+                handlePhrasesManagerFailures(failure)
+            case .success:
+                break
+            }
         }
     }
 
@@ -269,6 +279,12 @@ public struct PhrasesScreen: View {
                 title: AppLocales.getText(.PHRASE_UPDATE_FAILURE_TITLE),
                 type: .error,
                 description: AppLocales.getText(.PHRASE_UPDATE_FAILURE_DESCRIPTION)
+            ), timeout: 3)
+        case .unknownTranslationFailure, .translationFailure:
+            popUpManager.showPopUp(style: .bottom(
+                title: AppLocales.getText(.TRANSLATION_FAILURE_TITLE),
+                type: .error,
+                description: AppLocales.getText(.TRANSLATION_FAILURE_DESCRIPTION)
             ), timeout: 3)
         }
     }
