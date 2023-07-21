@@ -13,9 +13,11 @@ private let logger = KamaalLogger(label: "SecretsJSON", failOnError: true)
 
 struct Secrets: Codable {
     let apiKey: String?
+    let apiURL: URL?
 
     enum CodingKeys: String, CodingKey {
         case apiKey = "api_key"
+        case apiURL = "api_url"
     }
 }
 

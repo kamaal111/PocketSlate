@@ -14,9 +14,9 @@ public struct PocketSlateAPI {
     public let health: PocketSlateHealthAPI
     public let translation: PocketSlateTranslationAPI
 
-    public init(apiKey: String) {
+    public init(apiKey: String, apiURL: URL) {
         let client = Client(
-            serverURL: URL(staticString: "http://localhost:8000/api/v1"),
+            serverURL: apiURL,
             transport: URLSessionTransport()
         )
         self.health = .init(client: client)

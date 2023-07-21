@@ -52,8 +52,8 @@ extension PhrasesScreen {
             self.primaryLocale = primaryLocale
             self.secondaryLocale = secondaryLocale
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
-            if let apiKey = SecretsJSON.shared.content?.apiKey {
-                self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey)
+            if let secrets = SecretsJSON.shared.content, let apiKey = secrets.apiKey, let apiURL = secrets.apiURL {
+                self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey, apiURL: apiURL)
             }
         }
 

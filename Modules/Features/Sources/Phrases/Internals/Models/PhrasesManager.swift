@@ -26,8 +26,8 @@ public final class PhrasesManager: ObservableObject {
 
     init() {
         self.phrases = []
-        if let apiKey = SecretsJSON.shared.content?.apiKey {
-            self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey)
+        if let secrets = SecretsJSON.shared.content, let apiKey = secrets.apiKey, let apiURL = secrets.apiURL {
+            self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey, apiURL: apiURL)
         }
 
         setupObservers()
@@ -95,8 +95,7 @@ public final class PhrasesManager: ObservableObject {
                 return .failure(.unknownTranslationFailure)
             }
 
-            var updatedPhrases = phrases
-            updatedPhrases[index] = AppPhrase(
+            let updatedPhrase = AppPhrase(
                 id: phrase.id,
                 creationDate: phrase.creationDate,
                 updatedDate: Date(),
@@ -105,7 +104,7 @@ public final class PhrasesManager: ObservableObject {
             )
             logger.info("Translation found for \(sourceText)")
 
-            return await updatePhrases(editedPhrases: updatedPhrases)
+            return await updatePhrases(editedPhrases: [updatedPhrase])
         }
     }
 

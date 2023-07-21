@@ -51,8 +51,11 @@ make-secrets:
     #!/bin/sh
 
     time {
-        python3 Scripts/make_secrets.py --output "Modules/Features/Sources/Users/Internals/Resources/Secrets.json" --github_token ${GITHUB_TOKEN:-""}
-        python3 Scripts/make_secrets.py --output "Modules/Features/Sources/Phrases/Internals/Resources/Secrets.json" --api_key ${API_KEY:-""}
+        python3 Scripts/make_secrets.py --output "Modules/Features/Sources/Users/Internals/Resources/Secrets.json" \
+            --github_token ${GITHUB_TOKEN:-""}
+
+        python3 Scripts/make_secrets.py --output "Modules/Features/Sources/Phrases/Internals/Resources/Secrets.json" \
+            --api_key ${API_KEY:-""} --api_url ${API_URL:-""}
     }
 
 pull-modules:

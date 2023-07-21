@@ -1,5 +1,6 @@
 import json
 import sys
+from functools import reduce
 from getopt import getopt
 from pathlib import Path
 
@@ -29,16 +30,14 @@ def parse_opts(shortopts: list[str] = [], longopts: list[str] = []) -> dict[str,
 
 
 def main():
-    opts = parse_opts(longopts=["github_token", "output", "api_key"])
+    output_keys = ["api_key", "api_url", "github_token"]
+    opts = parse_opts(longopts=["output"] + output_keys)
     output = opts.get("output")
     if not output:
         raise Exception("No output provied")
 
     secrets = json.dumps(
-        {
-            "github_token": opts.get("github_token"),
-            "api_key": opts.get("api_key"),
-        }
+        reduce(lambda acc, key: {**acc, key: opts.get(key)}, output_keys, {})
     )
 
     output_path = Path(output)
