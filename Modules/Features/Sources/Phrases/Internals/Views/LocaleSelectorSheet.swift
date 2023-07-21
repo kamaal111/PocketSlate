@@ -32,6 +32,7 @@ struct LocaleSelectorSheet: View {
     @State private var highlightedItem = 0
 
     let locales: [Locale]
+    let supportedTranslatableLocales: [Locale]
     let onClose: () -> Void
     let onLocaleSelect: (_ locale: Locale) -> Void
 
@@ -90,6 +91,10 @@ struct LocaleSelectorSheet: View {
     private func localeButton(_ numberedLocale: NumberedLocale) -> some View {
         let button = Button(action: { onLocaleSelect(numberedLocale.locale) }) {
             HStack {
+                Image(systemName: "globe")
+                    .kBold()
+                    .foregroundColor(supportedTranslatableLocales
+                        .contains(numberedLocale.locale) ? .accentColor : .secondary)
                 Text(numberedLocale.message(appLocale: userData.appLocale))
                     .foregroundColor(.accentColor)
                     .bold()
@@ -206,7 +211,12 @@ private struct NumberedLocale: Hashable, Identifiable {
 
 struct LocaleSelectorSheet_Previews: PreviewProvider {
     static var previews: some View {
-        LocaleSelectorSheet(locales: PhrasesScreen.ViewModel.locales, onClose: { }, onLocaleSelect: { _ in })
-            .usersEnvironment()
+        LocaleSelectorSheet(
+            locales: PhrasesScreen.ViewModel.locales,
+            supportedTranslatableLocales: PhrasesScreen.ViewModel.locales,
+            onClose: { },
+            onLocaleSelect: { _ in }
+        )
+        .usersEnvironment()
     }
 }

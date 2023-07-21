@@ -24,8 +24,8 @@ public struct PocketSlateTranslationAPI {
     public func makeTranslation(forText text: String,
                                 from sourceLocale: Locale,
                                 to targetLocale: Locale) async -> Result<String, PocketSlateAPIErrors> {
-        let sourceLocaleIdentifier = String(sourceLocale.identifier.prefix(2))
-        let targetLocaleIdentifer = String(targetLocale.identifier.prefix(2))
+        let sourceLocaleIdentifier = String(sourceLocale.identifier.split(separator: "-")[0])
+        let targetLocaleIdentifer = String(targetLocale.identifier.split(separator: "-")[0])
 
         return await CacheUtils.cacheResult(
             cachingKey: "make_translation_text_\(text)_from_\(sourceLocaleIdentifier)_to_\(targetLocaleIdentifer)",
@@ -62,7 +62,7 @@ public struct PocketSlateTranslationAPI {
     }
 
     public func getSupportedLocales(as target: Locale) async -> Result<[SupportedLocale], PocketSlateAPIErrors> {
-        let targetIdentifier = String(target.identifier.prefix(2))
+        let targetIdentifier = String(target.identifier.split(separator: "-")[0])
 
         return await CacheUtils.cacheResult(
             cachingKey: "get_supported_locales_as_\(targetIdentifier)",

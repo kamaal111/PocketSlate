@@ -62,6 +62,7 @@ public struct PhrasesScreen: View {
                                 primaryLocale: viewModel.primaryLocale,
                                 secondaryLocale: viewModel.secondaryLocale,
                                 isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
+                                supportedTranslatableLocales: viewModel.supportedTranslatebleLocales,
                                 onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
                                 onDeleteTranslation: handleDeleteTranslation,
                                 translateText: { phrase, sourceLocale, targetLocale in
@@ -90,6 +91,7 @@ public struct PhrasesScreen: View {
         .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {
             LocaleSelectorSheet(
                 locales: viewModel.selectedLocaleSelectorLocales,
+                supportedTranslatableLocales: viewModel.supportedTranslatebleLocales,
                 onClose: { viewModel.closeLocaleSelectorSheet() },
                 onLocaleSelect: { locale in viewModel.selectLocale(locale) }
             )
@@ -133,7 +135,6 @@ public struct PhrasesScreen: View {
     }
 
     private func handleOnAppear() {
-        viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale)
         Task {
             let result = await phrasesManager.fetchPhrasesForLocalePair(
                 primary: viewModel.primaryLocale,
@@ -145,6 +146,9 @@ public struct PhrasesScreen: View {
             case .success:
                 break
             }
+        }
+        Task {
+            await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale)
         }
     }
 

@@ -44,6 +44,7 @@ extension PhrasesScreen {
         @Published var editingPrimaryPhraseField = ""
         @Published var editingSecondaryPhraseField = ""
         @Published private(set) var editedPhrases: [AppPhrase] = []
+        @Published private(set) var supportedTranslatebleLocales: [Locale] = []
 
         private var pocketSlateAPI: PocketSlateAPI?
 
@@ -92,7 +93,19 @@ extension PhrasesScreen {
             return phrase.id == textEditingPhrase.id
         }
 
-        func fetchSupportedTranslationLocales(forTargetLocale _: Locale) { }
+        func fetchSupportedTranslationLocales(forTargetLocale targetLocale: Locale) async {
+            guard let result = await pocketSlateAPI?.translation.getSupportedLocales(as: targetLocale) else { return }
+            let supportedLocales: [SupportedLocale]
+            switch result {
+            case let .failure(failure):
+                logger.error(label: "Failed to get supported locales", error: failure)
+                return
+            case let .success(success):
+                supportedLocales = success
+            }
+
+            await setSupportedTranslatebleLocales(supportedLocales.map(\.tag))
+        }
 
         @MainActor
         func deselectTextEditingPhrase() {
@@ -172,6 +185,11 @@ extension PhrasesScreen {
         @MainActor
         func openLocaleSelectorSheet() {
             localeSelectorSheetIsShown = true
+        }
+
+        @MainActor
+        private func setSupportedTranslatebleLocales(_ locales: [Locale]) {
+            supportedTranslatebleLocales = locales
         }
 
         static let locales: [Locale] = {

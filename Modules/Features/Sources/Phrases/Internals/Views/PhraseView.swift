@@ -31,6 +31,7 @@ struct PhraseView: View {
     let primaryLocale: Locale
     let secondaryLocale: Locale
     let isEditingText: Bool
+    let supportedTranslatableLocales: [Locale]
     let onEditText: (_ phrase: AppPhrase) -> Void
     let onDeleteTranslation: (_ phrase: AppPhrase) -> Void
     let translateText: (_ phrase: AppPhrase, _ sourceLocale: Locale, _ targetLocale: Locale) -> Void
@@ -87,7 +88,8 @@ struct PhraseView: View {
                 )
             } else {
                 HStack {
-                    if phrase.translations[sourceLocale]?.first?.trimmingByWhitespacesAndNewLines.isEmpty == false {
+                    if phrase.translations[sourceLocale]?.first?.trimmingByWhitespacesAndNewLines.isEmpty == false,
+                       supportedTranslatableLocales.contains(locale) {
                         Image(systemName: "globe")
                             .kBold()
                             .foregroundColor(.accentColor)
@@ -156,6 +158,7 @@ struct PhraseView_Previews: PreviewProvider {
             primaryLocale: primaryLocale,
             secondaryLocale: secondaryLocale,
             isEditingText: false,
+            supportedTranslatableLocales: [],
             onEditText: { _ in },
             onDeleteTranslation: { _ in },
             translateText: { _, _, _ in }

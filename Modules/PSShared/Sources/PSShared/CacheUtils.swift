@@ -71,6 +71,7 @@ public enum CacheUtils {
             return nil
         }
 
+        logger.info("Loaded cache object of \(cachingKey)")
         return decodedCache.response
     }
 
