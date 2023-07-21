@@ -187,11 +187,7 @@ extension PhrasesScreen {
                         return (result.primary.appended(locale), result.sub)
                     }
 
-                    if !EnabledFeatures.showSubLocales {
-                        return result
-                    }
-
-                    return (result.primary, result.sub.appended(locale))
+                    return result
                 }
 
             let combinedLocales = languages

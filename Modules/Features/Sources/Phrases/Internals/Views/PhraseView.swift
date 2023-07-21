@@ -12,6 +12,7 @@ import KamaalUI
 import AppLocales
 import KamaalLogger
 import AVFoundation
+import KamaalExtensions
 
 private let logger = KamaalLogger(from: PhraseView.self, failOnError: true)
 
@@ -32,12 +33,13 @@ struct PhraseView: View {
     let isEditingText: Bool
     let onEditText: (_ phrase: AppPhrase) -> Void
     let onDeleteTranslation: (_ phrase: AppPhrase) -> Void
+    let translateText: (_ phrase: AppPhrase, _ sourceLocale: Locale, _ targetLocale: Locale) -> Void
 
     var body: some View {
         HStack {
-            phraseTextView(primaryLocale, editingText: $editingPrimaryField)
+            phraseTextView(primaryLocale, sourceLocale: secondaryLocale, editingText: $editingPrimaryField)
             SplitterView()
-            phraseTextView(secondaryLocale, editingText: $editingSecondaryField)
+            phraseTextView(secondaryLocale, sourceLocale: primaryLocale, editingText: $editingSecondaryField)
             if editMode?.isEditing ?? false, !isEditingText {
                 HStack {
                     #if os(macOS)
@@ -76,7 +78,7 @@ struct PhraseView: View {
         #endif
     }
 
-    private func phraseTextView(_ locale: Locale, editingText: Binding<String>) -> some View {
+    private func phraseTextView(_ locale: Locale, sourceLocale: Locale, editingText: Binding<String>) -> some View {
         KJustStack {
             if editMode?.isEditing == true, isEditingText {
                 KFloatingTextField(
@@ -84,22 +86,26 @@ struct PhraseView: View {
                     title: userData.appLocale.localizedString(forIdentifier: locale.identifier)!
                 )
             } else {
-                if let text = phrase.translations[locale]?.first {
-                    HStack {
+                HStack {
+                    if phrase.translations[sourceLocale]?.first?.trimmingByWhitespacesAndNewLines.isEmpty == false {
+                        Image(systemName: "globe")
+                            .kBold()
+                            .foregroundColor(.accentColor)
+                            .onTapGesture { translateText(phrase, sourceLocale, locale) }
+                    }
+                    if let text = phrase.translations[locale]?.first, !text.isEmpty {
                         Text(text)
                         Spacer()
                         if editMode?.isEditing == false {
                             Image(systemName: "speaker.wave.3")
                                 .kBold()
                                 .foregroundColor(isEnabled ? .accentColor : .secondary)
-                                .onTapGesture {
-                                    speakOut(text: text, with: locale)
-                                }
+                                .onTapGesture { speakOut(text: text, with: locale) }
                         }
+                    } else {
+                        Text(localized: .NOT_SET)
+                            .foregroundColor(.secondary)
                     }
-                } else {
-                    Text(localized: .NOT_SET)
-                        .foregroundColor(.secondary)
                 }
             }
         }
@@ -151,7 +157,8 @@ struct PhraseView_Previews: PreviewProvider {
             secondaryLocale: secondaryLocale,
             isEditingText: false,
             onEditText: { _ in },
-            onDeleteTranslation: { _ in }
+            onDeleteTranslation: { _ in },
+            translateText: { _, _, _ in }
         )
     }
 }

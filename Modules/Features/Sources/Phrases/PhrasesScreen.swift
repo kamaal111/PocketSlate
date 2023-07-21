@@ -63,7 +63,12 @@ public struct PhrasesScreen: View {
                                 secondaryLocale: viewModel.secondaryLocale,
                                 isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
                                 onEditText: { phrase in viewModel.selectTextEditingPhrase(phrase) },
-                                onDeleteTranslation: handleDeleteTranslation
+                                onDeleteTranslation: handleDeleteTranslation,
+                                translateText: { phrase, sourceLocale, targetLocale in
+                                    print("phrase", phrase)
+                                    print("sourceLocale", sourceLocale)
+                                    print("targetLocale", targetLocale)
+                                }
                             )
                             .disabled(phrasesManager.isLoadingPhrase)
                             #if os(iOS)

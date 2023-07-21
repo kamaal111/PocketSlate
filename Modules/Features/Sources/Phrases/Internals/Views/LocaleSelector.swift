@@ -32,10 +32,6 @@ struct LocaleSelector: View {
                                 .foregroundColor(.secondary)
                                 .ktakeWidthEagerly()
                                 .lineLimit(1)
-                        } else if EnabledFeatures.showSubLocales {
-                            Text("k")
-                                .foregroundColor(.white.opacity(0.01))
-                                .ktakeWidthEagerly()
                         }
                     }
                     .kBindToFrameSize($textSize)
