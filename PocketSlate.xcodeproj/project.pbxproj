@@ -41,6 +41,7 @@
 		2C831E602A364A050028BCD8 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		2C831E612A364BDF0028BCD8 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CBF68862A6B026400A593E1 /* PSShared */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PSShared; sourceTree = "<group>"; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2CDF2BF32A3B9A5C007CA8FC /* Navigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Navigation; sourceTree = "<group>"; };
 		2CDF2BF82A3B9EAC007CA8FC /* AppUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppUI; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 				2C6BAC1C29FD665900009E19 /* Models */,
 				2CDF2BF32A3B9A5C007CA8FC /* Navigation */,
 				2C2F11092A632AD80027EAEE /* PocketSlateAPI */,
+				2CBF68862A6B026400A593E1 /* PSShared */,
 			);
 			path = Modules;
 			sourceTree = "<group>";

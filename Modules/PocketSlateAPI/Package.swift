@@ -18,6 +18,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMinor(from: "0.9.2")),
         .package(path: "../AppLocales"),
+        .package(path: "../PSShared"),
     ],
     targets: [
         .target(
@@ -28,6 +29,7 @@ let package = Package(
                 .product(name: "KamaalExtensions", package: "KamaalSwift"),
                 .product(name: "KamaalLogger", package: "KamaalSwift"),
                 "AppLocales",
+                "PSShared",
             ],
             plugins: [
                 .plugin(name: "OpenAPIGenerator", package: "swift-openapi-generator"),

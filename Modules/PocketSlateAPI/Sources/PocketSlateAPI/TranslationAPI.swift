@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 17/07/2023.
 //
 
+import PSShared
 import Foundation
 import AppLocales
 import KamaalLogger
@@ -26,7 +27,7 @@ public struct PocketSlateTranslationAPI {
         let sourceLocaleIdentifier = String(sourceLocale.identifier.prefix(2))
         let targetLocaleIdentifer = String(targetLocale.identifier.prefix(2))
 
-        return await withCache(
+        return await CacheUtils.cacheResult(
             cachingKey: "make_translation_text_\(text)_from_\(sourceLocaleIdentifier)_to_\(targetLocaleIdentifer)",
             expirationDate: Date().adding(minutes: 60 * 24 * 7), // 10_080 minutes == 1 week
             completion: {
@@ -43,10 +44,19 @@ public struct PocketSlateTranslationAPI {
                         ))
                     ))
                 } catch {
+                    logger.error(label: "Failed to make translations", error: error)
                     return .failure(.unknownError(statusCode: 500, message: nil, context: error))
                 }
 
                 return parseMakeTranslation(result)
+                    .map { success in
+                        logger.info("Successfully got translated text")
+                        return success
+                    }
+                    .mapError { error in
+                        logger.error(label: "Failed to get translated text", error: error)
+                        return error
+                    }
             }
         )
     }
@@ -54,7 +64,7 @@ public struct PocketSlateTranslationAPI {
     public func getSupportedLocales(as target: Locale) async -> Result<[SupportedLocale], PocketSlateAPIErrors> {
         let targetIdentifier = String(target.identifier.prefix(2))
 
-        return await withCache(
+        return await CacheUtils.cacheResult(
             cachingKey: "get_supported_locales_as_\(targetIdentifier)",
             expirationDate: Date().adding(minutes: 60 * 24 * 7), // 10_080 minutes == 1 week
             completion: {
@@ -69,54 +79,25 @@ public struct PocketSlateTranslationAPI {
                         )
                     ))
                 } catch {
+                    logger.error(label: "Failed to get supported locales", error: error)
                     return .failure(.unknownError(statusCode: 500, message: nil, context: error))
                 }
 
                 return parseGetsupportedLocalesResponse(result)
+                    .map { success in
+                        logger.info("Successfully got supported locales")
+                        return success
+                    }
+                    .mapError { error in
+                        logger.error(label: "Failed to get supported locales", error: error)
+                        return error
+                    }
             }
         )
     }
 
     private var defaultHeaders: TranslationAPIHeaders {
         .init(apiKey: apiKey)
-    }
-
-    private func withCache<Success: Codable, Failure: Error>(
-        cachingKey: String,
-        expirationDate: Date,
-        completion: () async -> Result<Success, Failure>
-    ) async -> Result<Success, Failure> {
-        let cachedData = UserDefaults.standard.data(forKey: cachingKey)
-        if let cachedData {
-            let decodedCache = try? JSONDecoder().decode(CacheContainer<Success>.self, from: cachedData)
-            assert(decodedCache != nil)
-            if let decodedCache, !decodedCache.hasExpired {
-                logger.info("Returning cached result for \(cachingKey)")
-                return .success(decodedCache.response)
-            }
-        }
-
-        let result = await completion()
-        let success: Success
-        switch result {
-        case let .success(successResult):
-            success = successResult
-        case .failure:
-            return result
-        }
-
-        let containedCache = CacheContainer(response: success, expirationDate: expirationDate)
-        let encodedContainedCache = try? JSONEncoder().encode(containedCache)
-        assert(encodedContainedCache != nil)
-        guard let encodedContainedCache else {
-            logger.error("Failed to encode cache of \(cachingKey)")
-            return result
-        }
-
-        logger.info("Storing cache result of \(cachingKey)")
-        UserDefaults.standard.setValue(encodedContainedCache, forKey: cachingKey)
-
-        return result
     }
 
     private func parseMakeTranslation(_ response: Operations.makeTranslation
