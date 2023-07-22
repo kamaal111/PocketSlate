@@ -33,6 +33,9 @@ jobs:
           ls -d /Applications/Xcode*
           sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
 
+      - name: Check diff
+        run: just assert-has-no-diffs
+
   test:
     name: Test
     timeout-minutes: 15
@@ -61,9 +64,7 @@ jobs:
         run: just test
 
       - name: Check diff
-        run: |
-          DIFFS=$(git diff --name-only origin/main | sed '/^$/d' | awk '{print NR}'| sort -nr | sed -n '1p')
-          just assert-empty "$DIFFS"
+        run: just assert-has-no-diffs
 
   build:
     name: Build
@@ -100,6 +101,4 @@ jobs:
         run: just build
 
       - name: Check diff
-        run: |
-          DIFFS=$(git diff --name-only origin/main | sed '/^$/d' | awk '{print NR}'| sort -nr | sed -n '1p')
-          just assert-empty "$DIFFS"
+        run: just assert-has-no-diffs

@@ -81,11 +81,18 @@ make-secrets:
 pull-modules:
     python3 Scripts/pull_gitmodules.py
 
-assert-empty value:
-    python3 Scripts/asserts/empty.py "{{ value }}"
+assert-has-no-diffs:
+    #!/bin/zsh
+
+    DIFFS=$(git diff --name-only origin/main | sed '/^$/d' | awk '{print NR}'| sort -nr | sed -n '1p')
+    just assert-empty "$DIFFS"
 
 install-node-modules:
     yarn || exit 1
+
+[private]
+assert-empty value:
+    python3 Scripts/asserts/empty.py "{{ value }}"
 
 [private]
 install_system_dependencies:
