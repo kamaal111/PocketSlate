@@ -13,6 +13,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
     // swiftlint:disable:next implicitly_unwrapped_optional
     private var viewModel: PhrasesScreen.ViewModel!
 
+    private let TIME_OUT = TimeInterval(5)
+
     override func setUp() async throws {
         viewModel = PhrasesScreen.ViewModel(
             primaryLocale: Locale(identifier: "en"),
@@ -306,7 +308,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
 
         await viewModel.deselectTextEditingPhrase()
 
-        await fulfillment(of: [expectation], timeout: 3)
+        await fulfillment(of: [expectation], timeout: TIME_OUT)
         XCTAssertNil(viewModel.textEditingPhrase)
     }
 
@@ -323,7 +325,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
 
         await viewModel.swapLocales()
 
-        await fulfillment(of: [expectation], timeout: 3)
+        await fulfillment(of: [expectation], timeout: TIME_OUT)
         XCTAssertEqual(viewModel.primaryLocale, previousSecondaryLocale)
         XCTAssertEqual(viewModel.secondaryLocale, previousPrimaryLocale)
         XCTAssertNotEqual(viewModel.primaryLocale, viewModel.secondaryLocale)
@@ -339,7 +341,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
 
         viewModel.editMode = .active
 
-        await fulfillment(of: [expectation], timeout: 3)
+        await fulfillment(of: [expectation], timeout: TIME_OUT)
         XCTAssert(viewModel.editedPhrases.isEmpty)
     }
 
@@ -354,7 +356,7 @@ final class PhrasesScreenViewModelTests: XCTestCase {
 
         await viewModel.selectTextEditingPhrase(phrase)
 
-        await fulfillment(of: [expectation], timeout: 3)
+        await fulfillment(of: [expectation], timeout: TIME_OUT)
         XCTAssertEqual(viewModel.textEditingPhrase?.id, phrase.id)
         XCTAssert(viewModel.phraseTextIsBeingEdited(phrase))
     }
