@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality
+    timeout-minutes: 5
+    runs-on: macos-12
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Generate
+        run: |
+          just generate
+          DIFFS=$(git diff --name-only origin/main)
+          echo $DIFFS
+
+      - name: Swift lint
+        run: just lint

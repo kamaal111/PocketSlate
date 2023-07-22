@@ -16,6 +16,9 @@ format:
     swiftformat .
     npx prettier --write .
 
+lint:
+    python3 Scripts/swiftlint_checker/main.py
+
 acknowledgements:
     python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output Modules/Features/Sources/Users/Internals/Resources
 

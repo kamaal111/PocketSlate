@@ -120,9 +120,11 @@ struct AppPhrase: Hashable, Identifiable {
             .mapError { error in
                 switch source {
                 case .userDefaults:
-                    return UserDefaultsPhrase.internalErrorToAppPhraseError(error as! UserDefaultsPhrase.Errors)
+                    guard let error = error as? UserDefaultsPhrase.Errors else { fatalError("Failed to typecast") }
+                    return UserDefaultsPhrase.internalErrorToAppPhraseError(error)
                 case .cloud:
-                    return CloudPhrase.internalErrorToAppPhraseError(error as! CloudPhrase.Errors)
+                    guard let error = error as? CloudPhrase.Errors else { fatalError("Failed to typecast") }
+                    return CloudPhrase.internalErrorToAppPhraseError(error)
                 }
             }
     }

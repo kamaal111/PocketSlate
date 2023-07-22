@@ -188,7 +188,10 @@ private struct TranslationAPIHeaders {
 
     init(apiKey: String) {
         self.apiKey = apiKey
-        self.appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
         self.appName = "pocket-slate"
+
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        else { fatalError("Failed to typecast") }
+        self.appVersion = appVersion
     }
 }
