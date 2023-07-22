@@ -5,17 +5,27 @@
 //  Created by Kamaal M Farah on 22/07/2023.
 //
 
+import AppUI
 import SwiftUI
+import KamaalUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            KScrollableForm {
+                KSection(header: "Personalization") {
+                    PlaygroundNavigationButton(title: "App logo creator", destination: .appLogoCreator)
+                }
+            }
+            .navigationDestination(for: Screens.self) { screen in
+                switch screen {
+                case .appLogoCreator: AppLogoCreatorScreen()
+                }
+            }
         }
-        .padding()
+        #if os(macOS)
+        .padding(.all, .medium)
+        #endif
     }
 }
 

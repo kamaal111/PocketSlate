@@ -11,6 +11,15 @@
 		2C08636E2A6C320300EE30DB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08636D2A6C320300EE30DB /* ContentView.swift */; };
 		2C0863702A6C320500EE30DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C08636F2A6C320500EE30DB /* Assets.xcassets */; };
 		2C0863742A6C320500EE30DB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C0863732A6C320500EE30DB /* Preview Assets.xcassets */; };
+		2C0863792A6C343700EE30DB /* KamaalUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C0863782A6C343700EE30DB /* KamaalUI */; };
+		2C08637B2A6C35B500EE30DB /* AppUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C08637A2A6C35B500EE30DB /* AppUI */; };
+		2C08637F2A6C360E00EE30DB /* PlaygroundNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08637E2A6C360E00EE30DB /* PlaygroundNavigationButton.swift */; };
+		2C0863812A6C366800EE30DB /* WideNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863802A6C366800EE30DB /* WideNavigationLink.swift */; };
+		2C0863832A6C36DA00EE30DB /* Screens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863822A6C36DA00EE30DB /* Screens.swift */; };
+		2C0863862A6C379300EE30DB /* AppLogoCreatorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863852A6C379300EE30DB /* AppLogoCreatorScreen.swift */; };
+		2C0863882A6C3BD700EE30DB /* AppLogoColorFormRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863872A6C3BD700EE30DB /* AppLogoColorFormRow.swift */; };
+		2C08638A2A6C3C7800EE30DB /* AppLogoColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863892A6C3C7800EE30DB /* AppLogoColorSelector.swift */; };
+		2C08638C2A6C43F600EE30DB /* AppLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08638B2A6C43F600EE30DB /* AppLogo.swift */; };
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
 		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
 		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
@@ -32,6 +41,13 @@
 		2C08636F2A6C320500EE30DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C0863712A6C320500EE30DB /* Playground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Playground.entitlements; sourceTree = "<group>"; };
 		2C0863732A6C320500EE30DB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		2C08637E2A6C360E00EE30DB /* PlaygroundNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundNavigationButton.swift; sourceTree = "<group>"; };
+		2C0863802A6C366800EE30DB /* WideNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WideNavigationLink.swift; sourceTree = "<group>"; };
+		2C0863822A6C36DA00EE30DB /* Screens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screens.swift; sourceTree = "<group>"; };
+		2C0863852A6C379300EE30DB /* AppLogoCreatorScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoCreatorScreen.swift; sourceTree = "<group>"; };
+		2C0863872A6C3BD700EE30DB /* AppLogoColorFormRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoColorFormRow.swift; sourceTree = "<group>"; };
+		2C0863892A6C3C7800EE30DB /* AppLogoColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoColorSelector.swift; sourceTree = "<group>"; };
+		2C08638B2A6C43F600EE30DB /* AppLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogo.swift; sourceTree = "<group>"; };
 		2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_iOS.swift; sourceTree = "<group>"; };
 		2C2F11092A632AD80027EAEE /* PocketSlateAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PocketSlateAPI; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -62,6 +78,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C08637B2A6C35B500EE30DB /* AppUI in Frameworks */,
+				2C0863792A6C343700EE30DB /* KamaalUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,10 +103,13 @@
 			isa = PBXGroup;
 			children = (
 				2C0863712A6C320500EE30DB /* Playground.entitlements */,
+				2C08638B2A6C43F600EE30DB /* AppLogo.swift */,
 				2C08636D2A6C320300EE30DB /* ContentView.swift */,
 				2C08636B2A6C320300EE30DB /* PlaygroundApp.swift */,
+				2C0863822A6C36DA00EE30DB /* Screens.swift */,
 				2C08636F2A6C320500EE30DB /* Assets.xcassets */,
 				2C0863722A6C320500EE30DB /* Preview Content */,
+				2C08637C2A6C35F800EE30DB /* Views */,
 			);
 			path = Playground;
 			sourceTree = "<group>";
@@ -99,6 +120,34 @@
 				2C0863732A6C320500EE30DB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		2C08637C2A6C35F800EE30DB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2C0863842A6C378000EE30DB /* Screens */,
+				2C08637D2A6C35FE00EE30DB /* SupportingViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2C08637D2A6C35FE00EE30DB /* SupportingViews */ = {
+			isa = PBXGroup;
+			children = (
+				2C0863872A6C3BD700EE30DB /* AppLogoColorFormRow.swift */,
+				2C0863892A6C3C7800EE30DB /* AppLogoColorSelector.swift */,
+				2C08637E2A6C360E00EE30DB /* PlaygroundNavigationButton.swift */,
+				2C0863802A6C366800EE30DB /* WideNavigationLink.swift */,
+			);
+			path = SupportingViews;
+			sourceTree = "<group>";
+		};
+		2C0863842A6C378000EE30DB /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2C0863852A6C379300EE30DB /* AppLogoCreatorScreen.swift */,
+			);
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		2C6BABEA29FD59B200009E19 /* PocketSlate */ = {
@@ -212,6 +261,10 @@
 			dependencies = (
 			);
 			name = Playground;
+			packageProductDependencies = (
+				2C0863782A6C343700EE30DB /* KamaalUI */,
+				2C08637A2A6C35B500EE30DB /* AppUI */,
+			);
 			productName = Playground;
 			productReference = 2C0863692A6C320300EE30DB /* Playground.app */;
 			productType = "com.apple.product-type.application";
@@ -331,7 +384,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C08636E2A6C320300EE30DB /* ContentView.swift in Sources */,
+				2C0863862A6C379300EE30DB /* AppLogoCreatorScreen.swift in Sources */,
+				2C0863832A6C36DA00EE30DB /* Screens.swift in Sources */,
 				2C08636C2A6C320300EE30DB /* PlaygroundApp.swift in Sources */,
+				2C0863882A6C3BD700EE30DB /* AppLogoColorFormRow.swift in Sources */,
+				2C0863812A6C366800EE30DB /* WideNavigationLink.swift in Sources */,
+				2C08637F2A6C360E00EE30DB /* PlaygroundNavigationButton.swift in Sources */,
+				2C08638A2A6C3C7800EE30DB /* AppLogoColorSelector.swift in Sources */,
+				2C08638C2A6C43F600EE30DB /* AppLogo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -673,6 +733,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2C0863782A6C343700EE30DB /* KamaalUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalUI;
+		};
+		2C08637A2A6C35B500EE30DB /* AppUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppUI;
+		};
 		2C3333E52A48C7BB00990E4E /* CloudSyncing */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CloudSyncing;
