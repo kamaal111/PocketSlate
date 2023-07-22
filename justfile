@@ -24,6 +24,14 @@ acknowledgements:
 
 generate: acknowledgements localize make-secrets make-api-spec
 
+trust-swift-plugins:
+    #!/bin/zsh
+
+    mkdir -p ~/Library/org.swift.swiftpm/security/
+    rm -f ~/Library/org.swift.swiftpm/security/plugins.json
+    touch ~/Library/org.swift.swiftpm/security/plugins.json
+    python3 Scripts/trust_swift_plugins.py
+
 build: generate
     #!/bin/zsh
 
@@ -68,7 +76,6 @@ pull-modules:
 assert-empty value:
     python3 Scripts/asserts/empty.py "{{ value }}"
 
-[private]
 install-node-modules:
     yarn || exit 1
 

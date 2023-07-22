@@ -54,10 +54,13 @@ jobs:
           sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
 
       - name: Install node modules
-        run: yarn
+        run: just install-node-modules
 
       - name: Format
         run: just format
+
+      - name: Trust Swift plugins
+        run: just trust-swift-plugins
 
       - name: Build
         env:
