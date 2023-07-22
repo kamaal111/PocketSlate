@@ -33,6 +33,38 @@ jobs:
           ls -d /Applications/Xcode*
           sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
 
+  test:
+    name: Test
+    timeout-minutes: 15
+    runs-on: macos-13
+    needs: [quality]
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Select Xcode version
+        run: |
+          ls -d /Applications/Xcode*
+          sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
+
+      - name: Trust Swift plugins
+        run: just trust-swift-plugins
+
+      - name: Test
+        env:
+          DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
+        run: just test
+
+      - name: Check diff
+        run: |
+          DIFFS=$(git diff --name-only origin/main | sed '/^$/d' | awk '{print NR}'| sort -nr | sed -n '1p')
+          just assert-empty "$DIFFS"
+
   build:
     name: Build
     timeout-minutes: 15

@@ -2,6 +2,7 @@ set export
 set dotenv-load
 
 DEFAULT_SECRETS_PATH := "Modules/Features/Sources/Users/Internals/Resources/Secrets.json"
+WORKSPACE := "PocketSlate.xcworkspace"
 
 localize: install-node-modules
     node Scripts/generateLocales.js
@@ -36,10 +37,17 @@ build: generate
     #!/bin/zsh
 
     CONFIGURATION="Debug"
-    WORKSPACE="PocketSlate.xcworkspace"
     SCHEME="PocketSlate"
 
-    xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
+    xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
+
+test: generate
+    #!/bin/zsh
+
+    CONFIGURATION="Debug"
+    SCHEME="PocketSlate"
+
+    xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
 
 bootstrap: install_system_dependencies pull-modules generate make-api-spec
 
@@ -84,3 +92,4 @@ install_system_dependencies:
     npm i -g yarn
     brew install swiftformat
     brew install swiftlint
+    sudo gem install xcpretty
