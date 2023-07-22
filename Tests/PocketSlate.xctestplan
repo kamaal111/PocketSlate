@@ -13,7 +13,6 @@
   },
   "testTargets" : [
     {
-      "enabled" : false,
       "target" : {
         "containerPath" : "container:Modules\/AppLocales",
         "identifier" : "AppLocalesTests",
@@ -25,6 +24,20 @@
         "containerPath" : "container:Modules\/Features",
         "identifier" : "PhrasesTests",
         "name" : "PhrasesTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/PocketSlateAPI",
+        "identifier" : "PocketSlateAPITests",
+        "name" : "PocketSlateAPITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Modules\/PSShared",
+        "identifier" : "PSSharedTests",
+        "name" : "PSSharedTests"
       }
     }
   ],
