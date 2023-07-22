@@ -10,9 +10,9 @@ import SwiftUI
 import KamaalUI
 
 let PLAYGROUND_SELECTABLE_COLORS: [Color] = [
-    .red,
-    .green,
-    .yellow,
+    Color("LogoBackgroundColor"),
+    .white,
+    .black,
 ]
 
 struct AppLogoCreatorScreen: View {
@@ -84,6 +84,13 @@ struct AppLogoCreatorScreen: View {
             AppLogoColorSelector(color: $viewModel.backgroundColor, title: "Background color")
                 .disabled(viewModel.disabledBackgroundColorButtons)
                 .padding(.bottom, .medium)
+            AppLogoColorSelector(color: $viewModel.translatedTextColor, title: "Translated text color")
+                .padding(.bottom, .medium)
+            AppLogoColorSelector(
+                color: $viewModel.translatedTextBackgroundColor,
+                title: "Translated text background color"
+            )
+            .padding(.bottom, .medium)
             AppLogoColorFormRow(title: "Has curves") {
                 Toggle(viewModel.hasCurves ? "Yup" : "Nope", isOn: $viewModel.hasCurves)
             }
@@ -102,6 +109,8 @@ extension AppLogoCreatorScreen {
         @Published var curvedCornersSize: CGFloat = 16
         @Published var hasABackground = true
         @Published var backgroundColor = PLAYGROUND_SELECTABLE_COLORS[0]
+        @Published var translatedTextColor = PLAYGROUND_SELECTABLE_COLORS[1]
+        @Published var translatedTextBackgroundColor = PLAYGROUND_SELECTABLE_COLORS[2]
         @Published var hasCurves = true
         @Published var exportLogoSize = "400" {
             didSet {
@@ -150,6 +159,8 @@ extension AppLogoCreatorScreen {
             AppLogo(
                 size: size,
                 backgroundColor: hasABackground ? backgroundColor : .white.opacity(0),
+                translatedTextColor: translatedTextColor,
+                translatedTextBackgroundColor: translatedTextBackgroundColor,
                 curvedCornersSize: hasCurves ? curvedCornersSize : 0
             )
         }

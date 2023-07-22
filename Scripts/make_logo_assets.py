@@ -54,6 +54,6 @@ def make_background_transparent(input_image: Image):
 
 
 if __name__ == "__main__":
-    make_background_transparent(Image.open("Resources/raw-globe.png")).save(
-        "Resources/globe.png", format="PNG"
-    )
+    image = Image.open("Resources/raw-globe.png")
+    image_without_backround = make_background_transparent(image)
+    image_without_backround.save("Resources/globe.png", format="PNG")

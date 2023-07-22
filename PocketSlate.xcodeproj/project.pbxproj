@@ -20,6 +20,8 @@
 		2C0863882A6C3BD700EE30DB /* AppLogoColorFormRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863872A6C3BD700EE30DB /* AppLogoColorFormRow.swift */; };
 		2C08638A2A6C3C7800EE30DB /* AppLogoColorSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0863892A6C3C7800EE30DB /* AppLogoColorSelector.swift */; };
 		2C08638C2A6C43F600EE30DB /* AppLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08638B2A6C43F600EE30DB /* AppLogo.swift */; };
+		2C08638E2A6C45B800EE30DB /* KamaalExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 2C08638D2A6C45B800EE30DB /* KamaalExtensions */; };
+		2C0863942A6C4CB200EE30DB /* KoreanCalligraphy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C0863932A6C4CB200EE30DB /* KoreanCalligraphy.ttf */; };
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
 		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
 		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
@@ -48,6 +50,8 @@
 		2C0863872A6C3BD700EE30DB /* AppLogoColorFormRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoColorFormRow.swift; sourceTree = "<group>"; };
 		2C0863892A6C3C7800EE30DB /* AppLogoColorSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogoColorSelector.swift; sourceTree = "<group>"; };
 		2C08638B2A6C43F600EE30DB /* AppLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogo.swift; sourceTree = "<group>"; };
+		2C0863922A6C48E600EE30DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2C0863932A6C4CB200EE30DB /* KoreanCalligraphy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KoreanCalligraphy.ttf; sourceTree = "<group>"; };
 		2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_iOS.swift; sourceTree = "<group>"; };
 		2C2F11092A632AD80027EAEE /* PocketSlateAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PocketSlateAPI; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -78,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C08638E2A6C45B800EE30DB /* KamaalExtensions in Frameworks */,
 				2C08637B2A6C35B500EE30DB /* AppUI in Frameworks */,
 				2C0863792A6C343700EE30DB /* KamaalUI in Frameworks */,
 			);
@@ -103,11 +108,13 @@
 			isa = PBXGroup;
 			children = (
 				2C0863712A6C320500EE30DB /* Playground.entitlements */,
+				2C0863922A6C48E600EE30DB /* Info.plist */,
 				2C08638B2A6C43F600EE30DB /* AppLogo.swift */,
 				2C08636D2A6C320300EE30DB /* ContentView.swift */,
 				2C08636B2A6C320300EE30DB /* PlaygroundApp.swift */,
 				2C0863822A6C36DA00EE30DB /* Screens.swift */,
 				2C08636F2A6C320500EE30DB /* Assets.xcassets */,
+				2C08638F2A6C48A200EE30DB /* Fonts */,
 				2C0863722A6C320500EE30DB /* Preview Content */,
 				2C08637C2A6C35F800EE30DB /* Views */,
 			);
@@ -148,6 +155,14 @@
 				2C0863852A6C379300EE30DB /* AppLogoCreatorScreen.swift */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		2C08638F2A6C48A200EE30DB /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				2C0863932A6C4CB200EE30DB /* KoreanCalligraphy.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		2C6BABEA29FD59B200009E19 /* PocketSlate */ = {
@@ -264,6 +279,7 @@
 			packageProductDependencies = (
 				2C0863782A6C343700EE30DB /* KamaalUI */,
 				2C08637A2A6C35B500EE30DB /* AppUI */,
+				2C08638D2A6C45B800EE30DB /* KamaalExtensions */,
 			);
 			productName = Playground;
 			productReference = 2C0863692A6C320300EE30DB /* Playground.app */;
@@ -340,6 +356,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0863942A6C4CB200EE30DB /* KoreanCalligraphy.ttf in Resources */,
 				2C0863742A6C320500EE30DB /* Preview Assets.xcassets in Resources */,
 				2C0863702A6C320500EE30DB /* Assets.xcassets in Resources */,
 			);
@@ -424,6 +441,7 @@
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Playground/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -466,6 +484,7 @@
 				ENABLE_PREVIEWS = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Playground/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -741,6 +760,11 @@
 		2C08637A2A6C35B500EE30DB /* AppUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppUI;
+		};
+		2C08638D2A6C45B800EE30DB /* KamaalExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalExtensions;
 		};
 		2C3333E52A48C7BB00990E4E /* CloudSyncing */ = {
 			isa = XCSwiftPackageProductDependency;
