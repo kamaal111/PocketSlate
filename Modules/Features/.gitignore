@@ -9,3 +9,4 @@ DerivedData/
 .netrc
 Sources/Users/Internals/Resources/Secrets.json
 Sources/Phrases/Internals/Resources/Secrets.json
+Sources/Users/Internals/Resources/Acknowledgements.json
