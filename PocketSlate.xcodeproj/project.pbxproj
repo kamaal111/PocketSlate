@@ -33,6 +33,11 @@
 		2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABF029FD59B200009E19 /* ContentView.swift */; };
 		2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BAC0F29FD605200009E19 /* AppLocales */; };
 		2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */ = {isa = PBXBuildFile; productRef = 2C831E622A364D6D0028BCD8 /* Phrases */; };
+		2C9094B42A6C69A500160DE8 /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C9094B32A6C69A500160DE8 /* KamaalLogger */; };
+		2C9094B72A6C6A4700160DE8 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094B62A6C6A4700160DE8 /* Shell.swift */; };
+		2C9094BC2A6C6C6E00160DE8 /* app-icon-generator in Resources */ = {isa = PBXBuildFile; fileRef = 2C9094BB2A6C6C6E00160DE8 /* app-icon-generator */; };
+		2C9094BF2A6C6DDF00160DE8 /* FileManager+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094BE2A6C6DDF00160DE8 /* FileManager+extensions.swift */; };
+		2C9094C12A6C700E00160DE8 /* SavePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094C02A6C700E00160DE8 /* SavePanel.swift */; };
 		2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDF2BF42A3B9A9B007CA8FC /* Navigation */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +75,10 @@
 		2C831E5F2A3649F30028BCD8 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		2C831E602A364A050028BCD8 /* package.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = package.json; sourceTree = "<group>"; };
 		2C831E612A364BDF0028BCD8 /* Features */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Features; sourceTree = "<group>"; };
+		2C9094B62A6C6A4700160DE8 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+		2C9094BB2A6C6C6E00160DE8 /* app-icon-generator */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "app-icon-generator"; sourceTree = "<group>"; };
+		2C9094BE2A6C6DDF00160DE8 /* FileManager+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+extensions.swift"; sourceTree = "<group>"; };
+		2C9094C02A6C700E00160DE8 /* SavePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePanel.swift; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* PocketSlate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocketSlate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBF68862A6B026400A593E1 /* PSShared */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PSShared; sourceTree = "<group>"; };
 		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -85,6 +94,7 @@
 				2C08638E2A6C45B800EE30DB /* KamaalExtensions in Frameworks */,
 				2C08637B2A6C35B500EE30DB /* AppUI in Frameworks */,
 				2C0863792A6C343700EE30DB /* KamaalUI in Frameworks */,
+				2C9094B42A6C69A500160DE8 /* KamaalLogger in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,9 +123,10 @@
 				2C08636D2A6C320300EE30DB /* ContentView.swift */,
 				2C08636B2A6C320300EE30DB /* PlaygroundApp.swift */,
 				2C0863822A6C36DA00EE30DB /* Screens.swift */,
-				2C08636F2A6C320500EE30DB /* Assets.xcassets */,
-				2C08638F2A6C48A200EE30DB /* Fonts */,
+				2C9094BD2A6C6DCE00160DE8 /* Extensions */,
 				2C0863722A6C320500EE30DB /* Preview Content */,
+				2C9094B82A6C6A6A00160DE8 /* Resources */,
+				2C9094B52A6C6A3700160DE8 /* Utilities */,
 				2C08637C2A6C35F800EE30DB /* Views */,
 			);
 			path = Playground;
@@ -226,6 +237,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		2C9094B52A6C6A3700160DE8 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2C9094C02A6C700E00160DE8 /* SavePanel.swift */,
+				2C9094B62A6C6A4700160DE8 /* Shell.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		2C9094B82A6C6A6A00160DE8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2C9094BB2A6C6C6E00160DE8 /* app-icon-generator */,
+				2C08636F2A6C320500EE30DB /* Assets.xcassets */,
+				2C08638F2A6C48A200EE30DB /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		2C9094BD2A6C6DCE00160DE8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2C9094BE2A6C6DDF00160DE8 /* FileManager+extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		2CB0271D29FD58DF0000F5AD = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +318,7 @@
 				2C0863782A6C343700EE30DB /* KamaalUI */,
 				2C08637A2A6C35B500EE30DB /* AppUI */,
 				2C08638D2A6C45B800EE30DB /* KamaalExtensions */,
+				2C9094B32A6C69A500160DE8 /* KamaalLogger */,
 			);
 			productName = Playground;
 			productReference = 2C0863692A6C320300EE30DB /* Playground.app */;
@@ -357,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C0863942A6C4CB200EE30DB /* KoreanCalligraphy.ttf in Resources */,
+				2C9094BC2A6C6C6E00160DE8 /* app-icon-generator in Resources */,
 				2C0863742A6C320500EE30DB /* Preview Assets.xcassets in Resources */,
 				2C0863702A6C320500EE30DB /* Assets.xcassets in Resources */,
 			);
@@ -401,8 +441,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C08636E2A6C320300EE30DB /* ContentView.swift in Sources */,
+				2C9094C12A6C700E00160DE8 /* SavePanel.swift in Sources */,
 				2C0863862A6C379300EE30DB /* AppLogoCreatorScreen.swift in Sources */,
+				2C9094B72A6C6A4700160DE8 /* Shell.swift in Sources */,
 				2C0863832A6C36DA00EE30DB /* Screens.swift in Sources */,
+				2C9094BF2A6C6DDF00160DE8 /* FileManager+extensions.swift in Sources */,
 				2C08636C2A6C320300EE30DB /* PlaygroundApp.swift in Sources */,
 				2C0863882A6C3BD700EE30DB /* AppLogoColorFormRow.swift in Sources */,
 				2C0863812A6C366800EE30DB /* WideNavigationLink.swift in Sources */,
@@ -631,7 +674,9 @@
 		2CB0273629FD58E20000F5AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconMacOS;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIconIOS;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIconMacOS;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PocketSlate/PocketSlate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -671,7 +716,9 @@
 		2CB0273729FD58E20000F5AD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconMacOS;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIconIOS;
+				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIconMacOS;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PocketSlate/PocketSlate.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -786,6 +833,11 @@
 		2C831E622A364D6D0028BCD8 /* Phrases */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Phrases;
+		};
+		2C9094B32A6C69A500160DE8 /* KamaalLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalLogger;
 		};
 		2CDF2BF42A3B9A9B007CA8FC /* Navigation */ = {
 			isa = XCSwiftPackageProductDependency;

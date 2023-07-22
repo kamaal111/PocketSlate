@@ -8,6 +8,9 @@
 import AppUI
 import SwiftUI
 import KamaalUI
+import KamaalLogger
+
+private let logger = KamaalLogger(from: AppLogoCreatorScreen.self, failOnError: true)
 
 let PLAYGROUND_SELECTABLE_COLORS: [Color] = [
     Color("LogoBackgroundColor"),
@@ -34,7 +37,10 @@ struct AppLogoCreatorScreen: View {
     private var logoSection: some View {
         KSection(header: "Logo") {
             HStack(alignment: .top) {
-                viewModel.logoView(size: 150)
+                viewModel.logoView(
+                    size: viewModel.previewLogoSize,
+                    cornerRadius: viewModel.hasCurves ? viewModel.curvedCornersSize : 0
+                )
                 Spacer()
                 VStack(alignment: .leading) {
                     HStack {
@@ -121,6 +127,8 @@ extension AppLogoCreatorScreen {
             }
         }
 
+        let previewLogoSize: CGFloat = 150
+
         enum Errors: Error {
             case conversionFailure
         }
@@ -155,25 +163,65 @@ extension AppLogoCreatorScreen {
             withAnimation { exportLogoSize = "800" }
         }
 
-        func logoView(size: CGFloat) -> some View {
+        func logoView(size: CGFloat, cornerRadius: CGFloat) -> some View {
             AppLogo(
                 size: size,
                 backgroundColor: hasABackground ? backgroundColor : .white.opacity(0),
                 translatedTextColor: translatedTextColor,
                 translatedTextBackgroundColor: translatedTextBackgroundColor,
-                curvedCornersSize: hasCurves ? curvedCornersSize : 0
+                curvedCornersSize: cornerRadius
             )
         }
 
-        #if canImport(Cocoa) && !targetEnvironment(macCatalyst)
-        func exportLogo() { }
+        #if os(macOS)
+        func exportLogo() {
+            Task {
+                let logoViewData = try! await getLogoViewImageData()
 
-        func exportLogoAsIconSet() { }
+                let logoName = "logo.png"
+                let (savePanelResult, panel) = await SavePanel.savePanel(filename: logoName)
+                guard savePanelResult == .ok else { return }
+
+                let saveURL = await panel.url!
+                let fileManager = FileManager.default
+                if fileManager.fileExists(atPath: saveURL.path) {
+                    try? fileManager.removeItem(at: saveURL)
+                }
+
+                try! logoViewData.write(to: saveURL)
+            }
+        }
+
+        func exportLogoAsIconSet() {
+            Task {
+                let fileManager = FileManager.default
+                let temporaryDirectory = fileManager.temporaryDirectory
+                let logoViewData = try! await getLogoViewImageData()
+                let appIconScriptResult = try! Shell
+                    .runAppIconGenerator(input: logoViewData, output: temporaryDirectory)
+                    .get()
+                assert(appIconScriptResult.splitLines.last?.hasPrefix("done creating icons") == true)
+
+                let iconSetName = "AppIcon.appiconset"
+                let iconSetURL = try! fileManager
+                    .findDirectoryOrFile(inDirectory: temporaryDirectory, searchPath: iconSetName)!
+                defer { try? fileManager.removeItem(at: iconSetURL) }
+
+                let (savePanelResult, panel) = await SavePanel.savePanel(filename: iconSetName)
+                guard savePanelResult == .ok else { return }
+
+                let saveURL = await panel.url!
+                if fileManager.fileExists(atPath: saveURL.path) {
+                    try? fileManager.removeItem(at: saveURL)
+                }
+
+                try! fileManager.moveItem(at: iconSetURL, to: saveURL)
+            }
+        }
 
         @MainActor
-        private func logoViewImageData(size: CGFloat) async throws -> Data {
-            let view = logoView(size: size)
-            let data = ImageRenderer(content: view)
+        private func getLogoViewImageData() async throws -> Data {
+            let data = ImageRenderer(content: logoToExport)
                 .nsImage?
                 .tiffRepresentation
             guard let data else { throw Errors.conversionFailure }
@@ -185,6 +233,11 @@ extension AppLogoCreatorScreen {
             return pngRepresentation
         }
         #endif
+
+        private var logoToExport: some View {
+            let size = Double(exportLogoSize)!.cgFloat
+            return logoView(size: size, cornerRadius: hasCurves ? curvedCornersSize * (size / previewLogoSize) : 0)
+        }
     }
 }
 

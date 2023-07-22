@@ -45,9 +45,9 @@ opt_in_rules:
 excluded:
   - Packages/*/Package.swift
   - Packages/*/Tests
-  - CDPersist/Sources/Models/CoreData
   - Tests
   - fastlane/SnapshotHelper.swift
+  - Playground
 type_name:
   min_length:
     warning: 2
