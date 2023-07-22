@@ -22,11 +22,38 @@ jobs:
       - name: Install just
         uses: taiki-e/install-action@just
 
+      - name: Swift lint
+        run: just lint
+
+  build:
+    name: Build
+    timeout-minutes: 15
+    runs-on: macos-12
+    needs: [quality]
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Select Xcode version
+        env:
+          XCODE_APP_NAME: Xcode_14.2.app
+        run: |
+          ls -d /Applications/Xcode*
+          sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
+
+      - name: Build
+        env:
+          DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
+        run: just build
+
       - name: Generate
         run: |
           just generate
           DIFFS=$(git diff --name-only origin/main)
           echo $DIFFS
-
-      - name: Swift lint
-        run: just lint
