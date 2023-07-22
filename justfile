@@ -25,7 +25,7 @@ acknowledgements:
 generate: acknowledgements localize make-secrets make-api-spec
 
 build: generate
-    #!/bin/sh
+    #!/bin/zsh
 
     CONFIGURATION="Debug"
     WORKSPACE="PocketSlate.xcworkspace"
