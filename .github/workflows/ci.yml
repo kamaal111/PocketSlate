@@ -7,11 +7,14 @@ concurrency:
   group: ${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  XCODE_APP_NAME: Xcode_14.3.app
+
 jobs:
   quality:
     name: Quality
     timeout-minutes: 5
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
       - name: Git - Checkout
         uses: actions/checkout@v3
@@ -25,10 +28,21 @@ jobs:
       - name: Swift lint
         run: just lint
 
+      - name: Select Xcode version
+        run: |
+          ls -d /Applications/Xcode*
+          sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
+
+      - name: Check diff
+        run: |
+          just generate
+          DIFFS=$(git diff --name-only origin/main)
+          echo $DIFFS
+
   build:
     name: Build
     timeout-minutes: 15
-    runs-on: macos-12
+    runs-on: macos-13
     needs: [quality]
     steps:
       - name: Git - Checkout
@@ -41,8 +55,6 @@ jobs:
         uses: taiki-e/install-action@just
 
       - name: Select Xcode version
-        env:
-          XCODE_APP_NAME: Xcode_14.2.app
         run: |
           ls -d /Applications/Xcode*
           sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
@@ -51,9 +63,3 @@ jobs:
         env:
           DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
         run: just build
-
-      - name: Generate
-        run: |
-          just generate
-          DIFFS=$(git diff --name-only origin/main)
-          echo $DIFFS
