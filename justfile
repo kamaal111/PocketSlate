@@ -65,6 +65,9 @@ make-secrets:
 pull-modules:
     python3 Scripts/pull_gitmodules.py
 
+assert-empty value:
+    python3 Scripts/asserts/empty.py "{{ value }}"
+
 [private]
 install-node-modules:
     yarn || exit 1
