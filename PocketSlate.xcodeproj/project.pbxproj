@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C08636C2A6C320300EE30DB /* PlaygroundApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08636B2A6C320300EE30DB /* PlaygroundApp.swift */; };
+		2C08636E2A6C320300EE30DB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08636D2A6C320300EE30DB /* ContentView.swift */; };
+		2C0863702A6C320500EE30DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C08636F2A6C320500EE30DB /* Assets.xcassets */; };
+		2C0863742A6C320500EE30DB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C0863732A6C320500EE30DB /* Preview Assets.xcassets */; };
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
 		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
 		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
@@ -22,6 +26,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C0863692A6C320300EE30DB /* Playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C08636B2A6C320300EE30DB /* PlaygroundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaygroundApp.swift; sourceTree = "<group>"; };
+		2C08636D2A6C320300EE30DB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2C08636F2A6C320500EE30DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2C0863712A6C320500EE30DB /* Playground.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Playground.entitlements; sourceTree = "<group>"; };
+		2C0863732A6C320500EE30DB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_iOS.swift; sourceTree = "<group>"; };
 		2C2F11092A632AD80027EAEE /* PocketSlateAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PocketSlateAPI; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -48,6 +58,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2C0863662A6C320300EE30DB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CB0272329FD58DF0000F5AD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -64,6 +81,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C08636A2A6C320300EE30DB /* Playground */ = {
+			isa = PBXGroup;
+			children = (
+				2C0863712A6C320500EE30DB /* Playground.entitlements */,
+				2C08636D2A6C320300EE30DB /* ContentView.swift */,
+				2C08636B2A6C320300EE30DB /* PlaygroundApp.swift */,
+				2C08636F2A6C320500EE30DB /* Assets.xcassets */,
+				2C0863722A6C320500EE30DB /* Preview Content */,
+			);
+			path = Playground;
+			sourceTree = "<group>";
+		};
+		2C0863722A6C320500EE30DB /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				2C0863732A6C320500EE30DB /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
 		2C6BABEA29FD59B200009E19 /* PocketSlate */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,6 +171,7 @@
 				2C6BAC0E29FD605200009E19 /* Frameworks */,
 				2C6BAC0429FD5D9C00009E19 /* Locales */,
 				2C6BAC0C29FD5F7400009E19 /* Modules */,
+				2C08636A2A6C320300EE30DB /* Playground */,
 				2C6BABEA29FD59B200009E19 /* PocketSlate */,
 				2CB0272729FD58DF0000F5AD /* Products */,
 				2C6BAC0929FD5E3C00009E19 /* Scripts */,
@@ -145,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				2CB0272629FD58DF0000F5AD /* PocketSlate.app */,
+				2C0863692A6C320300EE30DB /* Playground.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,6 +199,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2C0863682A6C320300EE30DB /* Playground */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C0863772A6C320500EE30DB /* Build configuration list for PBXNativeTarget "Playground" */;
+			buildPhases = (
+				2C0863652A6C320300EE30DB /* Sources */,
+				2C0863662A6C320300EE30DB /* Frameworks */,
+				2C0863672A6C320300EE30DB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Playground;
+			productName = Playground;
+			productReference = 2C0863692A6C320300EE30DB /* Playground.app */;
+			productType = "com.apple.product-type.application";
+		};
 		2CB0272529FD58DF0000F5AD /* PocketSlate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2CB0273529FD58E20000F5AD /* Build configuration list for PBXNativeTarget "PocketSlate" */;
@@ -193,9 +249,12 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					2C0863682A6C320300EE30DB = {
+						CreatedOnToolsVersion = 15.0;
+					};
 					2CB0272529FD58DF0000F5AD = {
 						CreatedOnToolsVersion = 14.3;
 					};
@@ -218,11 +277,21 @@
 			projectRoot = "";
 			targets = (
 				2CB0272529FD58DF0000F5AD /* PocketSlate */,
+				2C0863682A6C320300EE30DB /* Playground */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2C0863672A6C320300EE30DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C0863742A6C320500EE30DB /* Preview Assets.xcassets in Resources */,
+				2C0863702A6C320500EE30DB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CB0272429FD58DF0000F5AD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -257,6 +326,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2C0863652A6C320300EE30DB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2C08636E2A6C320300EE30DB /* ContentView.swift in Sources */,
+				2C08636C2A6C320300EE30DB /* PlaygroundApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2CB0272229FD58DF0000F5AD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -271,6 +349,89 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		2C0863752A6C320500EE30DB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Playground/Playground.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Playground/Preview Content\"";
+				DEVELOPMENT_TEAM = DXUKH9VF73;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.Playground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2C0863762A6C320500EE30DB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Playground/Playground.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Playground/Preview Content\"";
+				DEVELOPMENT_TEAM = DXUKH9VF73;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.Playground;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		2CB0273329FD58E20000F5AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -471,6 +632,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2C0863772A6C320500EE30DB /* Build configuration list for PBXNativeTarget "Playground" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C0863752A6C320500EE30DB /* Debug */,
+				2C0863762A6C320500EE30DB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		2CB0272129FD58DF0000F5AD /* Build configuration list for PBXProject "PocketSlate" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
