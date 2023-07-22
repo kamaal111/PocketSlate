@@ -90,11 +90,6 @@ public final class PhrasesManager: ObservableObject {
                 translatedText = success
             }
 
-            guard let index = phrases.findIndex(by: \.id, is: phrase.id) else {
-                assertionFailure("Index should be present")
-                return .failure(.unknownTranslationFailure)
-            }
-
             let updatedPhrase = AppPhrase(
                 id: phrase.id,
                 creationDate: phrase.creationDate,
@@ -104,6 +99,7 @@ public final class PhrasesManager: ObservableObject {
             )
             logger.info("Translation found for \(sourceText)")
 
+            assert(phrases.find(by: \.id, is: phrase.id) != nil)
             return await updatePhrases(editedPhrases: [updatedPhrase])
         }
     }
@@ -159,8 +155,14 @@ public final class PhrasesManager: ObservableObject {
         await withLoading {
             var updatedPhrases: [UUID: AppPhrase] = [:]
             var updateErrors: [AppPhrase.Errors] = []
-            for phrase in editedPhrases {
-                let result = await phrase.update(translations: phrase.translations)
+            for editedPhrase in editedPhrases {
+                guard let existingPhrase = phrases.find(by: \.id, is: editedPhrase.id) else {
+                    logger.error("Failed to find existing phrase")
+                    continue
+                }
+                guard existingPhrase.translations != editedPhrase.translations else { continue }
+
+                let result = await editedPhrase.update(translations: editedPhrase.translations)
                 switch result {
                 case let .failure(failure):
                     logger.error(label: "failed to update a phrase", error: failure)
@@ -169,6 +171,7 @@ public final class PhrasesManager: ObservableObject {
                     updatedPhrases[success.id] = success
                 }
             }
+
             guard updateErrors.isEmpty else { return .failure(.fromAppPhrase(updateErrors[0])) }
 
             let listResult: Result<[AppPhrase], AppPhrase.Errors>
