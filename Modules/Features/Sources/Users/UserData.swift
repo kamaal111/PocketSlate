@@ -25,8 +25,23 @@ public final class UserData: ObservableObject {
     private static var currentLocale = Locale.current
 
     public var settingsConfiguration: SettingsConfiguration {
-        .init(
-            feedback: nil,
+        var feedback: SettingsConfiguration.FeedbackConfiguration?
+        if let githubToken = SecretsJSON.shared.content?.githubToken {
+            #if os(macOS)
+            let deviceLabel = "macOS"
+            #else
+            let deviceLabel = UIDevice.current.userInterfaceIdiom == .pad ? "iPadOS" : "iOS"
+            #endif
+            feedback = .init(
+                token: githubToken,
+                username: "Kamaal111",
+                repoName: "PocketSlate",
+                additionalLabels: ["in app feedback", deviceLabel]
+            )
+        }
+
+        return .init(
+            feedback: feedback,
             color: colorConfiguration,
             acknowledgements: AcknowledgementsJSON.shared.content,
             showLogs: showLogs

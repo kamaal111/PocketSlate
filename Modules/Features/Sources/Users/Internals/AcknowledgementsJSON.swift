@@ -9,7 +9,7 @@ import KamaalUtils
 import KamaalLogger
 import KamaalSettings
 
-private let logger = KamaalLogger(label: "AcknowledgementsJSON", failOnError: true)
+private let logger = KamaalLogger(from: AcknowledgementsJSON.self, failOnError: true)
 
 class AcknowledgementsJSON {
     private(set) var content: Acknowledgements?
