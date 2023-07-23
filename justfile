@@ -3,6 +3,7 @@ set dotenv-load
 
 DEFAULT_SECRETS_PATH := "Modules/Features/Sources/Users/Internals/Resources/Secrets.json"
 WORKSPACE := "PocketSlate.xcworkspace"
+SCHEME := "PocketSlate"
 
 localize: install-node-modules
     node Scripts/generateLocales.js
@@ -37,18 +38,16 @@ build: generate
     #!/bin/zsh
 
     CONFIGURATION="Debug"
-    SCHEME="PocketSlate"
 
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
 archive:
-    echo "Archiving"
+    bundle exec fastlane gym --scheme $SCHEME
 
 test: generate
     #!/bin/zsh
 
     CONFIGURATION="Debug"
-    SCHEME="PocketSlate"
 
     xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
