@@ -39,7 +39,7 @@ build: generate
     CONFIGURATION="Debug"
     SCHEME="PocketSlate"
 
-    xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
+    xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
 archive:
     echo "Archiving"
@@ -47,9 +47,10 @@ archive:
 test: generate
     #!/bin/zsh
 
+    CONFIGURATION="Debug"
     SCHEME="PocketSlate"
 
-    xcodebuild test -configuration ${CONFIGURATION:-"Debug"} -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
+    xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
 bootstrap: install_system_dependencies pull-modules generate
 
