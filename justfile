@@ -44,6 +44,11 @@ build: generate
 archive:
     bundle exec fastlane gym --scheme $SCHEME
 
+upload-ios:
+    #!/bin/zsh
+
+    xcrun altool --upload-app -t ios -f LexiGlotty.ipa -u kamaal.f1@gmail.com -p $APP_STORE_CONNECT_PASSWORD
+
 test: generate
     #!/bin/zsh
 
@@ -51,7 +56,7 @@ test: generate
 
     xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
-bootstrap: install_system_dependencies pull-modules generate
+bootstrap: install_system_dependencies install-ruby-bundle pull-modules generate
 
 make-api-spec:
     #!/bin/sh
@@ -92,6 +97,10 @@ assert-has-no-diffs:
 install-node-modules:
     yarn || exit 1
 
+install-ruby-bundle:
+    sudo gem install bundler
+    bundle install
+
 [private]
 assert-empty value:
     python3 Scripts/asserts/empty.py "{{ value }}"
@@ -103,6 +112,3 @@ install_system_dependencies:
     brew update
     brew tap homebrew/bundle
     brew bundle
-
-    sudo gem install bundler
-    bundle install
