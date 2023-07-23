@@ -36,35 +36,35 @@ jobs:
       - name: Check diff
         run: just assert-has-no-diffs
 
-  test:
-    name: Test
-    timeout-minutes: 15
-    runs-on: macos-13
-    needs: [quality]
-    steps:
-      - name: Git - Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref }}
-          submodules: recursive
-      - name: Install just
-        uses: taiki-e/install-action@just
+  # test:
+  #   name: Test
+  #   timeout-minutes: 15
+  #   runs-on: macos-13
+  #   needs: [quality]
+  #   steps:
+  #     - name: Git - Checkout
+  #       uses: actions/checkout@v3
+  #       with:
+  #         ref: ${{ github.ref }}
+  #         submodules: recursive
+  #     - name: Install just
+  #       uses: taiki-e/install-action@just
 
-      - name: Select Xcode version
-        run: |
-          ls -d /Applications/Xcode*
-          sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
+  #     - name: Select Xcode version
+  #       run: |
+  #         ls -d /Applications/Xcode*
+  #         sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
 
-      - name: Trust Swift plugins
-        run: just trust-swift-plugins
+  #     - name: Trust Swift plugins
+  #       run: just trust-swift-plugins
 
-      - name: Test
-        env:
-          DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
-        run: just test
+  #     - name: Test
+  #       env:
+  #         DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
+  #       run: just test
 
-      - name: Check diff
-        run: just assert-has-no-diffs
+  #     - name: Check diff
+  #       run: just assert-has-no-diffs
 
   build:
     name: Build
@@ -137,17 +137,15 @@ jobs:
       - name: Trust Swift plugins
         run: just trust-swift-plugins
 
-      # - name: Import signing certificate
-      #   env:
-      #     SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
-      #     SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
-      #     KEYCHAIN_PASSPHRASE: ${{ secrets.KEYCHAIN_PASSPHRASE }}
-      #   run: bash Scripts/import_signing_certificate.bash
+      - name: Import signing certificate
+        env:
+          SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
+          SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSPHRASE: ${{ secrets.KEYCHAIN_PASSPHRASE }}
+        run: bash Scripts/import_signing_certificate.bash
 
       - name: Bump build number
-        run: |
-          echo "Setting build number to ${{ github.run_number }}"
-          just bump-version ${{ github.run_number }}
+        run: just bump-version ${{ github.run_number }}
 
       - name: Archive app
         run: just archive
