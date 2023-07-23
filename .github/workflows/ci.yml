@@ -144,8 +144,20 @@ jobs:
           KEYCHAIN_PASSPHRASE: ${{ secrets.KEYCHAIN_PASSPHRASE }}
         run: bash Scripts/import_signing_certificate.bash
 
+      - name: Import provisioning profile
+        env:
+          PROVISIONING_PROFILE_DATA: ${{ secrets.IOS_PROVISIONING_PROFILE_DATA }}
+        run: bash Scripts/import_provisioning_profile.bash
+
       - name: Bump build number
         run: just bump-version ${{ github.run_number }}
+
+      - name: Generate assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.FEEDBACK_TOKEN }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_URL: ${{ secrets.API_URL }}
+        run: just generate
 
       - name: Archive app
         run: just archive
