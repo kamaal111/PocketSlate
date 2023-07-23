@@ -4,7 +4,7 @@ platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
     increment_build_number(xcodeproj: "PocketSlate.xcodeproj")
-    build_app(workspace: "PocketSlate.xcworkspace", scheme: "PocketSlate")
+    build_app(workspace: "PocketSlate.xcworkspace", scheme: "PocketSlate", sdk: "16.4")
     upload_to_app_store
   end
 end
