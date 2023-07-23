@@ -58,6 +58,11 @@ jobs:
       - name: Trust Swift plugins
         run: just trust-swift-plugins
 
+      - name: Setup - Ruby and bundler dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
       - name: Test
         env:
           DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
@@ -71,6 +76,7 @@ jobs:
     timeout-minutes: 15
     runs-on: macos-13
     needs: [quality]
+    if: github.ref != 'refs/heads/main'
     steps:
       - name: Git - Checkout
         uses: actions/checkout@v3
@@ -95,6 +101,11 @@ jobs:
       - name: Trust Swift plugins
         run: just trust-swift-plugins
 
+      - name: Setup - Ruby and bundler dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
       - name: Build
         env:
           DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
@@ -102,3 +113,40 @@ jobs:
 
       - name: Check diff
         run: just assert-has-no-diffs
+
+  deployIOS:
+    name: Deploy iOS
+    timeout-minutes: 15
+    runs-on: macos-13
+    needs: [quality, test]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Select Xcode version
+        run: |
+          ls -d /Applications/Xcode*
+          sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
+
+      - name: Trust Swift plugins
+        run: just trust-swift-plugins
+
+      - name: Setup - Ruby and bundler dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Bump build number
+        run: |
+          echo "Setting build number to ${{ github.run_number }}"
+          just bump-version ${{ github.run_number }}
+
+      - name: Archive app
+        run: just archive

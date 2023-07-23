@@ -7,8 +7,8 @@ WORKSPACE := "PocketSlate.xcworkspace"
 localize: install-node-modules
     node Scripts/generateLocales.js
 
-bump-version:
-    go run Scripts/xcode-app-version-bumper/*go
+bump-version number:
+    go run Scripts/xcode-app-version-bumper/*go --number {{ number }}
 
 clear-mac-data:
     rm -rf ~/Library/Containers/io.kamaal.PocketSlate
@@ -41,15 +41,17 @@ build: generate
 
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
 
+archive:
+    echo "Archiving"
+
 test: generate
     #!/bin/zsh
 
-    CONFIGURATION="Debug"
     SCHEME="PocketSlate"
 
-    xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
+    xcodebuild test -configuration ${CONFIGURATION:-"Debug"} -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION | xcpretty && exit ${PIPESTATUS[0]}
 
-bootstrap: install_system_dependencies pull-modules generate make-api-spec
+bootstrap: install_system_dependencies pull-modules generate
 
 make-api-spec:
     #!/bin/sh
@@ -97,6 +99,10 @@ assert-empty value:
 [private]
 install_system_dependencies:
     npm i -g yarn
-    brew install swiftformat
-    brew install swiftlint
-    sudo gem install xcpretty
+
+    brew update
+    brew tap homebrew/bundle
+    brew bundle
+
+    sudo gem install bundler
+    bundle install
