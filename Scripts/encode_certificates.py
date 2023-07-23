@@ -8,10 +8,8 @@ from typing import Optional, TypedDict
 SECRETS_DIRECTORY = "Secrets"
 
 MAP_FILENAME_TO_CERTIFICATES = {
-    "Tasktivity_App_Store_distribution.mobileprovision": "provisioning_profile",
-    "Certificates.p12": "signing_certificate",
-    "MacOSCertificates.p12": "mac_signing_certificate",
-    "Tasktivity_Mac_App_Store_distribution.provisionprofile": "mac_provisioning_profile",
+    "LexiGlotty_iOS_App_Store_distribution.mobileprovision": "ios_provisioning_profile",
+    "IOSCertificates.p12": "ios_signing_certificate",
 }
 
 
