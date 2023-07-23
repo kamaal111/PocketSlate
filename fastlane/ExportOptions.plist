@@ -13,9 +13,9 @@
 		<key>provisioningProfiles</key>
 		<dict>
 			<key>io.kamaal.PocketSlate</key>
-			<string>PocketSlate App Store distribution</string>
+			<string>LexiGlotty iOS App Store distribution</string>
 		</dict>
 		<key>signingCertificate</key>
-		<string>iPhone Distribution: Kamaal Farah (DXUKH9VF73)</string>
+		<string>Apple Distribution: Kamaal Farah (DXUKH9VF73)</string>
 	</dict>
 </plist>
