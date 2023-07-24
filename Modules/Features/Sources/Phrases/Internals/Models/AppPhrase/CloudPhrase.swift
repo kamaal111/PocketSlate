@@ -13,15 +13,15 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: CloudPhrase.self, failOnError: true)
 
-struct CloudPhrase {
+struct CloudPhrase: Identifiable, Codable {
     let id: UUID
-    let kCreationDate: Date
+    let creationDate: Date
     private(set) var updatedDate: Date
     private(set) var translations: [Locale: [String]]
 
-    init(id: UUID, kCreationDate: Date, updatedDate: Date, translations: [Locale: [String]]) {
+    init(id: UUID, creationDate: Date, updatedDate: Date, translations: [Locale: [String]]) {
         self.id = id
-        self.kCreationDate = kCreationDate
+        self.creationDate = creationDate
         self.updatedDate = updatedDate
         self.translations = translations
         assert(Skypiea.shared.subscriptionsWanted.contains(Self.recordType))
@@ -39,7 +39,7 @@ extension CloudPhrase: Cloudable {
             case .id:
                 result[key] = id.nsString
             case .creationDate:
-                result[key] = kCreationDate
+                result[key] = creationDate
             case .updatedDate:
                 result[key] = updatedDate
             case .translations:
@@ -68,7 +68,7 @@ extension CloudPhrase: Cloudable {
         let translations = try? JSONDecoder().decode([Locale: [String]].self, from: translationsData)
         return CloudPhrase(
             id: id,
-            kCreationDate: creationDate,
+            creationDate: creationDate,
             updatedDate: updatedDate,
             translations: translations ?? [:]
         )
@@ -144,7 +144,7 @@ extension CloudPhrase: StorablePhrase {
 
     static func create(translations: [Locale: [String]]) async -> Result<Self, Errors> {
         let now = Date()
-        let newItem = CloudPhrase(id: UUID(), kCreationDate: now, updatedDate: now, translations: translations)
+        let newItem = CloudPhrase(id: UUID(), creationDate: now, updatedDate: now, translations: translations)
             .toRecord()
         let createdItem: Self?
         do {
@@ -187,7 +187,7 @@ extension CloudPhrase: StorablePhrase {
     static func fromAppPhrase(_ phrase: AppPhrase) -> CloudPhrase {
         CloudPhrase(
             id: phrase.id,
-            kCreationDate: phrase.creationDate,
+            creationDate: phrase.creationDate,
             updatedDate: phrase.updatedDate,
             translations: phrase.translations
         )

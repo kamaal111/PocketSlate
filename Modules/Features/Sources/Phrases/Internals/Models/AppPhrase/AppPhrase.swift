@@ -41,7 +41,7 @@ struct AppPhrase: Hashable, Identifiable {
         case .userDefaults:
             return await Self.mapErrors(UserDefaultsPhrase(
                 id: id,
-                kCreationDate: creationDate,
+                creationDate: creationDate,
                 updatedDate: updatedDate,
                 translations: translations
             ).deleteTranslations(for: locales), of: source)
@@ -50,7 +50,7 @@ struct AppPhrase: Hashable, Identifiable {
             return await Self.mapErrors(
                 CloudPhrase(
                     id: id,
-                    kCreationDate: creationDate,
+                    creationDate: creationDate,
                     updatedDate: updatedDate,
                     translations: translations
                 )
@@ -105,7 +105,7 @@ struct AppPhrase: Hashable, Identifiable {
     private static func fromStorablePhrase(_ phrase: some StorablePhrase) -> AppPhrase {
         AppPhrase(
             id: phrase.id,
-            creationDate: phrase.kCreationDate,
+            creationDate: phrase.creationDate,
             updatedDate: phrase.updatedDate,
             translations: phrase.translations,
             source: .userDefaults
