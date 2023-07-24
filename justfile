@@ -3,8 +3,8 @@ set dotenv-load
 
 DEFAULT_SECRETS_PATH := "Modules/Features/Sources/Users/Internals/Resources/Secrets.json"
 WORKSPACE := "PocketSlate.xcworkspace"
-SCHEME := "PocketSlate"
 APP_NAME := "LexiGlotty"
+IOS_SCHEME := APP_NAME + "-iOS"
 
 localize: install-node-modules
     node Scripts/generateLocales.js
@@ -23,7 +23,9 @@ lint:
     python3 Scripts/swiftlint_checker/main.py
 
 acknowledgements:
-    python3 Scripts/xcode-acknowledgements/main.py --scheme PocketSlate --output Modules/Features/Sources/Users/Internals/Resources
+    #!/bin/zsh
+
+    python3 Scripts/xcode-acknowledgements/main.py --scheme $IOS_SCHEME --output Modules/Features/Sources/Users/Internals/Resources
 
 generate: acknowledgements localize make-secrets make-api-spec
 
@@ -35,35 +37,25 @@ trust-swift-plugins:
     touch ~/Library/org.swift.swiftpm/security/plugins.json
     python3 Scripts/trust_swift_plugins.py
 
-build: generate
+build-ios destination:
     #!/bin/zsh
 
-    CONFIGURATION="Debug"
+    just build $IOS_SCHEME "{{ destination }}"
 
-    xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
-
-archive:
+test-ios destination:
     #!/bin/zsh
 
-    CONFIGURATION="Release"
+    just test $IOS_SCHEME "{{ destination }}"
 
-    xcodebuild -scheme $SCHEME -workspace $WORKSPACE \
-        -configuration $CONFIGURATION -destination $DESTINATION \
-        -archivePath "$APP_NAME.xcarchive" clean archive
-    ls
-    # bundle exec fastlane gym --scheme $SCHEME
+archive-ios:
+    #!/bin/zsh
+
+    just archive $IOS_SCHEME "platform=iOS"
 
 upload-ios:
     #!/bin/zsh
 
-    xcrun altool --upload-app -t ios -f LexiGlotty.ipa -u kamaal.f1@gmail.com -p $APP_STORE_CONNECT_PASSWORD
-
-test: generate
-    #!/bin/zsh
-
-    CONFIGURATION="Debug"
-
-    xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
+    xcrun altool --upload-app -t ios -f $APP_NAME.ipa -u kamaal.f1@gmail.com -p $APP_STORE_CONNECT_PASSWORD
 
 bootstrap: install_system_dependencies install-ruby-bundle pull-modules generate
 
@@ -109,6 +101,34 @@ install-node-modules:
 install-ruby-bundle:
     sudo gem install bundler
     bundle install
+
+[private]
+build scheme destination: generate
+    #!/bin/zsh
+
+    CONFIGURATION="Debug"
+
+    set -o pipefail && xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
+
+[private]
+test scheme destination: generate
+    #!/bin/zsh
+
+    CONFIGURATION="Debug"
+
+    set -o pipefail && xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
+
+[private]
+archive scheme destination:
+    #!/bin/zsh
+
+    CONFIGURATION="Release"
+    echo "{{ scheme }}"
+    echo "{{ destination }}"
+    
+    set -o pipefail && xcodebuild -scheme "{{ scheme }}" -workspace $WORKSPACE \
+        -configuration $CONFIGURATION -destination "{{ destination }}" \
+        -archivePath "$APP_NAME.xcarchive" clean archive | bundle exec xcpretty
 
 [private]
 assert-empty value:

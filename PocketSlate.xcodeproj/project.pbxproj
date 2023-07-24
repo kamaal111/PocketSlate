@@ -38,6 +38,18 @@
 		2C9094BC2A6C6C6E00160DE8 /* app-icon-generator in Resources */ = {isa = PBXBuildFile; fileRef = 2C9094BB2A6C6C6E00160DE8 /* app-icon-generator */; };
 		2C9094BF2A6C6DDF00160DE8 /* FileManager+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094BE2A6C6DDF00160DE8 /* FileManager+extensions.swift */; };
 		2C9094C12A6C700E00160DE8 /* SavePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094C02A6C700E00160DE8 /* SavePanel.swift */; };
+		2CDCDD502A6ECAF600CF7757 /* AppDelegate_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */; };
+		2CDCDD512A6ECAF600CF7757 /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
+		2CDCDD522A6ECAF600CF7757 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
+		2CDCDD532A6ECAF600CF7757 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABF029FD59B200009E19 /* ContentView.swift */; };
+		2CDCDD552A6ECAF600CF7757 /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDCDD4B2A6ECAF600CF7757 /* CloudSyncing */; };
+		2CDCDD562A6ECAF600CF7757 /* AppLocales in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDCDD472A6ECAF600CF7757 /* AppLocales */; };
+		2CDCDD572A6ECAF600CF7757 /* Users in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDCDD492A6ECAF600CF7757 /* Users */; };
+		2CDCDD582A6ECAF600CF7757 /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDCDD4A2A6ECAF600CF7757 /* Navigation */; };
+		2CDCDD592A6ECAF600CF7757 /* Phrases in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDCDD482A6ECAF600CF7757 /* Phrases */; };
+		2CDCDD5A2A6ECAF600CF7757 /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDCDD4C2A6ECAF600CF7757 /* KamaalLogger */; };
+		2CDCDD5C2A6ECAF600CF7757 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEF29FD59B200009E19 /* Preview Assets.xcassets */; };
+		2CDCDD5D2A6ECAF600CF7757 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEC29FD59B200009E19 /* Assets.xcassets */; };
 		2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CDF2BF42A3B9A9B007CA8FC /* Navigation */; };
 /* End PBXBuildFile section */
 
@@ -62,7 +74,7 @@
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_macOS.swift; sourceTree = "<group>"; };
 		2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
-		2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = PocketSlate.entitlements; sourceTree = "<group>"; };
+		2C6BABEB29FD59B200009E19 /* LexiGlottyMacOS.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = LexiGlottyMacOS.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketSlateApp.swift; sourceTree = "<group>"; };
 		2C6BABEF29FD59B200009E19 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -81,7 +93,10 @@
 		2C9094C02A6C700E00160DE8 /* SavePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePanel.swift; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* LexiGlotty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LexiGlotty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBF68862A6B026400A593E1 /* PSShared */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PSShared; sourceTree = "<group>"; };
-		2CD49BC32A24C6D70085DD83 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2CD49BC32A24C6D70085DD83 /* MacOSInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = MacOSInfo.plist; sourceTree = "<group>"; };
+		2CDCDD612A6ECAF600CF7757 /* LexiGlotty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LexiGlotty.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CDCDD632A6ECB3C00CF7757 /* IOSInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = IOSInfo.plist; sourceTree = "<group>"; };
+		2CDCDD642A6ECC4200CF7757 /* LexiGlottyIOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LexiGlottyIOS.entitlements; sourceTree = "<group>"; };
 		2CDF2BF32A3B9A5C007CA8FC /* Navigation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Navigation; sourceTree = "<group>"; };
 		2CDF2BF82A3B9EAC007CA8FC /* AppUI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppUI; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -108,6 +123,19 @@
 				2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */,
 				2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */,
 				2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CDCDD542A6ECAF600CF7757 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CDCDD552A6ECAF600CF7757 /* CloudSyncing in Frameworks */,
+				2CDCDD562A6ECAF600CF7757 /* AppLocales in Frameworks */,
+				2CDCDD572A6ECAF600CF7757 /* Users in Frameworks */,
+				2CDCDD582A6ECAF600CF7757 /* Navigation in Frameworks */,
+				2CDCDD592A6ECAF600CF7757 /* Phrases in Frameworks */,
+				2CDCDD5A2A6ECAF600CF7757 /* KamaalLogger in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -179,8 +207,10 @@
 		2C6BABEA29FD59B200009E19 /* PocketSlate */ = {
 			isa = PBXGroup;
 			children = (
-				2C6BABEB29FD59B200009E19 /* PocketSlate.entitlements */,
-				2CD49BC32A24C6D70085DD83 /* Info.plist */,
+				2CDCDD642A6ECC4200CF7757 /* LexiGlottyIOS.entitlements */,
+				2C6BABEB29FD59B200009E19 /* LexiGlottyMacOS.entitlements */,
+				2CDCDD632A6ECB3C00CF7757 /* IOSInfo.plist */,
+				2CD49BC32A24C6D70085DD83 /* MacOSInfo.plist */,
 				2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */,
 				2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */,
 				2C6BABF029FD59B200009E19 /* ContentView.swift */,
@@ -286,6 +316,7 @@
 			children = (
 				2CB0272629FD58DF0000F5AD /* LexiGlotty.app */,
 				2C0863692A6C320300EE30DB /* Playground.app */,
+				2CDCDD612A6ECAF600CF7757 /* LexiGlotty.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -324,9 +355,9 @@
 			productReference = 2C0863692A6C320300EE30DB /* Playground.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2CB0272529FD58DF0000F5AD /* PocketSlate */ = {
+		2CB0272529FD58DF0000F5AD /* LexiGlotty-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2CB0273529FD58E20000F5AD /* Build configuration list for PBXNativeTarget "PocketSlate" */;
+			buildConfigurationList = 2CB0273529FD58E20000F5AD /* Build configuration list for PBXNativeTarget "LexiGlotty-macOS" */;
 			buildPhases = (
 				2CE62EF229FEBF140063BE1D /* Pre Compile */,
 				2CB0272229FD58DF0000F5AD /* Sources */,
@@ -337,7 +368,7 @@
 			);
 			dependencies = (
 			);
-			name = PocketSlate;
+			name = "LexiGlotty-macOS";
 			packageProductDependencies = (
 				2C6BAC0F29FD605200009E19 /* AppLocales */,
 				2C831E622A364D6D0028BCD8 /* Phrases */,
@@ -348,6 +379,32 @@
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* LexiGlotty.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2CDCDD462A6ECAF600CF7757 /* LexiGlotty-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2CDCDD5E2A6ECAF600CF7757 /* Build configuration list for PBXNativeTarget "LexiGlotty-iOS" */;
+			buildPhases = (
+				2CDCDD4E2A6ECAF600CF7757 /* Pre Compile */,
+				2CDCDD4F2A6ECAF600CF7757 /* Sources */,
+				2CDCDD542A6ECAF600CF7757 /* Frameworks */,
+				2CDCDD5B2A6ECAF600CF7757 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "LexiGlotty-iOS";
+			packageProductDependencies = (
+				2CDCDD472A6ECAF600CF7757 /* AppLocales */,
+				2CDCDD482A6ECAF600CF7757 /* Phrases */,
+				2CDCDD492A6ECAF600CF7757 /* Users */,
+				2CDCDD4A2A6ECAF600CF7757 /* Navigation */,
+				2CDCDD4B2A6ECAF600CF7757 /* CloudSyncing */,
+				2CDCDD4C2A6ECAF600CF7757 /* KamaalLogger */,
+			);
+			productName = PocketSlate;
+			productReference = 2CDCDD612A6ECAF600CF7757 /* LexiGlotty.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -384,7 +441,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2CB0272529FD58DF0000F5AD /* PocketSlate */,
+				2CDCDD462A6ECAF600CF7757 /* LexiGlotty-iOS */,
+				2CB0272529FD58DF0000F5AD /* LexiGlotty-macOS */,
 				2C0863682A6C320300EE30DB /* Playground */,
 			);
 		};
@@ -411,9 +469,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2CDCDD5B2A6ECAF600CF7757 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CDCDD5C2A6ECAF600CF7757 /* Preview Assets.xcassets in Resources */,
+				2CDCDD5D2A6ECAF600CF7757 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2CDCDD4E2A6ECAF600CF7757 /* Pre Compile */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Pre Compile";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = " if which swiftlint >/dev/null; then\n     swiftlint lint --quiet $@ | sed 's/error: /warning: /g'\n else\n     echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n fi\n";
+		};
 		2CE62EF229FEBF140063BE1D /* Pre Compile */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -463,6 +549,17 @@
 				2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */,
 				2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */,
 				2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2CDCDD4F2A6ECAF600CF7757 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2CDCDD502A6ECAF600CF7757 /* AppDelegate_macOS.swift in Sources */,
+				2CDCDD512A6ECAF600CF7757 /* AppDelegate_iOS.swift in Sources */,
+				2CDCDD522A6ECAF600CF7757 /* PocketSlateApp.swift in Sources */,
+				2CDCDD532A6ECAF600CF7757 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,10 +772,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconMacOS;
-				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIconIOS;
-				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIconMacOS;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = PocketSlate/PocketSlate.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PocketSlate/LexiGlottyMacOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 36;
 				DEAD_CODE_STRIPPING = YES;
@@ -687,7 +782,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PocketSlate/Info.plist;
+				INFOPLIST_FILE = PocketSlate/MacOSInfo.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LexiGlotty;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -708,10 +803,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.PocketSlate;
 				PRODUCT_NAME = LexiGlotty;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -719,10 +814,96 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconMacOS;
-				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=iphoneos*]" = AppIconIOS;
-				"ASSETCATALOG_COMPILER_APPICON_NAME[sdk=macosx*]" = AppIconMacOS;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = PocketSlate/PocketSlate.entitlements;
+				CODE_SIGN_ENTITLEMENTS = PocketSlate/LexiGlottyMacOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 36;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"PocketSlate/Preview Content\"";
+				DEVELOPMENT_TEAM = DXUKH9VF73;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PocketSlate/MacOSInfo.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LexiGlotty;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.PocketSlate;
+				PRODUCT_NAME = LexiGlotty;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		2CDCDD5F2A6ECAF600CF7757 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconIOS;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PocketSlate/LexiGlottyIOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 36;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"PocketSlate/Preview Content\"";
+				DEVELOPMENT_TEAM = DXUKH9VF73;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PocketSlate/IOSInfo.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LexiGlotty;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.kamaal.PocketSlate;
+				PRODUCT_NAME = LexiGlotty;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2CDCDD602A6ECAF600CF7757 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconIOS;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PocketSlate/LexiGlottyIOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
@@ -734,7 +915,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = PocketSlate/Info.plist;
+				INFOPLIST_FILE = PocketSlate/IOSInfo.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LexiGlotty;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.travel";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -757,7 +938,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "LexiGlotty iOS App Store distribution";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -785,7 +968,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2CB0273529FD58E20000F5AD /* Build configuration list for PBXNativeTarget "PocketSlate" */ = {
+		2CB0273529FD58E20000F5AD /* Build configuration list for PBXNativeTarget "LexiGlotty-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2CB0273629FD58E20000F5AD /* Debug */,
@@ -794,10 +977,27 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		2CDCDD5E2A6ECAF600CF7757 /* Build configuration list for PBXNativeTarget "LexiGlotty-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2CDCDD5F2A6ECAF600CF7757 /* Debug */,
+				2CDCDD602A6ECAF600CF7757 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
 		2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 0.9.2;
+			};
+		};
+		2CDCDD4D2A6ECAF600CF7757 /* XCRemoteSwiftPackageReference "KamaalSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Kamaalio/KamaalSwift.git";
 			requirement = {
@@ -846,6 +1046,31 @@
 		2C9094B32A6C69A500160DE8 /* KamaalLogger */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
+			productName = KamaalLogger;
+		};
+		2CDCDD472A6ECAF600CF7757 /* AppLocales */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppLocales;
+		};
+		2CDCDD482A6ECAF600CF7757 /* Phrases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Phrases;
+		};
+		2CDCDD492A6ECAF600CF7757 /* Users */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Users;
+		};
+		2CDCDD4A2A6ECAF600CF7757 /* Navigation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Navigation;
+		};
+		2CDCDD4B2A6ECAF600CF7757 /* CloudSyncing */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CloudSyncing;
+		};
+		2CDCDD4C2A6ECAF600CF7757 /* KamaalLogger */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CDCDD4D2A6ECAF600CF7757 /* XCRemoteSwiftPackageReference "KamaalSwift" */;
 			productName = KamaalLogger;
 		};
 		2CDF2BF42A3B9A9B007CA8FC /* Navigation */ = {

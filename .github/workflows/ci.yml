@@ -36,35 +36,42 @@ jobs:
       - name: Check diff
         run: just assert-has-no-diffs
 
-  # test:
-  #   name: Test
-  #   timeout-minutes: 15
-  #   runs-on: macos-13
-  #   needs: [quality]
-  #   steps:
-  #     - name: Git - Checkout
-  #       uses: actions/checkout@v3
-  #       with:
-  #         ref: ${{ github.ref }}
-  #         submodules: recursive
-  #     - name: Install just
-  #       uses: taiki-e/install-action@just
+  test:
+    name: Test
+    timeout-minutes: 15
+    runs-on: macos-13
+    needs: [quality]
+    if: ${{ false }}
+    steps:
+      - name: Git - Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+          submodules: recursive
+      - name: Install just
+        uses: taiki-e/install-action@just
 
-  #     - name: Select Xcode version
-  #       run: |
-  #         ls -d /Applications/Xcode*
-  #         sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
+      - name: Setup - Ruby and bundler dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
 
-  #     - name: Trust Swift plugins
-  #       run: just trust-swift-plugins
+      - name: Install Ruby bundle
+        run: just install-ruby-bundle
 
-  #     - name: Test
-  #       env:
-  #         DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
-  #       run: just test
+      - name: Select Xcode version
+        run: |
+          ls -d /Applications/Xcode*
+          sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
 
-  #     - name: Check diff
-  #       run: just assert-has-no-diffs
+      - name: Trust Swift plugins
+        run: just trust-swift-plugins
+
+      - name: Test
+        run: just test-ios "platform=iOS Simulator,name=iPhone 14 Pro Max"
+
+      - name: Check diff
+        run: just assert-has-no-diffs
 
   build:
     name: Build
@@ -82,6 +89,14 @@ jobs:
       - name: Install just
         uses: taiki-e/install-action@just
 
+      - name: Setup - Ruby and bundler dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+
+      - name: Install Ruby bundle
+        run: just install-ruby-bundle
+
       - name: Select Xcode version
         run: |
           ls -d /Applications/Xcode*
@@ -97,9 +112,7 @@ jobs:
         run: just trust-swift-plugins
 
       - name: Build
-        env:
-          DESTINATION: "platform=iOS Simulator,name=iPhone 14 Pro Max"
-        run: just build
+        run: just build "platform=iOS Simulator,name=iPhone 14 Pro Max"
 
       - name: Check diff
         run: just assert-has-no-diffs
@@ -163,9 +176,7 @@ jobs:
         run: just generate
 
       - name: Archive app
-        env:
-          DESTINATION: generic/platform=iOS
-        run: just archive
+        run: just archive-ios
 
       - name: Upload app to App Store Connect
         env:
