@@ -17,7 +17,7 @@ protocol StorablePhrase: Identifiable {
 
     var id: UUID { get }
     var translations: [Locale: [String]] { get }
-    var kCreationDate: Date { get }
+    var creationDate: Date { get }
     var updatedDate: Date { get }
 
     func update(translations: [Locale: [String]]) async -> Result<Self, Errors>
@@ -37,7 +37,7 @@ extension StorablePhrase {
     var asAppPhrase: AppPhrase {
         AppPhrase(
             id: id,
-            creationDate: kCreationDate,
+            creationDate: creationDate,
             updatedDate: updatedDate,
             translations: translations,
             source: Self.source

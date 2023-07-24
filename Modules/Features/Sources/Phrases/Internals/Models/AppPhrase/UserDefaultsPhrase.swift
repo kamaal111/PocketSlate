@@ -13,12 +13,19 @@ private let logger = KamaalLogger(from: UserDefaultsPhrase.self, failOnError: tr
 
 struct UserDefaultsPhrase: Codable, StorablePhrase {
     let id: UUID
-    let kCreationDate: Date
+    let creationDate: Date
     private(set) var updatedDate: Date
     private(set) var translations: [Locale: [String]]
 
     enum Errors: Error {
         case invalidPayload
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case creationDate = "kCreationDate"
+        case updatedDate
+        case translations
     }
 
     func deleteTranslations(for locales: [Locale]) async -> Result<Self?, Errors> {
@@ -67,7 +74,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         if let index = allItems.findIndex(by: \.id, is: id) {
             updatedPhrase = Self(
                 id: allItems[index].id,
-                kCreationDate: allItems[index].kCreationDate,
+                creationDate: allItems[index].creationDate,
                 updatedDate: now,
                 translations: translations
             )
@@ -76,7 +83,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         } else {
             updatedPhrase = Self(
                 id: UUID(),
-                kCreationDate: now,
+                creationDate: now,
                 updatedDate: now,
                 translations: translations
             )
@@ -103,7 +110,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         let now = Date()
         let newPhrase = Self(
             id: UUID(),
-            kCreationDate: now,
+            creationDate: now,
             updatedDate: now,
             translations: translations
         )
@@ -140,7 +147,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
     static func fromAppPhrase(_ phrase: AppPhrase) -> UserDefaultsPhrase {
         UserDefaultsPhrase(
             id: phrase.id,
-            kCreationDate: phrase.creationDate,
+            creationDate: phrase.creationDate,
             updatedDate: phrase.updatedDate,
             translations: phrase.translations
         )
