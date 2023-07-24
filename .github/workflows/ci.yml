@@ -158,12 +158,35 @@ jobs:
           SIGNING_CERTIFICATE_P12_DATA: ${{ secrets.SIGNING_CERTIFICATE_P12_DATA }}
           SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
           KEYCHAIN_PASSPHRASE: ${{ secrets.KEYCHAIN_PASSPHRASE }}
-        run: bash Scripts/import_signing_certificate.bash
-
-      - name: Import provisioning profile
-        env:
           PROVISIONING_PROFILE_DATA: ${{ secrets.IOS_PROVISIONING_PROFILE_DATA }}
-        run: bash Scripts/import_provisioning_profile.bash
+        # run: bash Scripts/import_signing_certificate.bash
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$SIGNING_CERTIFICATE_P12_DATA" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$PROVISIONING_PROFILE_DATA" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSPHRASE" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSPHRASE" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$SIGNING_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+      # - name: Import provisioning profile
+      #   env:
+      #     PROVISIONING_PROFILE_DATA: ${{ secrets.IOS_PROVISIONING_PROFILE_DATA }}
+      #   run: bash Scripts/import_provisioning_profile.bash
 
       - name: Bump build number
         run: just bump-version ${{ github.run_number }}

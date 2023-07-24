@@ -129,7 +129,7 @@ archive scheme destination:
     
     xcodebuild -scheme "{{ scheme }}" -workspace $WORKSPACE \
         -configuration $CONFIGURATION -destination "{{ destination }}" \
-        -archivePath $ARCHIVE_FILE archive
+        -sdk iphoneos -archivePath $ARCHIVE_FILE archive
 
     ls
 
