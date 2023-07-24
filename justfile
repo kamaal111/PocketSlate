@@ -4,6 +4,7 @@ set dotenv-load
 DEFAULT_SECRETS_PATH := "Modules/Features/Sources/Users/Internals/Resources/Secrets.json"
 WORKSPACE := "PocketSlate.xcworkspace"
 SCHEME := "PocketSlate"
+APP_NAME := "LexiGlotty"
 
 localize: install-node-modules
     node Scripts/generateLocales.js
@@ -42,7 +43,15 @@ build: generate
     xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme $SCHEME -destination $DESTINATION
 
 archive:
-    bundle exec fastlane gym --scheme $SCHEME
+    #!/bin/zsh
+
+    CONFIGURATION="Release"
+
+    xcodebuild -scheme $SCHEME -workspace $WORKSPACE \
+        -configuration $CONFIGURATION -destination $DESTINATION \
+        -archivePath "$APP_NAME.xcarchive" clean archive
+    ls
+    # bundle exec fastlane gym --scheme $SCHEME
 
 upload-ios:
     #!/bin/zsh

@@ -163,6 +163,8 @@ jobs:
         run: just generate
 
       - name: Archive app
+        env:
+          DESTINATION: generic/platform=iOS
         run: just archive
 
       - name: Upload app to App Store Connect
