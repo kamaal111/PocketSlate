@@ -178,7 +178,7 @@ jobs:
       - name: Archive app
         run: just archive-ios
 
-      - name: Upload app to App Store Connect
-        env:
-          APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
-        run: just upload-ios
+      # - name: Upload app to App Store Connect
+      #   env:
+      #     APP_STORE_CONNECT_PASSWORD: ${{ secrets.APP_STORE_CONNECT_PASSWORD }}
+      #   run: just upload-ios

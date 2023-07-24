@@ -50,7 +50,7 @@ test-ios destination:
 archive-ios:
     #!/bin/zsh
 
-    just archive $IOS_SCHEME "platform=iOS"
+    just archive $IOS_SCHEME "generic/platform=iOS"
 
 upload-ios:
     #!/bin/zsh
@@ -108,7 +108,8 @@ build scheme destination: generate
 
     CONFIGURATION="Debug"
 
-    set -o pipefail && xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
+    set -o pipefail && xcodebuild -configuration $CONFIGURATION -workspace $WORKSPACE \
+        -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
 
 [private]
 test scheme destination: generate
@@ -116,19 +117,28 @@ test scheme destination: generate
 
     CONFIGURATION="Debug"
 
-    set -o pipefail && xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
+    set -o pipefail && xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE \
+        -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
 
 [private]
 archive scheme destination:
     #!/bin/zsh
 
     CONFIGURATION="Release"
-    echo "{{ scheme }}"
-    echo "{{ destination }}"
+    ARCHIVE_FILE="$APP_NAME.xcarchive"
     
-    set -o pipefail && xcodebuild -scheme "{{ scheme }}" -workspace $WORKSPACE \
+    xcodebuild -scheme "{{ scheme }}" -workspace $WORKSPACE \
         -configuration $CONFIGURATION -destination "{{ destination }}" \
-        -archivePath "$APP_NAME.xcarchive" clean archive | bundle exec xcpretty
+        -archivePath $ARCHIVE_FILE archive
+
+    ls
+
+    if [ ! -d $ARCHIVE_FILE ]
+    then
+        exit 1
+    fi
+
+    xcodebuild -exportArchive -archivePath $ARCHIVE_FILE -exportPath . -exportOptionsPlist fastlane/ExportOptions.plist
 
 [private]
 assert-empty value:
