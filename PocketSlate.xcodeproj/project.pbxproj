@@ -73,7 +73,7 @@
 		2C2F11092A632AD80027EAEE /* PocketSlateAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PocketSlateAPI; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
 		2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_macOS.swift; sourceTree = "<group>"; };
-		2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PocketSlate.xctestplan; sourceTree = "<group>"; };
+		2C46904D2A4851D3006A8730 /* LexiGlotty.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LexiGlotty.xctestplan; sourceTree = "<group>"; };
 		2C6BABEB29FD59B200009E19 /* LexiGlottyMacOS.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = LexiGlottyMacOS.entitlements; sourceTree = "<group>"; };
 		2C6BABEC29FD59B200009E19 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PocketSlateApp.swift; sourceTree = "<group>"; };
@@ -330,7 +330,7 @@
 		2CD8784C2A3E19F800F21603 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				2C46904D2A4851D3006A8730 /* PocketSlate.xctestplan */,
+				2C46904D2A4851D3006A8730 /* LexiGlotty.xctestplan */,
 			);
 			path = Tests;
 			sourceTree = "<group>";

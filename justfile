@@ -50,7 +50,7 @@ test-ios destination:
 archive-ios:
     #!/bin/zsh
 
-    just archive $IOS_SCHEME "generic/platform=iOS"
+    just archive $IOS_SCHEME "platform=iOS,name=Any iOS Device"
 
 upload-ios:
     #!/bin/zsh
