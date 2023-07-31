@@ -63,3 +63,4 @@ Secrets
 Packaging.log
 ExportOptions.plist
 DistributionSummary.plist
+Brewfile.lock.json
