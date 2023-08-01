@@ -10,7 +10,9 @@ localize: install-node-modules
     node Scripts/generateLocales.js
 
 bump-version number:
-    go run Scripts/xcode-app-version-bumper/*go --number {{ number }}
+    #!/bin/zsh
+
+    .venv/bin/xctools bump-version --build-number {{number}}
 
 clear-mac-data:
     rm -rf ~/Library/Containers/io.kamaal.PocketSlate

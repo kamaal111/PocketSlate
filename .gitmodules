@@ -6,10 +6,6 @@
 	path = Scripts/swiftlint_checker
 	url = https://github.com/kamaal111/swiftlint_checker.git
 	branch = main
-[submodule "xcode-app-version-bumper"]
-	path = Scripts/xcode-app-version-bumper
-	url = https://github.com/kamaal111/xcode-app-version-bumper.git
-	branch = main
 [submodule "xcode-acknowledgements"]
 	path = Scripts/xcode-acknowledgements
 	url = https://github.com/kamaal111/xcode-acknowledgements.git
