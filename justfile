@@ -37,7 +37,9 @@ trust-swift-plugins:
     mkdir -p ~/Library/org.swift.swiftpm/security/
     rm -f ~/Library/org.swift.swiftpm/security/plugins.json
     touch ~/Library/org.swift.swiftpm/security/plugins.json
-    python3 Scripts/trust_swift_plugins.py
+
+    .venv/bin/xctools trust-swift-plugins --trust-file Resources/swift-plugin-trust.json
+    # python3 Scripts/trust_swift_plugins.py
 
 build-ios destination:
     #!/bin/zsh
@@ -103,6 +105,11 @@ install-node-modules:
 install-ruby-bundle:
     sudo gem install bundler
     bundle install
+
+init-python-env:
+    python3 -m venv .venv
+    pip install poetry
+    poetry install
 
 [private]
 build scheme destination: generate

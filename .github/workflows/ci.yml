@@ -58,6 +58,9 @@ jobs:
       - name: Install Ruby bundle
         run: just install-ruby-bundle
 
+      - name: Initialize Python environment
+        run: just init-python-env
+
       - name: Select Xcode version
         run: |
           ls -d /Applications/Xcode*
@@ -96,13 +99,16 @@ jobs:
       - name: Install Ruby bundle
         run: just install-ruby-bundle
 
+      - name: Install node modules
+        run: just install-node-modules
+
+      - name: Initialize Python environment
+        run: just init-python-env
+
       - name: Select Xcode version
         run: |
           ls -d /Applications/Xcode*
           sudo xcode-select --switch /Applications/$XCODE_APP_NAME/Contents/Developer
-
-      - name: Install node modules
-        run: just install-node-modules
 
       - name: Format
         run: just format
@@ -140,6 +146,9 @@ jobs:
 
       - name: Install Ruby bundle
         run: just install-ruby-bundle
+
+      - name: Initialize Python environment
+        run: just init-python-env
 
       - uses: actions/setup-go@v4
         with:
