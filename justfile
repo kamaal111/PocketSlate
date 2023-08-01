@@ -107,9 +107,12 @@ install-ruby-bundle:
     bundle install
 
 init-python-env:
+    #!/bin/zsh
+
     python3 -m venv .venv
+    . .venv/bin/activate
     pip install poetry
-    poetry install
+    poetry add --editable Scripts/XcTools
 
 [private]
 build scheme destination: generate
