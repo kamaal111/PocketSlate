@@ -32,14 +32,7 @@ acknowledgements:
 generate: acknowledgements localize make-secrets make-api-spec
 
 trust-swift-plugins:
-    #!/bin/zsh
-
-    mkdir -p ~/Library/org.swift.swiftpm/security/
-    rm -f ~/Library/org.swift.swiftpm/security/plugins.json
-    touch ~/Library/org.swift.swiftpm/security/plugins.json
-
     .venv/bin/xctools trust-swift-plugins --trust-file Resources/swift-plugin-trust.json
-    # python3 Scripts/trust_swift_plugins.py
 
 build-ios destination:
     #!/bin/zsh
