@@ -186,7 +186,23 @@ files = [
 docs = ["furo (>=2023.5.20)", "proselint (>=0.13)", "sphinx (>=7.0.1)", "sphinx-autodoc-typehints (>=1.23,!=1.23.4)"]
 test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-cov (>=4.1)", "pytest-mock (>=3.10)"]
 
+[[package]]
+name = "xctools-kamaalio"
+version = "0.0.6"
+description = "A package to help deal with Xcode projects."
+optional = false
+python-versions = ">=3.7"
+files = []
+develop = true
+
+[package.dependencies]
+click = ">=8.1.6"
+
+[package.source]
+type = "directory"
+url = "Scripts/XcTools"
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "a5de1af43d4f599fe9f4db40c4531f72ffba862f5bef47a808b0366371075cd6"
+content-hash = "be34bb2867740b25b2bdc256251dd0a85f16961c77a9edaff01e37a44775d27f"

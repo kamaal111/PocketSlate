@@ -8,6 +8,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 pillow = "^10.0.0"
+xctools-kamaalio = {path = "Scripts/XcTools", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
