@@ -38,7 +38,7 @@ jobs:
 
   test:
     name: Test
-    timeout-minutes: 15
+    timeout-minutes: 20
     runs-on: macos-13
     needs: [quality]
     steps:
