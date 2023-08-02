@@ -54,23 +54,12 @@ upload-ios:
 
     xcrun altool --upload-app -t ios -f $APP_NAME.ipa -u kamaal.f1@gmail.com -p $APP_STORE_CONNECT_PASSWORD
 
-bootstrap: install-system-dependencies install-ruby-bundle pull-modules trust-swift-plugins generate
+bootstrap: install-system-dependencies trust-swift-plugins generate
 
 make-api-spec:
     #!/bin/sh
 
-    cd Scripts/open-api-maker
-    if [ ! -d .venv ]
-    then
-        python3 -m venv .venv
-    fi
-    . .venv/bin/activate
-    pip install poetry
-    poetry install || true
-
-    time {
-        python3 src/main.py --input ../../Resources/swagger.yaml --output ../../Modules/PocketSlateAPI/Sources/PocketSlateAPI/openapi.yaml
-    }
+    open-api-maker --input Resources/swagger.yaml --output Modules/PocketSlateAPI/Sources/PocketSlateAPI/openapi.yaml
 
 make-secrets:
     #!/bin/sh
@@ -94,10 +83,6 @@ assert-has-no-diffs:
 
 install-node-modules:
     yarn || exit 1
-
-install-ruby-bundle:
-    sudo gem install bundler
-    bundle install
 
 [private]
 build scheme destination:
@@ -143,7 +128,11 @@ assert-empty value:
 
 [private]
 install-system-dependencies:
+    #!/bin/zsh
+
     npm i -g yarn
+
+    export HOMEBREW_NO_AUTO_UPDATE=1
 
     brew update
     brew tap homebrew/bundle

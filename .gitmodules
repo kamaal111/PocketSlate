@@ -10,7 +10,3 @@
 	path = Scripts/xcode-acknowledgements
 	url = https://github.com/kamaal111/xcode-acknowledgements.git
 	branch = main
-[submodule "open-api-maker"]
-	path = Scripts/open-api-maker
-	url = https://github.com/kamaal111/open-api-maker.git
-	branch = main
