@@ -50,14 +50,6 @@ jobs:
       - name: Install just
         uses: taiki-e/install-action@just
 
-      - name: Setup - Ruby and bundler dependencies
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0
-
-      - name: Install Ruby bundle
-        run: just install-ruby-bundle
-
       - name: Initialize Python environment
         run: just init-python-env
 
@@ -90,14 +82,6 @@ jobs:
 
       - name: Install just
         uses: taiki-e/install-action@just
-
-      - name: Setup - Ruby and bundler dependencies
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0
-
-      - name: Install Ruby bundle
-        run: just install-ruby-bundle
 
       - name: Install node modules
         run: just install-node-modules
