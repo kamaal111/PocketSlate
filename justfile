@@ -122,8 +122,8 @@ test scheme destination: generate
 
     CONFIGURATION="Debug"
 
-    set -o pipefail && xcodebuild test -configuration $CONFIGURATION -workspace $WORKSPACE \
-        -scheme "{{ scheme }}" -destination "{{ destination }}" | bundle exec xcpretty
+    .venv/bin/xctools test --configuration $CONFIGURATION --scheme "{{ scheme }}" \
+        --destination "{{ destination }}" --workspace $WORKSPACE
 
 [private]
 archive scheme destination:
