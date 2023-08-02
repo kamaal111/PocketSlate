@@ -14,7 +14,3 @@
 	path = Scripts/open-api-maker
 	url = https://github.com/kamaal111/open-api-maker.git
 	branch = main
-[submodule "xctools"]
-	path = Scripts/XcTools
-	url = https://github.com/kamaalio/XcTools.git
-	branch = main

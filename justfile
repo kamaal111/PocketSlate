@@ -12,7 +12,7 @@ localize: install-node-modules
 bump-version number:
     #!/bin/zsh
 
-    .venv/bin/xctools bump-version --build-number {{number}}
+    xctools bump-version --build-number {{number}}
 
 clear-mac-data:
     rm -rf ~/Library/Containers/io.kamaal.PocketSlate
@@ -32,7 +32,7 @@ acknowledgements:
 generate: acknowledgements localize make-secrets make-api-spec
 
 trust-swift-plugins:
-    .venv/bin/xctools trust-swift-plugins --trust-file Resources/swift-plugin-trust.json
+    xctools trust-swift-plugins --trust-file Resources/swift-plugin-trust.json
 
 build-ios destination:
     #!/bin/zsh
@@ -54,7 +54,7 @@ upload-ios:
 
     xcrun altool --upload-app -t ios -f $APP_NAME.ipa -u kamaal.f1@gmail.com -p $APP_STORE_CONNECT_PASSWORD
 
-bootstrap: install_system_dependencies install-ruby-bundle pull-modules generate
+bootstrap: install-system-dependencies install-ruby-bundle pull-modules trust-swift-plugins generate
 
 make-api-spec:
     #!/bin/sh
@@ -99,30 +99,22 @@ install-ruby-bundle:
     sudo gem install bundler
     bundle install
 
-init-python-env:
-    #!/bin/zsh
-
-    python3 -m venv .venv
-    . .venv/bin/activate
-    pip install poetry
-    poetry add --editable Scripts/XcTools
-
 [private]
-build scheme destination: generate
+build scheme destination:
     #!/bin/zsh
 
     CONFIGURATION="Debug"
 
-    .venv/bin/xctools build --configuration $CONFIGURATION --scheme "{{ scheme }}" \
+    xctools build --configuration $CONFIGURATION --scheme "{{ scheme }}" \
         --destination "{{ destination }}" --workspace $WORKSPACE
 
 [private]
-test scheme destination: generate
+test scheme destination:
     #!/bin/zsh
 
     CONFIGURATION="Debug"
 
-    .venv/bin/xctools test --configuration $CONFIGURATION --scheme "{{ scheme }}" \
+    xctools test --configuration $CONFIGURATION --scheme "{{ scheme }}" \
         --destination "{{ destination }}" --workspace $WORKSPACE
 
 [private]
@@ -131,7 +123,7 @@ archive scheme destination:
 
     CONFIGURATION="Release"
     ARCHIVE_FILE="$APP_NAME.xcarchive"
-    
+
     xcodebuild -scheme "{{ scheme }}" -workspace $WORKSPACE \
         -configuration $CONFIGURATION -destination "{{ destination }}" \
         -sdk iphoneos -archivePath $ARCHIVE_FILE archive
@@ -150,7 +142,7 @@ assert-empty value:
     python3 Scripts/asserts/empty.py "{{ value }}"
 
 [private]
-install_system_dependencies:
+install-system-dependencies:
     npm i -g yarn
 
     brew update

@@ -1,3 +1,5 @@
+tap 'kamaalio/xctools'
+
 brew 'swiftformat'
 brew 'swiftlint'
 brew 'just'
