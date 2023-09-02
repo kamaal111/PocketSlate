@@ -10,21 +10,12 @@
       }
     },
     {
-      "identity" : "icloutkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kamaal111/ICloutKit.git",
-      "state" : {
-        "revision" : "4e1a6a0e830bd67077520987915d95a77b8bef46",
-        "version" : "3.0.0"
-      }
-    },
-    {
       "identity" : "kamaalswift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Kamaalio/KamaalSwift.git",
       "state" : {
-        "revision" : "5036a1df36f5a38804399f03f701c357f05eeae9",
-        "version" : "0.9.2"
+        "revision" : "95d9d9a6ac6be9f63e815decfd21d64b628c9572",
+        "version" : "1.2.0"
       }
     },
     {

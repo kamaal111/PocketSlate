@@ -6,8 +6,8 @@
 //
 
 import CloudKit
-import ICloutKit
 import Foundation
+import KamaalCloud
 import KamaalLogger
 
 private let logger = KamaalLogger(from: (any Cloudable).self, failOnError: true)
@@ -111,15 +111,14 @@ extension Cloudable {
     }
 
     private static func save(_ record: CKRecord, on context: Skypiea) async throws -> Self? {
-        guard let savedRecord = try await context.save(record) else { return nil }
-
+        let savedRecord = try await context.save(record)
         return Self.fromRecord(savedRecord)
     }
 
     private static func handleFetchErrors(_ error: Error) throws {
-        if let accountErrors = error as? ICloutKit.AccountErrors {
+        if let accountErrors = error as? CloudAccountsModule.Errors {
             switch accountErrors {
-            case .accountStatusNoAccount:
+            case .noAccount:
                 throw CloudableErrors.iCloudDisabledByUser
             default:
                 break
