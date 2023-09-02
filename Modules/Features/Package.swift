@@ -12,8 +12,7 @@ let package = Package(
         .library(name: "Users", targets: ["Users"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", "0.9.2" ..< "0.10.0"),
-        .package(url: "https://github.com/kamaal111/ICloutKit.git", "3.0.0" ..< "4.0.0"),
+        .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "1.2.0")),
         .package(path: "../AppLocales"),
         .package(path: "../AppUI"),
         .package(path: "../PocketSlateAPI"),
@@ -24,7 +23,7 @@ let package = Package(
             dependencies: [
                 .product(name: "KamaalLogger", package: "KamaalSwift"),
                 .product(name: "KamaalExtensions", package: "KamaalSwift"),
-                "ICloutKit",
+                .product(name: "KamaalCloud", package: "KamaalSwift"),
             ]
         ),
         .target(
