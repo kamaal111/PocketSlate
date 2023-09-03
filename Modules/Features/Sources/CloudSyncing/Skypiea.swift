@@ -23,6 +23,7 @@ public class Skypiea {
 
     public let subscriptionsWanted = [
         "CloudPhrase",
+        "CloudTranslation",
     ]
 
     private var subscriptions: [CKSubscription] = [] {
@@ -51,8 +52,8 @@ public class Skypiea {
         return try await filter(ofType: objectType, by: predicate)
     }
 
-    func filter(ofType objectType: String, by predicate: NSPredicate) async throws -> [CKRecord] {
-        let items = try await cloud.objects.filter(ofType: objectType, by: predicate).get()
+    func filter(ofType objectType: String, by predicate: NSPredicate, limit: Int? = nil) async throws -> [CKRecord] {
+        let items = try await cloud.objects.filter(ofType: objectType, by: predicate, limit: limit).get()
         let (_, nonDuplicatesRecords) = try await deleteDuplicateOrDefectedRecords(items)
 
         return nonDuplicatesRecords
@@ -64,8 +65,12 @@ public class Skypiea {
     }
 
     @discardableResult
-    func batchDelete(_ records: [CKRecord]) async throws -> [CKRecord.ID] {
+    public func batchDelete(_ records: [CKRecord]) async throws -> [CKRecord.ID] {
         try await cloud.objects.delete(records: records).get()
+    }
+
+    public func batchSave(_ records: [CKRecord]) async throws -> [CKRecord] {
+        try await cloud.objects.save(records: records).get()
     }
 
     private func deleteDuplicateOrDefectedRecords(_ records: [CKRecord]) async throws
@@ -74,7 +79,7 @@ public class Skypiea {
         var recordsToDelete: [CKRecord] = []
         records.forEach { item in
             let recordName = item.recordID.recordName
-            if let recordToDelete = recordsMappedByRecordName[recordName] {
+            if recordsMappedByRecordName[recordName] != nil {
                 recordsToDelete = recordsToDelete.appended(item)
             } else {
                 recordsMappedByRecordName[recordName] = item
@@ -94,7 +99,6 @@ public class Skypiea {
     }
 
     private func subscribeAll(toType objectType: String) async throws -> CKSubscription {
-        let predicate = NSPredicate(value: true)
         logger.info("subscribing to all \(objectType) iCloud subscriptions")
         return try await cloud.subscriptions.subscribeToChanges(ofType: objectType).get()
     }
