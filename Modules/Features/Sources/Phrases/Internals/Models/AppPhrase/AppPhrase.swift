@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 11/06/2023.
 //
 
+import CloudKit
 import Foundation
 
 struct AppPhrase: Hashable, Identifiable {
@@ -47,14 +48,13 @@ struct AppPhrase: Hashable, Identifiable {
             ).deleteTranslations(for: locales), of: source)
                 .map { success in success?.asAppPhrase }
         case .cloud:
+            let record = CKRecord(
+                recordType: CloudPhrase.recordType,
+                recordID: .init(recordName: id.uuidString.uppercased())
+            )
             return await Self.mapErrors(
-                CloudPhrase(
-                    id: id,
-                    creationDate: creationDate,
-                    updatedDate: updatedDate,
-                    translations: translations
-                )
-                .deleteTranslations(for: locales),
+                CloudPhrase(record: record)
+                    .deleteTranslations(for: locales),
                 of: source
             )
             .map { success in success?.asAppPhrase }

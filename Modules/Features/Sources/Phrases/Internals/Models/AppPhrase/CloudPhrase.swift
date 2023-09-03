@@ -13,18 +13,35 @@ import KamaalExtensions
 
 private let logger = KamaalLogger(from: CloudPhrase.self, failOnError: true)
 
-struct CloudPhrase: Identifiable, Codable {
-    let id: UUID
-    let creationDate: Date
-    private(set) var updatedDate: Date
-    private(set) var translations: [Locale: [String]]
+struct CloudPhrase: Identifiable, Hashable {
+    let record: CKRecord
+    private let translationRecords: [CloudTranslation]
 
-    init(id: UUID, creationDate: Date, updatedDate: Date, translations: [Locale: [String]]) {
-        self.id = id
-        self.creationDate = creationDate
-        self.updatedDate = updatedDate
-        self.translations = translations
+    init(record: CKRecord) {
+        self.init(record: record, translations: [])
+    }
+
+    private init(record: CKRecord, translations: [CloudTranslation]) {
+        self.record = record
+        self.translationRecords = translations
         assert(Skypiea.shared.subscriptionsWanted.contains(Self.recordType))
+    }
+
+    var reference: CKRecord.Reference {
+        CKRecord.Reference(record: record, action: .deleteSelf)
+    }
+
+    var translations: [Locale: [String]] {
+        translationRecords
+            .reduce([:]) { result, translation in
+                var result = result
+                if let translations = result[translation.locale] {
+                    result[translation.locale] = translations.appended(translation.value)
+                } else {
+                    result[translation.locale] = [translation.value]
+                }
+                return result
+            }
     }
 }
 
@@ -33,59 +50,8 @@ struct CloudPhrase: Identifiable, Codable {
 extension CloudPhrase: Cloudable {
     static let recordType = "CloudPhrase"
 
-    func toRecord() -> CKRecord {
-        RecordKeys.allCases.reduce(CKRecord(recordType: Self.recordType)) { result, key in
-            switch key {
-            case .id:
-                result[key] = id.nsString
-            case .creationDate:
-                result[key] = creationDate
-            case .updatedDate:
-                result[key] = updatedDate
-            case .translations:
-                let translationsData: Data
-                do {
-                    translationsData = try JSONEncoder().encode(translations)
-                } catch {
-                    logger.error(label: "failed to encode translations", error: error)
-                    return result
-                }
-                result[key] = NSData(data: translationsData)
-            }
-
-            return result
-        }
-    }
-
     static func fromRecord(_ record: CKRecord) -> Self? {
-        assert(RecordKeys.allCases.allSatisfy { key in record[key] != nil })
-        guard let id = (record[.id] as? NSString)?.uuid else { return nil }
-        guard let creationDate = record[.creationDate] as? Date else { return nil }
-        guard let updatedDate = record[.updatedDate] as? Date else { return nil }
-        guard let translationsNSData = record[.translations] as? NSData else { return nil }
-
-        let translationsData = Data(referencing: translationsNSData)
-        let translations = try? JSONDecoder().decode([Locale: [String]].self, from: translationsData)
-        return CloudPhrase(
-            id: id,
-            creationDate: creationDate,
-            updatedDate: updatedDate,
-            translations: translations ?? [:]
-        )
-    }
-
-    enum RecordKeys: String, CaseIterable {
-        case id
-        case creationDate = "kCreationDate"
-        case updatedDate
-        case translations
-    }
-}
-
-extension CKRecord {
-    fileprivate subscript(key: CloudPhrase.RecordKeys) -> Any? {
-        get { self[key.rawValue] }
-        set { self[key.rawValue] = newValue as? CKRecordValue }
+        CloudPhrase(record: record)
     }
 }
 
@@ -100,62 +66,89 @@ extension CloudPhrase: StorablePhrase {
     }
 
     func deleteTranslations(for locales: [Locale]) async -> Result<Self?, Errors> {
-        var item = self
-
-        for locale in locales {
-            item.translations[locale] = []
-        }
-        if item.translationsAreEmpty {
-            return await delete()
-                .map { nil }
-        }
-
-        return await item.update(translations: item.translations)
-            .map { success in success }
-            .mapError { error in .deletionFailure(context: error) }
-    }
-
-    func update(translations: [Locale: [String]]) async -> Result<Self, Errors> {
-        var item = self
-        item.translations = translations
-        item.updatedDate = Date()
-
-        let updatedItem: CloudPhrase?
+        let translationsToDelete = translationRecords
+            .filter { translation in locales.contains(translation.locale) }
+            .map(\.record)
+        let context: Skypiea = .shared
         do {
-            updatedItem = try await item.update(on: .shared)
+            try await context.batchDelete(translationsToDelete)
         } catch {
-            return .failure(.updateFailure(context: error))
+            return .failure(.deletionFailure(context: error))
         }
-        guard let updatedItem else { return .failure(.updateFailure(context: nil)) }
 
-        return .success(updatedItem)
+        let updatedTranslations = translationRecords
+            .filter { translation in !locales.contains(translation.locale) }
+        let updatedPhrase = CloudPhrase(record: record, translations: updatedTranslations)
+        return .success(updatedPhrase)
     }
 
-    static func list() async -> Result<[Self], Errors> {
-        let items: [Self]
+    func update(translations _: [Locale: [String]]) async -> Result<Self, Errors> {
+        fatalError()
+    }
+
+    static func list() async -> Result<[CloudPhrase], Errors> {
+        let context: Skypiea = .shared
+        let items: [CloudPhrase]
         do {
-            items = try await list(from: .shared)
+            items = try await list(from: context)
         } catch {
             return .failure(.fetchFailure(context: error))
         }
+        guard !items.isEmpty else { return .success(items) }
 
-        return .success(items)
+        let references = items.map(\.reference)
+        let predicate = NSPredicate(format: "phrase in %@", references)
+        let translations: [CloudTranslation]
+        do {
+            translations = try await CloudTranslation.filter(by: predicate, from: context)
+        } catch {
+            return .failure(.fetchFailure(context: error))
+        }
+        let translationsMappedByPhraseIDs = Dictionary(grouping: translations) { translation in
+            let reference = translation.phraseReference
+            let phrase = items.find(by: \.reference, is: reference)!
+            return phrase.id
+        }
+        let phrasesWithTranslations = items
+            .map { phrase in
+                CloudPhrase(record: phrase.record, translations: translationsMappedByPhraseIDs[phrase.id] ?? [])
+            }
+        return .success(phrasesWithTranslations)
     }
 
     static func create(translations: [Locale: [String]]) async -> Result<Self, Errors> {
-        let now = Date()
-        let newItem = CloudPhrase(id: UUID(), creationDate: now, updatedDate: now, translations: translations)
-            .toRecord()
-        let createdItem: Self?
+        let newItem = CKRecord(recordType: recordType)
+        let reference = CKRecord.Reference(record: newItem, action: .deleteSelf)
+        let translationRecords = translations
+            .flatMap { translation in
+                translation
+                    .value
+                    .filter { translationValue in
+                        !translationValue.trimmingByWhitespacesAndNewLines.isEmpty
+                    }
+                    .map { translationValue in
+                        CloudTranslation.makeRecord(
+                            phraseReference: reference,
+                            locale: translation.key,
+                            value: translationValue
+                        )
+                    }
+            }
+        let context: Skypiea = .shared
+        let savedRecords: [CKRecord]
         do {
-            createdItem = try await create(newItem, on: .shared)
+            savedRecords = try await context.batchSave(translationRecords.appended(newItem))
         } catch {
             return .failure(.creationFailure(context: error))
         }
 
-        guard let createdItem else { return .failure(.creationFailure(context: nil)) }
+        let phraseRecord = savedRecords.find(by: \.recordType, is: recordType)!
+        let savedTranslationRecords = savedRecords
+            .filter { record in record.recordType == CloudTranslation.recordType }
+            .map { record in CloudTranslation(record: record) }
+        let newPhrase = CloudPhrase(record: phraseRecord, translations: savedTranslationRecords)
 
-        return .success(createdItem)
+        return .success(newPhrase)
     }
 
     static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {
@@ -173,24 +166,16 @@ extension CloudPhrase: StorablePhrase {
 
     static func internalErrorToAppPhraseError(_ error: Errors) -> AppPhrase.Errors {
         switch error {
-        case .fetchFailure:
-            return .fetchFailure(context: error)
-        case .creationFailure:
-            return .creationFailure(context: error)
-        case .deletionFailure:
-            return .deletionFailure(context: error)
-        case .updateFailure:
-            return .updateFailure(context: error)
+        case .fetchFailure: return .fetchFailure(context: error)
+        case .creationFailure: return .creationFailure(context: error)
+        case .deletionFailure: return .deletionFailure(context: error)
+        case .updateFailure: return .updateFailure(context: error)
         }
     }
 
     static func fromAppPhrase(_ phrase: AppPhrase) -> CloudPhrase {
-        CloudPhrase(
-            id: phrase.id,
-            creationDate: phrase.creationDate,
-            updatedDate: phrase.updatedDate,
-            translations: phrase.translations
-        )
+        let record = CKRecord(recordType: recordType, recordID: .init(recordName: phrase.id.uuidString.uppercased()))
+        return CloudPhrase(record: record)
     }
 
     static let source: PhraseStorageSources = .cloud

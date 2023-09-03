@@ -2,7 +2,7 @@
 //  CloudTranslation.swift
 //
 //
-//  Created by Kamaal M Farah on 24/07/2023.
+//  Created by Kamaal M Farah on 02/09/2023.
 //
 
 import CloudKit
@@ -10,83 +10,64 @@ import Foundation
 import CloudSyncing
 import KamaalExtensions
 
-struct CloudTranslation: Identifiable, Codable {
-    let id: UUID
-    let phraseID: UUID
-    let locale: Locale
-    let value: String
-    let creationDate: Date
-    private(set) var updatedDate: Date
+struct CloudTranslation: Identifiable, Hashable {
+    let record: CKRecord
 
-    init(id: UUID, phraseID: UUID, locale: Locale, value: String, creationDate: Date, updatedDate: Date) {
-        self.id = id
-        self.phraseID = phraseID
-        self.locale = locale
-        self.value = value
-        self.creationDate = creationDate
-        self.updatedDate = updatedDate
+    init(record: CKRecord) {
+        self.record = record
         assert(Skypiea.shared.subscriptionsWanted.contains(Self.recordType))
     }
-}
 
-// MARK: Cloudable
+    var phraseReference: CKRecord.Reference {
+        guard let reference = record["phrase"] as? CKRecord.Reference else {
+            fatalError("Should have phrase referernce")
+        }
+        return reference
+    }
 
-extension CloudTranslation: Cloudable {
-    static let recordType = "CloudTranslation"
+    var locale: Locale {
+        guard let identifier = record["localeID"] as? NSString else { fatalError("Should have locale identifier") }
+        return Locale(identifier: identifier.string)
+    }
 
-    func toRecord() -> CKRecord {
-        RecordKeys.allCases.reduce(CKRecord(recordType: Self.recordType)) { result, key in
+    var value: String {
+        guard let value = record["value"] as? NSString else { fatalError("Should have value") }
+        return value.string
+    }
+
+    static func makeRecord(
+        phraseReference: CKRecord.Reference,
+        locale: Locale,
+        value: String,
+        recordName: String? = nil
+    ) -> CKRecord {
+        let record: CKRecord
+        if let recordName {
+            record = CKRecord(recordType: recordType, recordID: .init(recordName: recordName))
+        } else {
+            record = CKRecord(recordType: recordType)
+        }
+        return RecordKeys.allCases.reduce(record) { result, key in
             switch key {
-            case .id:
-                result[key] = id.nsString
-            case .phraseID:
-                result[key] = phraseID.nsString
-            case .locale:
-                result[key] = locale.identifier.nsString
-            case .value:
-                result[key] = value.nsString
-            case .creationDate:
-                result[key] = creationDate
-            case .updatedDate:
-                result[key] = updatedDate
+            case .localeID: result[key.rawValue] = locale.identifier.nsString!
+            case .phrase: result[key.rawValue] = phraseReference
+            case .value: result[key.rawValue] = value.nsString!
             }
             return result
         }
     }
+}
 
-    static func fromRecord(_ record: CKRecord) -> CloudTranslation? {
-        assert(RecordKeys.allCases.allSatisfy { key in record[key] != nil })
-        guard let id = (record[.id] as? NSString)?.uuid else { return nil }
-        guard let phraseID = (record[.phraseID] as? NSString)?.uuid else { return nil }
-        guard let localeID = (record[.locale] as? NSString)?.string else { return nil }
-        guard let value = (record[.value] as? NSString)?.string else { return nil }
-        guard let creationDate = record[.creationDate] as? Date else { return nil }
-        guard let updatedDate = record[.updatedDate] as? Date else { return nil }
+extension CloudTranslation: Cloudable {
+    static let recordType = "CloudTranslation"
 
-        let locale = Locale(identifier: localeID)
-        return CloudTranslation(
-            id: id,
-            phraseID: phraseID,
-            locale: locale,
-            value: value,
-            creationDate: creationDate,
-            updatedDate: updatedDate
-        )
-    }
-
-    enum RecordKeys: String, CaseIterable {
-        case id
-        case phraseID
-        case locale
-        case value
-        case creationDate = "kCreationDate"
-        case updatedDate
+    static func fromRecord(_ record: CKRecord) -> Self? {
+        CloudTranslation(record: record)
     }
 }
 
-extension CKRecord {
-    fileprivate subscript(key: CloudTranslation.RecordKeys) -> Any? {
-        get { self[key.rawValue] }
-        set { self[key.rawValue] = newValue as? CKRecordValue }
-    }
+private enum RecordKeys: String, CaseIterable {
+    case phrase
+    case localeID
+    case value
 }
