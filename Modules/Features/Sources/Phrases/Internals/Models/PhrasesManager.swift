@@ -68,7 +68,7 @@ public final class PhrasesManager: ObservableObject {
         to targetLocale: Locale
     ) async -> Result<Void, Errors> {
         await withLoading {
-            guard let sourceText = phrase.translations[sourceLocale]?.first?.trimmingByWhitespacesAndNewLines,
+            guard let sourceText = phrase.translations[sourceLocale]?.trimmingByWhitespacesAndNewLines,
                   !sourceText.isEmpty else {
                 logger.error("Failed to get source text")
                 return .failure(.unknownTranslationFailure)
@@ -94,7 +94,7 @@ public final class PhrasesManager: ObservableObject {
                 id: phrase.id,
                 creationDate: phrase.creationDate,
                 updatedDate: Date(),
-                translations: phrase.translations.merged(with: [targetLocale: [translatedText]]),
+                translations: phrase.translations.merged(with: [targetLocale: translatedText]),
                 source: phrase.source
             )
             logger.info("Translation found for \(sourceText)")

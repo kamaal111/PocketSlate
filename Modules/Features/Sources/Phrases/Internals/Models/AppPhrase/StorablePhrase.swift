@@ -16,11 +16,11 @@ protocol StorablePhrase: Identifiable {
     associatedtype Errors: Error
 
     var id: UUID { get }
-    var translations: [Locale: [String]] { get }
+    var translations: [Locale: String] { get }
     var creationDate: Date { get }
     var updatedDate: Date { get }
 
-    func update(translations: [Locale: [String]]) async -> Result<Self, Errors>
+    func update(translations: [Locale: String]) async -> Result<Self, Errors>
     func deleteTranslations(for locales: [Locale]) async -> Result<Self?, Errors>
 
     static var source: PhraseStorageSources { get }

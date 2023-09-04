@@ -137,14 +137,12 @@ extension PhrasesScreen {
                 previouslyEditedPhrase = editedPhrases[previouslyEditedPhraseIndex]
             }
 
-            let editingPrimaryPhraseField = (previouslyEditedPhrase ?? phrase).translations[primaryLocale]?.first ?? ""
-            let editingSecondaryPhraseField = (previouslyEditedPhrase ?? phrase)
-                .translations[secondaryLocale]?
-                .first ?? ""
+            let editingPrimaryPhraseField = (previouslyEditedPhrase ?? phrase).translations[primaryLocale]
+            let editingSecondaryPhraseField = (previouslyEditedPhrase ?? phrase).translations[secondaryLocale]
 
             withAnimation {
-                self.editingPrimaryPhraseField = editingPrimaryPhraseField
-                self.editingSecondaryPhraseField = editingSecondaryPhraseField
+                self.editingPrimaryPhraseField = editingPrimaryPhraseField ?? ""
+                self.editingSecondaryPhraseField = editingSecondaryPhraseField ?? ""
                 textEditingPhrase = phrase
             }
         }
@@ -234,16 +232,16 @@ extension PhrasesScreen {
         private func updateEditedPhrasesOnChanges() {
             guard let textEditingPhrase else { return }
 
-            let selectedPhrasePrimaryTranslation = textEditingPhrase.translations[primaryLocale]?.first
-            let selectedPhraseSecondaryTranslation = textEditingPhrase.translations[secondaryLocale]?.first
+            let selectedPhrasePrimaryTranslation = textEditingPhrase.translations[primaryLocale]
+            let selectedPhraseSecondaryTranslation = textEditingPhrase.translations[secondaryLocale]
 
             guard editingPrimaryPhraseField != selectedPhrasePrimaryTranslation ||
                 editingSecondaryPhraseField != selectedPhraseSecondaryTranslation else { return }
 
             let translations = textEditingPhrase.translations
                 .merged(with: [
-                    primaryLocale: [editingPrimaryPhraseField],
-                    secondaryLocale: [editingSecondaryPhraseField],
+                    primaryLocale: editingPrimaryPhraseField,
+                    secondaryLocale: editingSecondaryPhraseField,
                 ])
             let editedPhrase = AppPhrase(
                 id: textEditingPhrase.id,

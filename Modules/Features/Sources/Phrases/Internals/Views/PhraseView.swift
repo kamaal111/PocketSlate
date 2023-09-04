@@ -88,14 +88,14 @@ struct PhraseView: View {
                 )
             } else {
                 HStack {
-                    if phrase.translations[sourceLocale]?.first?.trimmingByWhitespacesAndNewLines.isEmpty == false,
+                    if phrase.translations[sourceLocale]?.trimmingByWhitespacesAndNewLines.isEmpty == false,
                        supportedTranslatableLocales.contains(locale) {
                         Image(systemName: "globe")
                             .kBold()
                             .foregroundColor(.accentColor)
                             .onTapGesture { translateText(phrase, sourceLocale, locale) }
                     }
-                    if let text = phrase.translations[locale]?.first, !text.isEmpty {
+                    if let text = phrase.translations[locale], !text.isEmpty {
                         Text(text)
                         Spacer()
                         if editMode?.isEditing == false {
@@ -150,8 +150,8 @@ struct PhraseView_Previews: PreviewProvider {
                 creationDate: Date(timeIntervalSince1970: 1_687_286_860),
                 updatedDate: Date(timeIntervalSince1970: 1_687_286_860),
                 translations: [
-                    primaryLocale: ["Hello"],
-                    secondaryLocale: ["Ciao"],
+                    primaryLocale: "Hello",
+                    secondaryLocale: "Ciao",
                 ],
                 source: .userDefaults
             ),
