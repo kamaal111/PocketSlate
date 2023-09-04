@@ -12,7 +12,7 @@ struct AppPhrase: Hashable, Identifiable {
     let id: UUID
     let creationDate: Date
     let updatedDate: Date
-    let translations: [Locale: [String]]
+    let translations: [Locale: String]
     let source: PhraseStorageSources
 
     enum Errors: Error {
@@ -23,7 +23,7 @@ struct AppPhrase: Hashable, Identifiable {
         case updateFailure(context: Error)
     }
 
-    func update(translations: [Locale: [String]]) async -> Result<AppPhrase, Errors> {
+    func update(translations: [Locale: String]) async -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
             return await Self.mapErrors(

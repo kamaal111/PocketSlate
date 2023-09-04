@@ -15,7 +15,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
     let id: UUID
     let creationDate: Date
     private(set) var updatedDate: Date
-    private(set) var translations: [Locale: [String]]
+    private(set) var translations: [Locale: String]
 
     enum Errors: Error {
         case invalidPayload
@@ -43,7 +43,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
 
         var item = allItems[index]
         for locale in locales {
-            item.translations[locale] = []
+            item.translations[locale] = nil
             item.updatedDate = Date()
         }
         if item.translationsAreEmpty {
@@ -57,7 +57,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
         return .success(item)
     }
 
-    func update(translations: [Locale: [String]]) async -> Result<Self, Errors> {
+    func update(translations: [Locale: String]) async -> Result<Self, Errors> {
         if translations.isEmpty || translations.values.allSatisfy(\.isEmpty) {
             return .failure(.invalidPayload)
         }
@@ -113,6 +113,7 @@ struct UserDefaultsPhrase: Codable, StorablePhrase {
             creationDate: now,
             updatedDate: now,
             translations: translations
+                .reduce([:]) { _, _ in fatalError() }
         )
         let listResult = await list().map { $0.appended(newPhrase) }
         switch listResult {

@@ -31,17 +31,9 @@ struct CloudPhrase: Identifiable, Hashable {
         CKRecord.Reference(record: record, action: .deleteSelf)
     }
 
-    var translations: [Locale: [String]] {
+    var translations: [Locale: String] {
         translationRecords
-            .reduce([:]) { result, translation in
-                var result = result
-                if let translations = result[translation.locale] {
-                    result[translation.locale] = translations.appended(translation.value)
-                } else {
-                    result[translation.locale] = [translation.value]
-                }
-                return result
-            }
+            .reduce([:]) { result, translation in result.merged(with: [translation.locale: translation.value]) }
     }
 }
 
@@ -82,8 +74,29 @@ extension CloudPhrase: StorablePhrase {
         return .success(updatedPhrase)
     }
 
-    func update(translations _: [Locale: [String]]) async -> Result<Self, Errors> {
-        fatalError()
+    func update(translations: [Locale: String]) async -> Result<Self, Errors> {
+        let context: Skypiea = .shared
+        let newTranslations = translations
+            .map { locale, newTranslation in
+                let existingTranslation = self.translationRecords.find(by: \.locale, is: locale)
+                return CloudTranslation.makeRecord(
+                    phraseReference: reference,
+                    locale: locale,
+                    value: newTranslation,
+                    recordName: existingTranslation?.record.recordID.recordName
+                )
+            }
+        let result: [CKRecord]
+        do {
+            result = try await context.batchSave(newTranslations)
+        } catch {
+            return .failure(.updateFailure(context: error))
+        }
+
+        let updatedTranslation = result
+            .map { record in CloudTranslation(record: record) }
+        let newPhrase = CloudPhrase(record: record, translations: updatedTranslation)
+        return .success(newPhrase)
     }
 
     static func list() async -> Result<[CloudPhrase], Errors> {
@@ -175,21 +188,19 @@ extension CloudPhrase: StorablePhrase {
 
     static func fromAppPhrase(_ phrase: AppPhrase) -> CloudPhrase {
         let record = CKRecord(recordType: recordType, recordID: .init(recordName: phrase.id.uuidString.uppercased()))
-        return CloudPhrase(record: record)
+        let translations = phrase.translations
+            .map { locale, translation in
+                let record = CloudTranslation.makeRecord(
+                    phraseReference: CKRecord.Reference(
+                        recordID: .init(recordName: phrase.id.nsString.uppercased), action: .deleteSelf
+                    ),
+                    locale: locale,
+                    value: translation
+                )
+                return CloudTranslation(record: record)
+            }
+        return CloudPhrase(record: record, translations: translations)
     }
 
     static let source: PhraseStorageSources = .cloud
-}
-
-// MARK: Privates
-
-extension CloudPhrase {
-    private func delete() async -> Result<Void, Errors> {
-        do {
-            try await delete(onContext: .shared)
-        } catch {
-            return .failure(.deletionFailure(context: error))
-        }
-        return .success(())
-    }
 }
