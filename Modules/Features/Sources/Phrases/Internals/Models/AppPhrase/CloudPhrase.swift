@@ -100,33 +100,10 @@ extension CloudPhrase: StorablePhrase {
     }
 
     static func list() async -> Result<[CloudPhrase], Errors> {
-        let context: Skypiea = .shared
-        let items: [CloudPhrase]
-        do {
-            items = try await list(from: context)
-        } catch {
-            return .failure(.fetchFailure(context: error))
+        await listPhrasesAndAddTranslations { phrases in
+            let references = phrases.map(\.reference)
+            return NSPredicate(format: "phrase in %@", references)
         }
-        guard !items.isEmpty else { return .success(items) }
-
-        let references = items.map(\.reference)
-        let predicate = NSPredicate(format: "phrase in %@", references)
-        let translations: [CloudTranslation]
-        do {
-            translations = try await CloudTranslation.filter(by: predicate, from: context)
-        } catch {
-            return .failure(.fetchFailure(context: error))
-        }
-        let translationsMappedByPhraseIDs = Dictionary(grouping: translations) { translation in
-            let reference = translation.phraseReference
-            let phrase = items.find(by: \.reference, is: reference)!
-            return phrase.id
-        }
-        let phrasesWithTranslations = items
-            .map { phrase in
-                CloudPhrase(record: phrase.record, translations: translationsMappedByPhraseIDs[phrase.id] ?? [])
-            }
-        return .success(phrasesWithTranslations)
     }
 
     static func create(translations: [Locale: [String]]) async -> Result<Self, Errors> {
@@ -165,16 +142,40 @@ extension CloudPhrase: StorablePhrase {
     }
 
     static func listForLocale(_ locales: [Locale]) async -> Result<[Self], Errors> {
-        await list()
-            .map { success in
-                success
-                    .filter { phrase in
-                        let translations = phrase.translations
-                        guard !translations.isEmpty else { return false }
+        await listPhrasesAndAddTranslations { phrases in
+            let references = phrases.map(\.reference)
+            let localeIdentifiers = locales.map(\.identifier.nsString!)
+            return NSPredicate(format: "phrase in %@ AND localeID in %@", references, localeIdentifiers)
+        }
+    }
 
-                        return !locales.allSatisfy { locale in translations[locale]?.isEmpty ?? true }
-                    }
+    private static func listPhrasesAndAddTranslations(translationsPredicate: (_ phrases: [CloudPhrase])
+        -> NSPredicate) async -> Result<[CloudPhrase], Errors> {
+        let context: Skypiea = .shared
+        let items: [CloudPhrase]
+        do {
+            items = try await list(from: context)
+        } catch {
+            return .failure(.fetchFailure(context: error))
+        }
+        guard !items.isEmpty else { return .success(items) }
+
+        let translations: [CloudTranslation]
+        do {
+            translations = try await CloudTranslation.filter(by: translationsPredicate(items), from: context)
+        } catch {
+            return .failure(.fetchFailure(context: error))
+        }
+        let translationsMappedByPhraseIDs = Dictionary(grouping: translations) { translation in
+            let reference = translation.phraseReference
+            let phrase = items.find(by: \.reference, is: reference)!
+            return phrase.id
+        }
+        let phrasesWithTranslations = items
+            .map { phrase in
+                CloudPhrase(record: phrase.record, translations: translationsMappedByPhraseIDs[phrase.id] ?? [])
             }
+        return .success(phrasesWithTranslations)
     }
 
     static func internalErrorToAppPhraseError(_ error: Errors) -> AppPhrase.Errors {
