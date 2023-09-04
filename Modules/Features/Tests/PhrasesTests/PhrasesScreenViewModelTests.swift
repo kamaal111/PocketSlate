@@ -32,8 +32,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Cheers"],
-                Locale(identifier: "it"): ["Salute"],
+                Locale(identifier: "en"): "Cheers",
+                Locale(identifier: "it"): "Salute",
             ],
             source: .userDefaults
         )
@@ -42,8 +42,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Do you speak English"],
-                Locale(identifier: "it"): ["Parla Inglese"],
+                Locale(identifier: "en"): "Do you speak English",
+                Locale(identifier: "it"): "Parla Inglese",
             ],
             source: .userDefaults
         )
@@ -62,8 +62,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
                 creationDate: now,
                 updatedDate: now,
                 translations: [
-                    Locale(identifier: "en"): ["Cheers!"],
-                    Locale(identifier: "it"): ["Salute!"],
+                    Locale(identifier: "en"): "Cheers!",
+                    Locale(identifier: "it"): "Salute!",
                 ],
                 source: .userDefaults
             ),
@@ -72,8 +72,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
                 creationDate: now,
                 updatedDate: now,
                 translations: [
-                    Locale(identifier: "en"): ["Do you speak English?"],
-                    Locale(identifier: "it"): ["Parla Inglese?"],
+                    Locale(identifier: "en"): "Do you speak English?",
+                    Locale(identifier: "it"): "Parla Inglese?",
                 ],
                 source: .userDefaults
             ),
@@ -90,8 +90,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Your welcome"],
-                Locale(identifier: "it"): ["Prgo"],
+                Locale(identifier: "en"): "Your welcome",
+                Locale(identifier: "it"): "Prgo",
             ],
             source: .userDefaults
         )
@@ -100,8 +100,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Excuse me"],
-                Locale(identifier: "it"): ["Mi scusi"],
+                Locale(identifier: "en"): "Excuse me",
+                Locale(identifier: "it"): "Mi scusi",
             ],
             source: .userDefaults
         )
@@ -123,8 +123,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
                 creationDate: now,
                 updatedDate: now,
                 translations: [
-                    Locale(identifier: "en"): ["You're welcome"],
-                    Locale(identifier: "it"): ["Prego"],
+                    Locale(identifier: "en"): "You're welcome",
+                    Locale(identifier: "it"): "Prego",
                 ],
                 source: .userDefaults
             ),
@@ -139,8 +139,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["N"],
-                Locale(identifier: "it"): ["o"],
+                Locale(identifier: "en"): "N",
+                Locale(identifier: "it"): "o",
             ],
             source: .userDefaults
         )
@@ -149,8 +149,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["I am sorry"],
-                Locale(identifier: "it"): ["Mi dispiace"],
+                Locale(identifier: "en"): "I am sorry",
+                Locale(identifier: "it"): "Mi dispiace",
             ],
             source: .userDefaults
         )
@@ -172,8 +172,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
                 creationDate: now,
                 updatedDate: now,
                 translations: [
-                    Locale(identifier: "en"): ["Yes"],
-                    Locale(identifier: "it"): ["Si"],
+                    Locale(identifier: "en"): "Yes",
+                    Locale(identifier: "it"): "Si",
                 ],
                 source: .userDefaults
             ),
@@ -188,8 +188,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Good veefening"],
-                Locale(identifier: "it"): ["Buona pera"],
+                Locale(identifier: "en"): "Good veefening",
+                Locale(identifier: "it"): "Buona pera",
             ],
             source: .userDefaults
         )
@@ -198,8 +198,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Speak slowly"],
-                Locale(identifier: "it"): ["Parla lentamente"],
+                Locale(identifier: "en"): "Speak slowly",
+                Locale(identifier: "it"): "Parla lentamente",
             ],
             source: .userDefaults
         )
@@ -220,8 +220,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
                 creationDate: now,
                 updatedDate: now,
                 translations: [
-                    Locale(identifier: "en"): ["Good evening"],
-                    Locale(identifier: "it"): ["Buona sera"],
+                    Locale(identifier: "en"): "Good evening",
+                    Locale(identifier: "it"): "Buona sera",
                 ],
                 source: .userDefaults
             ),
@@ -236,8 +236,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Thank u"],
-                Locale(identifier: "it"): ["Graze"],
+                Locale(identifier: "en"): "Thank u",
+                Locale(identifier: "it"): "Graze",
             ],
             source: .userDefaults
         )
@@ -246,8 +246,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Very good"],
-                Locale(identifier: "it"): ["Molto bene"],
+                Locale(identifier: "en"): "Very good",
+                Locale(identifier: "it"): "Molto bene",
             ],
             source: .userDefaults
         )
@@ -265,8 +265,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
                 creationDate: now,
                 updatedDate: now,
                 translations: [
-                    Locale(identifier: "en"): ["Thank You"],
-                    Locale(identifier: "it"): ["Grazie"],
+                    Locale(identifier: "en"): "Thank You",
+                    Locale(identifier: "it"): "Grazie",
                 ],
                 source: .userDefaults
             ),
@@ -281,8 +281,8 @@ final class PhrasesScreenViewModelTests: XCTestCase {
             creationDate: now,
             updatedDate: now,
             translations: [
-                Locale(identifier: "en"): ["Hello"],
-                Locale(identifier: "it"): ["Ciao"],
+                Locale(identifier: "en"): "Hello",
+                Locale(identifier: "it"): "Ciao",
             ],
             source: .userDefaults
         )
