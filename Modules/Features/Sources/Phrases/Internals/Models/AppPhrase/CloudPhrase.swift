@@ -76,16 +76,33 @@ extension CloudPhrase: StorablePhrase {
 
     func update(translations: [Locale: String]) async -> Result<Self, Errors> {
         let context: Skypiea = .shared
+        let translationsPredicate = NSPredicate(
+            format: "phrase = %@ AND localeID in %@",
+            reference,
+            translations.values.map(\.nsString!)
+        )
+        let translationRecords: [CloudTranslation]
+        do {
+            translationRecords = try await CloudTranslation.filter(by: translationsPredicate, from: context)
+        } catch {
+            return .failure(.updateFailure(context: error))
+        }
+
         let newTranslations = translations
+            .filter { locale, newTranslation in
+                guard let translation = translationRecords.find(by: \.locale, is: locale) else { return true }
+                return translation.value != newTranslation
+            }
             .map { locale, newTranslation in
-                let existingTranslation = self.translationRecords.find(by: \.locale, is: locale)
+                let translation = translationRecords.find(by: \.locale, is: locale)
                 return CloudTranslation.makeRecord(
                     phraseReference: reference,
                     locale: locale,
                     value: newTranslation,
-                    recordName: existingTranslation?.record.recordID.recordName
+                    recordName: translation?.record.recordID.recordName
                 )
             }
+
         let result: [CKRecord]
         do {
             result = try await context.batchSave(newTranslations)
@@ -175,6 +192,7 @@ extension CloudPhrase: StorablePhrase {
             .map { phrase in
                 CloudPhrase(record: phrase.record, translations: translationsMappedByPhraseIDs[phrase.id] ?? [])
             }
+            .filter { phrase in !phrase.translationsAreEmpty }
         return .success(phrasesWithTranslations)
     }
 
