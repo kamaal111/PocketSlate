@@ -194,8 +194,13 @@ public final class PhrasesManager: ObservableObject {
             case let .success(success):
                 phrases = success
             }
-            await setPhrases(phrases.map { updatedPhrases[$0.id] ?? $0 })
-
+            let phrasesToSet = phrases
+                .map { updatedPhrases[$0.id] ?? $0 }
+            let remainingPhrasesToSet = updatedPhrases
+                .filter { id, _ in phrasesToSet.find(by: \.id, is: id) == nil }
+                .values
+                .asArray()
+            await setPhrases(phrasesToSet.concat(remainingPhrasesToSet))
             return .success(())
         }
     }

@@ -79,7 +79,7 @@ extension CloudPhrase: StorablePhrase {
         let translationsPredicate = NSPredicate(
             format: "phrase = %@ AND localeID in %@",
             reference,
-            translations.values.map(\.nsString!)
+            translations.keys.map(\.identifier.nsString!)
         )
         let translationRecords: [CloudTranslation]
         do {
@@ -110,8 +110,12 @@ extension CloudPhrase: StorablePhrase {
             return .failure(.updateFailure(context: error))
         }
 
-        let updatedTranslation = result
+        var updatedTranslation = result
             .map { record in CloudTranslation(record: record) }
+        let updatedTranslationLocales = updatedTranslation.map(\.locale)
+        updatedTranslation = translationRecords
+            .filter { translation in !updatedTranslationLocales.contains(translation.locale) }
+            .concat(updatedTranslation)
         let newPhrase = CloudPhrase(record: record, translations: updatedTranslation)
         return .success(newPhrase)
     }
