@@ -1,14 +1,15 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
 
 let package = Package(
     name: "Features",
-    platforms: [.macOS(.v12), .iOS(.v15)],
+    platforms: [.macOS(.v14), .iOS(.v17)],
     products: [
         .library(name: "CloudSyncing", targets: ["CloudSyncing"]),
         .library(name: "PhrasesV1", targets: ["PhrasesV1"]),
+        .library(name: "PhrasesV2", targets: ["PhrasesV2"]),
         .library(name: "Users", targets: ["Users"]),
     ],
     dependencies: [
@@ -46,6 +47,8 @@ let package = Package(
             ]
         ),
         .testTarget(name: "PhrasesV1Tests", dependencies: ["PhrasesV1"]),
+        .target(name: "PhrasesV2", dependencies: []),
+        .testTarget(name: "PhrasesV2Tests", dependencies: ["PhrasesV2"]),
         .target(
             name: "Users",
             dependencies: [
