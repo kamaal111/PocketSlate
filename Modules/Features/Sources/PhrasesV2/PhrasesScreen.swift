@@ -8,15 +8,17 @@
 import SwiftUI
 
 public struct PhrasesScreen: View {
+    @State private var viewModel = ViewModel()
+
     public init() { }
 
     public var body: some View {
         VStack {
             LocaleSelectors(
-                locales: (PreviewData.locales.first!, PreviewData.locales.last!),
+                locales: viewModel.locales,
                 selectedLocaleSelector: .primary,
-                swapLocales: { },
-                selectLocaleSelector: { _ in }
+                swapLocales: { viewModel.swapLocales() },
+                selectLocaleSelector: { localeSelector in viewModel.selectLocaleSelector(localeSelector) }
             )
         }
     }
