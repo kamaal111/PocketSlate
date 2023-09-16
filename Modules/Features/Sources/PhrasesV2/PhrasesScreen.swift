@@ -11,10 +11,22 @@ public struct PhrasesScreen: View {
     public init() { }
 
     public var body: some View {
-        Text("Hello, World!")
+        VStack {
+            LocaleSelectors(
+                locales: (PreviewData.locales.first!, PreviewData.locales.last!),
+                selectedLocaleSelector: .primary,
+                swapLocales: { },
+                selectLocaleSelector: { _ in }
+            )
+        }
     }
 }
 
+#if DEBUG
+import Users
+
 #Preview {
     PhrasesScreen()
+        .usersEnvironment()
 }
+#endif
