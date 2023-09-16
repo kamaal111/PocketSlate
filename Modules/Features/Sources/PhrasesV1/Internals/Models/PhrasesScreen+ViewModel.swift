@@ -48,7 +48,7 @@ extension PhrasesScreen {
 
         private var pocketSlateAPI: PocketSlateAPI?
 
-        init(primaryLocale: Locale, secondaryLocale: Locale) {
+        private init(primaryLocale: Locale, secondaryLocale: Locale) {
             self.primaryLocale = primaryLocale
             self.secondaryLocale = secondaryLocale
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []

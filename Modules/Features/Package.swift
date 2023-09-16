@@ -49,6 +49,9 @@ let package = Package(
         .testTarget(name: "PhrasesV1Tests", dependencies: ["PhrasesV1"]),
         .target(name: "PhrasesV2", dependencies: [
             .product(name: "KamaalUI", package: "KamaalSwift"),
+            .product(name: "KamaalUtils", package: "KamaalSwift"),
+            .product(name: "KamaalExtensions", package: "KamaalSwift"),
+            .product(name: "KamaalLogger", package: "KamaalSwift"),
             "AppUI",
             "Users",
         ]),
