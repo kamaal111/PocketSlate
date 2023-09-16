@@ -47,7 +47,11 @@ let package = Package(
             ]
         ),
         .testTarget(name: "PhrasesV1Tests", dependencies: ["PhrasesV1"]),
-        .target(name: "PhrasesV2", dependencies: []),
+        .target(name: "PhrasesV2", dependencies: [
+            .product(name: "KamaalUI", package: "KamaalSwift"),
+            "AppUI",
+            "Users",
+        ]),
         .testTarget(name: "PhrasesV2Tests", dependencies: ["PhrasesV2"]),
         .target(
             name: "Users",
