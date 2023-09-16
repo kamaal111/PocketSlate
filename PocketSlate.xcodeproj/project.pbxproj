@@ -22,6 +22,7 @@
 		2C08638C2A6C43F600EE30DB /* AppLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08638B2A6C43F600EE30DB /* AppLogo.swift */; };
 		2C08638E2A6C45B800EE30DB /* KamaalExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 2C08638D2A6C45B800EE30DB /* KamaalExtensions */; };
 		2C0863942A6C4CB200EE30DB /* KoreanCalligraphy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C0863932A6C4CB200EE30DB /* KoreanCalligraphy.ttf */; };
+		2C2591E52AB5B60500CB73A7 /* PhrasesV1 in Frameworks */ = {isa = PBXBuildFile; productRef = 2C2591E42AB5B60500CB73A7 /* PhrasesV1 */; };
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
 		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
 		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
@@ -32,7 +33,6 @@
 		2C6BABF329FD59B300009E19 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C6BABEF29FD59B200009E19 /* Preview Assets.xcassets */; };
 		2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABF029FD59B200009E19 /* ContentView.swift */; };
 		2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */ = {isa = PBXBuildFile; productRef = 2C6BAC0F29FD605200009E19 /* AppLocales */; };
-		2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */ = {isa = PBXBuildFile; productRef = 2C831E622A364D6D0028BCD8 /* Phrases */; };
 		2C9094B42A6C69A500160DE8 /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C9094B32A6C69A500160DE8 /* KamaalLogger */; };
 		2C9094B72A6C6A4700160DE8 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094B62A6C6A4700160DE8 /* Shell.swift */; };
 		2C9094BC2A6C6C6E00160DE8 /* app-icon-generator in Resources */ = {isa = PBXBuildFile; fileRef = 2C9094BB2A6C6C6E00160DE8 /* app-icon-generator */; };
@@ -93,7 +93,6 @@
 		2C9094C02A6C700E00160DE8 /* SavePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePanel.swift; sourceTree = "<group>"; };
 		2C93E7A32A6EDAB700476C41 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2C93E7A42A6EDAC600476C41 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = "<group>"; };
-		2C93E7A52A6EDADD00476C41 /* pyproject.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = pyproject.toml; sourceTree = "<group>"; };
 		2CB0272629FD58DF0000F5AD /* LexiGlotty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LexiGlotty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CBF68862A6B026400A593E1 /* PSShared */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PSShared; sourceTree = "<group>"; };
 		2CD49BC32A24C6D70085DD83 /* MacOSInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = MacOSInfo.plist; sourceTree = "<group>"; };
@@ -120,11 +119,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C2591E52AB5B60500CB73A7 /* PhrasesV1 in Frameworks */,
 				2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */,
 				2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */,
 				2C545C772A37AEDB00A672E0 /* Users in Frameworks */,
 				2CDF2BF52A3B9A9B007CA8FC /* Navigation in Frameworks */,
-				2C831E632A364D6D0028BCD8 /* Phrases in Frameworks */,
 				2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -305,7 +304,6 @@
 				2C831E5F2A3649F30028BCD8 /* LICENSE */,
 				2C831E602A364A050028BCD8 /* package.json */,
 				2C93E7A32A6EDAB700476C41 /* README.md */,
-				2C93E7A52A6EDADD00476C41 /* pyproject.toml */,
 				2C6BAC0E29FD605200009E19 /* Frameworks */,
 				2C6BAC0429FD5D9C00009E19 /* Locales */,
 				2C6BAC0C29FD5F7400009E19 /* Modules */,
@@ -377,11 +375,11 @@
 			name = "LexiGlotty-macOS";
 			packageProductDependencies = (
 				2C6BAC0F29FD605200009E19 /* AppLocales */,
-				2C831E622A364D6D0028BCD8 /* Phrases */,
 				2C545C762A37AEDB00A672E0 /* Users */,
 				2CDF2BF42A3B9A9B007CA8FC /* Navigation */,
 				2C3333E52A48C7BB00990E4E /* CloudSyncing */,
 				2C3333E82A48C85A00990E4E /* KamaalLogger */,
+				2C2591E42AB5B60500CB73A7 /* PhrasesV1 */,
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* LexiGlotty.app */;
@@ -1025,6 +1023,10 @@
 			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
 			productName = KamaalExtensions;
 		};
+		2C2591E42AB5B60500CB73A7 /* PhrasesV1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PhrasesV1;
+		};
 		2C3333E52A48C7BB00990E4E /* CloudSyncing */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CloudSyncing;
@@ -1041,10 +1043,6 @@
 		2C6BAC0F29FD605200009E19 /* AppLocales */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = AppLocales;
-		};
-		2C831E622A364D6D0028BCD8 /* Phrases */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Phrases;
 		};
 		2C9094B32A6C69A500160DE8 /* KamaalLogger */ = {
 			isa = XCSwiftPackageProductDependency;

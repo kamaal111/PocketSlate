@@ -7,7 +7,7 @@
 
 import Users
 import SwiftUI
-import Phrases
+import PhrasesV1
 
 @main
 struct PocketSlateApp: App {

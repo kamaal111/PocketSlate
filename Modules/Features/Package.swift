@@ -8,7 +8,7 @@ let package = Package(
     platforms: [.macOS(.v12), .iOS(.v15)],
     products: [
         .library(name: "CloudSyncing", targets: ["CloudSyncing"]),
-        .library(name: "Phrases", targets: ["Phrases"]),
+        .library(name: "PhrasesV1", targets: ["PhrasesV1"]),
         .library(name: "Users", targets: ["Users"]),
     ],
     dependencies: [
@@ -27,7 +27,7 @@ let package = Package(
             ]
         ),
         .target(
-            name: "Phrases",
+            name: "PhrasesV1",
             dependencies: [
                 .product(name: "KamaalPopUp", package: "KamaalSwift"),
                 .product(name: "KamaalExtensions", package: "KamaalSwift"),
@@ -45,7 +45,7 @@ let package = Package(
                 .process("Internals/Resources"),
             ]
         ),
-        .testTarget(name: "PhrasesTests", dependencies: ["Phrases"]),
+        .testTarget(name: "PhrasesV1Tests", dependencies: ["PhrasesV1"]),
         .target(
             name: "Users",
             dependencies: [

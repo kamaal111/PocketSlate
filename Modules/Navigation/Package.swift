@@ -26,7 +26,7 @@ let package = Package(
                 .product(name: "KamaalPopUp", package: "KamaalSwift"),
                 .product(name: "KamaalSettings", package: "KamaalSwift"),
                 .product(name: "Users", package: "Features"),
-                .product(name: "Phrases", package: "Features"),
+                .product(name: "PhrasesV1", package: "Features"),
                 "AppLocales",
             ]
         ),
