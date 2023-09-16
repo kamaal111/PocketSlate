@@ -54,6 +54,9 @@ let package = Package(
             .product(name: "KamaalLogger", package: "KamaalSwift"),
             "AppUI",
             "Users",
+        ],
+        resources: [
+            .process("Internals/Resources"),
         ]),
         .testTarget(name: "PhrasesV2Tests", dependencies: ["PhrasesV2"]),
         .target(

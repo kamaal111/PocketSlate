@@ -5,6 +5,7 @@
 //  Created by Kamaal M Farah on 16/09/2023.
 //
 
+import AppUI
 import SwiftUI
 import Observation
 import KamaalLogger
@@ -17,6 +18,10 @@ extension PhrasesScreen {
     final class ViewModel {
         private(set) var locales: (primary: Locale, secondary: Locale)
         private(set) var selectedLocaleSelector: LocaleSelectorTypes?
+        var editMode: EditMode = .inactive
+        var newPrimaryPhrase = ""
+        var newSecondaryPhrase = ""
+
         private var previouslySelectedLocales: [Locale]
 
         convenience init() {

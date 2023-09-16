@@ -1,0 +1,12 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Done" : {
+      "extractionState" : "manual"
+    },
+    "New translation" : {
+      "extractionState" : "manual"
+    }
+  },
+  "version" : "1.0"
+}
