@@ -1,5 +1,5 @@
 //
-//  Locale+extensions.swift
+//  Locale.swift
 //  PocketSlate
 //
 //  Created by Kamaal M Farah on 28/05/2023.

@@ -67,10 +67,10 @@ struct AppPhrase: Hashable, Identifiable {
     ) async -> Result<AppPhrase, Errors> {
         switch source {
         case .userDefaults:
-            return await Self.mapErrors(UserDefaultsPhrase.create(translations: translations), of: source)
+            return await mapErrors(UserDefaultsPhrase.create(translations: translations), of: source)
                 .map(\.asAppPhrase)
         case .cloud:
-            return await Self.mapErrors(CloudPhrase.create(translations: translations), of: source)
+            return await mapErrors(CloudPhrase.create(translations: translations), of: source)
                 .map(\.asAppPhrase)
         }
     }
@@ -78,10 +78,10 @@ struct AppPhrase: Hashable, Identifiable {
     static func list(from source: PhraseStorageSources) async -> Result<[AppPhrase], Errors> {
         switch source {
         case .userDefaults:
-            return await Self.mapErrors(UserDefaultsPhrase.list(), of: source)
+            return await mapErrors(UserDefaultsPhrase.list(), of: source)
                 .map { success in success.map(\.asAppPhrase) }
         case .cloud:
-            return await Self.mapErrors(CloudPhrase.list(), of: source)
+            return await mapErrors(CloudPhrase.list(), of: source)
                 .map { success in success.map(\.asAppPhrase) }
         }
     }

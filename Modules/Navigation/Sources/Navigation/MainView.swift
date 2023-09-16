@@ -7,8 +7,8 @@
 
 import Users
 import SwiftUI
-import Phrases
 import KamaalUI
+import PhrasesV1
 import KamaalPopUp
 import KamaalSettings
 import KamaalNavigation

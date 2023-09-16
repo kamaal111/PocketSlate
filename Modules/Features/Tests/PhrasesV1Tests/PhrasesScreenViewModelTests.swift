@@ -7,7 +7,7 @@
 
 import XCTest
 import Foundation
-@testable import Phrases
+@testable import PhrasesV1
 
 final class PhrasesScreenViewModelTests: XCTestCase {
     // swiftlint:disable:next implicitly_unwrapped_optional
