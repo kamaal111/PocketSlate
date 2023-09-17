@@ -52,6 +52,7 @@ let package = Package(
             .product(name: "KamaalUtils", package: "KamaalSwift"),
             .product(name: "KamaalExtensions", package: "KamaalSwift"),
             .product(name: "KamaalLogger", package: "KamaalSwift"),
+            .product(name: "KamaalAlgorithms", package: "KamaalSwift"),
             "AppUI",
             "Users",
         ],

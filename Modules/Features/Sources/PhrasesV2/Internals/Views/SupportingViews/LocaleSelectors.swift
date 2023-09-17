@@ -10,7 +10,7 @@ import SwiftUI
 import KamaalUI
 
 struct LocaleSelectors: View {
-    let locales: (primary: Locale, secondary: Locale)
+    let locales: LocalePair
     let selectedLocaleSelector: LocaleSelectorTypes?
     let swapLocales: () -> Void
     let selectLocaleSelector: (_ selector: LocaleSelectorTypes) -> Void
@@ -45,7 +45,7 @@ import Users
 
 #Preview {
     LocaleSelectors(
-        locales: (PreviewData.locales.first!, PreviewData.locales.last!),
+        locales: LocalePair(primary: PreviewData.locales.first!, secondary: PreviewData.locales.last!),
         selectedLocaleSelector: .primary,
         swapLocales: { },
         selectLocaleSelector: { _ in }

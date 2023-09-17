@@ -36,6 +36,14 @@ public struct PhrasesScreen: View {
                 #endif
             }
         }
+        .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {
+            LocaleSelectorSheet(
+                locales: viewModel.selectedLocaleSelectorLocales,
+                supportedTranslatableLocales: viewModel.supportedTranslatableLocales,
+                onClose: { viewModel.closeLocaleSelectorSheet() },
+                onLocaleSelect: { locale in viewModel.selectLocale(locale) }
+            )
+        }
         .toolbar(content: {
             EditButton()
         })

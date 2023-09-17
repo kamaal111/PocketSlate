@@ -6,6 +6,9 @@ WORKSPACE := "PocketSlate.xcworkspace"
 APP_NAME := "LexiGlotty"
 IOS_SCHEME := APP_NAME + "-iOS"
 
+default:
+    just --list
+
 localize: install-node-modules
     node Scripts/generateLocales.js
 

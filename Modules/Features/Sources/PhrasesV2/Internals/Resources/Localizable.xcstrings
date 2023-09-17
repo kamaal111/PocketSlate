@@ -1,10 +1,25 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Clear search" : {
+      "extractionState" : "manual"
+    },
+    "Close" : {
+      "extractionState" : "manual"
+    },
     "Done" : {
       "extractionState" : "manual"
     },
+    "Languages" : {
+      "extractionState" : "manual"
+    },
     "New translation" : {
+      "extractionState" : "manual"
+    },
+    "Nothing found matching '%@'" : {
+      "extractionState" : "manual"
+    },
+    "Search" : {
       "extractionState" : "manual"
     }
   },
