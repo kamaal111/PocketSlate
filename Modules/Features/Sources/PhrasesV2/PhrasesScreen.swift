@@ -5,11 +5,14 @@
 //  Created by Kamaal M Farah on 16/09/2023.
 //
 
+import Users
 import AppUI
 import SwiftUI
 import KamaalUI
 
 public struct PhrasesScreen: View {
+    @EnvironmentObject private var userData: UserData
+
     @State private var viewModel = ViewModel()
 
     public init() { }
@@ -48,14 +51,17 @@ public struct PhrasesScreen: View {
             EditButton()
         })
         .environment(\.editMode, $viewModel.editMode)
+        .onAppear(perform: handleOnAppear)
     }
 
     private func submitNewPhrase() { }
+
+    private func handleOnAppear() {
+        Task { await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale) }
+    }
 }
 
 #if DEBUG
-import Users
-
 #Preview {
     PhrasesScreen()
         .usersEnvironment()
