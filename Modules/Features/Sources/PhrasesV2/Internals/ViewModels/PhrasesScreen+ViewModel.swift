@@ -9,6 +9,7 @@ import AppUI
 import SwiftUI
 import Observation
 import KamaalLogger
+import PocketSlateAPI
 import KamaalExtensions
 
 private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
@@ -25,6 +26,7 @@ extension PhrasesScreen {
         var localeSelectorSheetIsShown = false
 
         private var previouslySelectedLocales: [Locale]
+        private var pocketSlateAPI: PocketSlateAPI?
 
         convenience init() {
             let initialLocales = Self.getInitialLocales()
@@ -34,6 +36,9 @@ extension PhrasesScreen {
         private init(locales: LocalePair) {
             self.locales = locales
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
+            if let secrets = SecretsJSON.shared.content, let apiKey = secrets.apiKey, let apiURL = secrets.apiURL {
+                self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey, apiURL: apiURL)
+            }
         }
 
         var selectedLocaleSelectorLocales: [Locale] {
@@ -44,16 +49,32 @@ extension PhrasesScreen {
 
             let currentLocale: Locale
             switch selectedLocaleSelector {
-            case .primary:
-                currentLocale = locales.primary
-            case .secondary:
-                currentLocale = locales.secondary
+            case .primary: currentLocale = locales.primary
+            case .secondary: currentLocale = locales.secondary
             }
 
             return previouslySelectedLocales
                 .concat(Self.locales)
                 .filter { $0 != currentLocale }
                 .uniques()
+        }
+
+        func fetchSupportedTranslationLocales(forTargetLocale targetLocale: Locale) async {
+            guard let api = pocketSlateAPI else {
+                logger.warning("Pocket slate api not configured")
+                return
+            }
+
+            let result = await api.translation.getSupportedLocales(as: targetLocale)
+            let supportedLocales: [SupportedLocale]
+            switch result {
+            case let .failure(failure):
+                logger.error(label: "Failed to get supported locales", error: failure)
+                return
+            case let .success(success): supportedLocales = success
+            }
+
+            await setSupportedTranslatebleLocales(supportedLocales.map(\.tag))
         }
 
         @MainActor
@@ -88,6 +109,11 @@ extension PhrasesScreen {
         @MainActor
         private func openLocaleSelectorSheet() {
             localeSelectorSheetIsShown = true
+        }
+
+        @MainActor
+        private func setSupportedTranslatebleLocales(_ locales: [Locale]) {
+            supportedTranslatableLocales = locales
         }
 
         @MainActor

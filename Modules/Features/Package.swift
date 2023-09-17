@@ -55,6 +55,7 @@ let package = Package(
             .product(name: "KamaalAlgorithms", package: "KamaalSwift"),
             "AppUI",
             "Users",
+            "PocketSlateAPI",
         ],
         resources: [
             .process("Internals/Resources"),
