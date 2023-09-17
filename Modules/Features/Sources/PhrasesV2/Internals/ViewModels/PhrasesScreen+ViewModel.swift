@@ -6,6 +6,7 @@
 //
 
 import AppUI
+import Models
 import SwiftUI
 import Observation
 import KamaalLogger
@@ -17,7 +18,7 @@ private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
 extension PhrasesScreen {
     @Observable
     final class ViewModel {
-        private(set) var locales: LocalePair
+        private(set) var locales: Pair<Locale>
         private(set) var selectedLocaleSelector: LocaleSelectorTypes?
         private(set) var supportedTranslatableLocales: [Locale] = []
         var editMode: EditMode = .inactive
@@ -33,12 +34,21 @@ extension PhrasesScreen {
             self.init(locales: initialLocales)
         }
 
-        private init(locales: LocalePair) {
+        private init(locales: Pair<Locale>) {
             self.locales = locales
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
             if let secrets = SecretsJSON.shared.content, let apiKey = secrets.apiKey, let apiURL = secrets.apiURL {
                 self.pocketSlateAPI = PocketSlateAPI(apiKey: apiKey, apiURL: apiURL)
             }
+        }
+
+        var newPhrasePair: Pair<String?> {
+            let trimmedPrimary = newPrimaryPhrase.trimmingByWhitespacesAndNewLines
+            let primary: String? = if trimmedPrimary.isEmpty { nil } else { trimmedPrimary }
+            let trimmedSecondary = newSecondaryPhrase.trimmingByWhitespacesAndNewLines
+            let secondary: String? = if trimmedSecondary.isEmpty { nil } else { trimmedSecondary }
+
+            return .init(primary: primary, secondary: secondary)
         }
 
         var selectedLocaleSelectorLocales: [Locale] {
@@ -118,7 +128,7 @@ extension PhrasesScreen {
 
         @MainActor
         private func setSelectedLocale(_ locale: Locale, localeSelector: LocaleSelectorTypes) {
-            var newLocales: LocalePair
+            var newLocales: Pair<Locale>
             switch localeSelector {
             case .primary:
                 newLocales = .init(primary: locale, secondary: locales.secondary)
@@ -138,7 +148,7 @@ extension PhrasesScreen {
         }
 
         @MainActor
-        private func setLocales(_ locales: LocalePair) {
+        private func setLocales(_ locales: Pair<Locale>) {
             self.locales = locales
             UserDefaults.primaryLocale = locales.primary
             UserDefaults.secondaryLocale = locales.secondary
@@ -175,7 +185,7 @@ extension PhrasesScreen {
                 .prepended(preferredLocale)
         }()
 
-        private static func getInitialLocales() -> LocalePair {
+        private static func getInitialLocales() -> Pair<Locale> {
             let preferredLocale = locales.first!
             var primaryLocale = UserDefaults.primaryLocale
             if primaryLocale == nil {

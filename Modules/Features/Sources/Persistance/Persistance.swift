@@ -18,7 +18,11 @@ public class Persistance {
             isStoredInMemoryOnly: false,
             cloudKitDatabase: .automatic
         )
-        self.dataContainer = try! ModelContainer(for: schema, configurations: [modelConfiguration])
+        do {
+            self.dataContainer = try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Failed to get data container; error='\(error)'")
+        }
     }
 
     @MainActor

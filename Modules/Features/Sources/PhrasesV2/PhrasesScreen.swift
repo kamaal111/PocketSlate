@@ -9,6 +9,7 @@ import Users
 import AppUI
 import SwiftUI
 import KamaalUI
+import KamaalExtensions
 
 public struct PhrasesScreen: View {
     @EnvironmentObject private var userData: UserData
@@ -61,11 +62,21 @@ public struct PhrasesScreen: View {
         .onAppear(perform: handleOnAppear)
     }
 
-    private func submitNewPhrase() { }
+    private func submitNewPhrase() {
+        guard !viewModel.newPhrasePair.array.allSatisfy({ $0 == nil }) else { return }
+
+        Task {
+            #warning("Handle this error")
+            await phrasesManager.createPhrase(values: viewModel.newPhrasePair, locales: viewModel.locales)
+        }
+    }
 
     private func handleOnAppear() {
         Task { await phrasesManager.fetchPhrasesForLocalePair(viewModel.locales) }
-        Task { await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale) }
+        Task {
+            #warning("Handle this error")
+            await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale)
+        }
     }
 }
 

@@ -5,11 +5,13 @@
 //  Created by Kamaal M Farah on 16/09/2023.
 //
 
+import Models
 import SwiftData
 import Algorithms
 import Foundation
 import Observation
 import Persistance
+import KamaalExtensions
 
 @Observable
 final class PhrasesManager {
@@ -20,13 +22,25 @@ final class PhrasesManager {
         case fetchFailure(context: Error)
     }
 
-    func fetchPhrasesForLocalePair(_ locales: LocalePair) async -> Result<Void, Errors> {
+    func createPhrase(values: Pair<String?>, locales: Pair<Locale>) async -> Result<Void, Errors> {
         await withLoading {
-            let translationsResult = await fetchTranslations(forPair: locales)
+            guard let phrase = await AppPhrase.create(values: values, locales: locales) else {
+                assertionFailure("No phrase created!")
+                return .success(())
+            }
+
+            await setPhrases(phrases.appended(phrase))
+            return .success(())
+        }
+    }
+
+    func fetchPhrasesForLocalePair(_ locales: Pair<Locale>) async -> Result<Void, Errors> {
+        await withLoading {
             let translations: [AppTranslation]
-            switch translationsResult {
-            case let .failure(failure): return .failure(failure)
-            case let .success(successs): translations = successs
+            do {
+                translations = try await AppTranslation.fetchTranslations(forPair: locales)
+            } catch {
+                return .failure(.fetchFailure(context: error))
             }
             let phrases = translations.compactMap(\.phrase).uniqued(on: \.id)
             await setPhrases(phrases)
@@ -47,31 +61,8 @@ final class PhrasesManager {
     }
 
     @MainActor
-    private func fetchTranslations(forPair locales: LocalePair) -> Result<[AppTranslation], Errors> {
-        let primaryLocaleIdentifier = locales.primary.identifier
-        let secondaryLocaleIdentifier = locales.secondary.identifier
-        var translationFetch = FetchDescriptor<AppTranslation>(
-            predicate: #Predicate { translation in
-                translation.localeIdentifier == primaryLocaleIdentifier
-                    || translation.localeIdentifier == secondaryLocaleIdentifier
-            }
-        )
-        translationFetch.includePendingChanges = true
-
-        let translations: [AppTranslation]
-        do {
-            translations = try Persistance.shared.dataContainer.mainContext.fetch(translationFetch)
-        } catch {
-            return .failure(.fetchFailure(context: error))
-        }
-
-        return .success(translations)
-    }
-
-    @MainActor
     private func setLoading(_ state: Bool) {
         guard isLoadingPhrase != state else { return }
-
         isLoadingPhrase = state
     }
 }

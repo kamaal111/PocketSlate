@@ -7,6 +7,7 @@
 
 import AppUI
 import Users
+import Models
 import SwiftUI
 import KamaalUI
 import KamaalExtensions
@@ -17,7 +18,7 @@ struct NewPhrasePanel: View {
     @Binding var primaryPhrase: String
     @Binding var secondaryPhrase: String
 
-    let locales: LocalePair
+    let locales: Pair<Locale>
     let submitNewPhrase: () -> Void
 
     var body: some View {
@@ -65,7 +66,7 @@ struct NewPhrasePanel: View {
     NewPhrasePanel(
         primaryPhrase: .constant("Hello"),
         secondaryPhrase: .constant("Ciao"),
-        locales: LocalePair(primary: Locale(identifier: "en"), secondary: Locale(identifier: "it")),
+        locales: Pair(primary: Locale(identifier: "en"), secondary: Locale(identifier: "it")),
         submitNewPhrase: { }
     )
     .usersEnvironment()
