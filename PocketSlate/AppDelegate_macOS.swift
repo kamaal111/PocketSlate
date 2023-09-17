@@ -21,11 +21,13 @@ extension AppDelegate: NSApplicationDelegate {
 
         application.registerForRemoteNotifications()
 
-        Task {
-            do {
-                try await Skypiea.shared.subscripeToAll()
-            } catch {
-                logger.warning("failed to subscribe to iCloud subscriptions; error='\(error)'")
+        if Features.subscribeToCloudKit {
+            Task {
+                do {
+                    try await Skypiea.shared.subscripeToAll()
+                } catch {
+                    logger.warning("failed to subscribe to iCloud subscriptions; error='\(error)'")
+                }
             }
         }
     }

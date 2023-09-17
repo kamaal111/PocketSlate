@@ -22,6 +22,8 @@
 		2C08638C2A6C43F600EE30DB /* AppLogo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C08638B2A6C43F600EE30DB /* AppLogo.swift */; };
 		2C08638E2A6C45B800EE30DB /* KamaalExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 2C08638D2A6C45B800EE30DB /* KamaalExtensions */; };
 		2C0863942A6C4CB200EE30DB /* KoreanCalligraphy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2C0863932A6C4CB200EE30DB /* KoreanCalligraphy.ttf */; };
+		2C128F182AB7779C005D9DC1 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C128F172AB7779C005D9DC1 /* Features.swift */; };
+		2C128F192AB7779C005D9DC1 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C128F172AB7779C005D9DC1 /* Features.swift */; };
 		2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
 		2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E52A48C7BB00990E4E /* CloudSyncing */; };
 		2C3333E92A48C85A00990E4E /* KamaalLogger in Frameworks */ = {isa = PBXBuildFile; productRef = 2C3333E82A48C85A00990E4E /* KamaalLogger */; };
@@ -37,6 +39,8 @@
 		2C9094BC2A6C6C6E00160DE8 /* app-icon-generator in Resources */ = {isa = PBXBuildFile; fileRef = 2C9094BB2A6C6C6E00160DE8 /* app-icon-generator */; };
 		2C9094BF2A6C6DDF00160DE8 /* FileManager+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094BE2A6C6DDF00160DE8 /* FileManager+extensions.swift */; };
 		2C9094C12A6C700E00160DE8 /* SavePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C9094C02A6C700E00160DE8 /* SavePanel.swift */; };
+		2CAA24C32AB77F4B00117D8B /* Persistance in Frameworks */ = {isa = PBXBuildFile; productRef = 2CAA24C22AB77F4B00117D8B /* Persistance */; };
+		2CAA24C52AB77F5100117D8B /* Persistance in Frameworks */ = {isa = PBXBuildFile; productRef = 2CAA24C42AB77F5100117D8B /* Persistance */; };
 		2CDCDD502A6ECAF600CF7757 /* AppDelegate_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */; };
 		2CDCDD512A6ECAF600CF7757 /* AppDelegate_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */; };
 		2CDCDD522A6ECAF600CF7757 /* PocketSlateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */; };
@@ -69,6 +73,7 @@
 		2C08638B2A6C43F600EE30DB /* AppLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogo.swift; sourceTree = "<group>"; };
 		2C0863922A6C48E600EE30DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2C0863932A6C4CB200EE30DB /* KoreanCalligraphy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KoreanCalligraphy.ttf; sourceTree = "<group>"; };
+		2C128F172AB7779C005D9DC1 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate_iOS.swift; sourceTree = "<group>"; };
 		2C2F11092A632AD80027EAEE /* PocketSlateAPI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PocketSlateAPI; sourceTree = "<group>"; };
 		2C3333E42A48C50F00990E4E /* .gitkeep */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -120,6 +125,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C3333E62A48C7BB00990E4E /* CloudSyncing in Frameworks */,
+				2CAA24C32AB77F4B00117D8B /* Persistance in Frameworks */,
 				2C6BAC1029FD605200009E19 /* AppLocales in Frameworks */,
 				2CF434182AB5B87C004BB880 /* PhrasesV2 in Frameworks */,
 				2C545C772A37AEDB00A672E0 /* Users in Frameworks */,
@@ -133,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CDCDD552A6ECAF600CF7757 /* CloudSyncing in Frameworks */,
+				2CAA24C52AB77F5100117D8B /* Persistance in Frameworks */,
 				2CDCDD562A6ECAF600CF7757 /* AppLocales in Frameworks */,
 				2CDCDD572A6ECAF600CF7757 /* Users in Frameworks */,
 				2CF4341A2AB5B88C004BB880 /* PhrasesV2 in Frameworks */,
@@ -216,6 +223,7 @@
 				2C2D7B042A4888E200330C8E /* AppDelegate_iOS.swift */,
 				2C3333EA2A48C95C00990E4E /* AppDelegate_macOS.swift */,
 				2C6BABF029FD59B200009E19 /* ContentView.swift */,
+				2C128F172AB7779C005D9DC1 /* Features.swift */,
 				2C6BABED29FD59B200009E19 /* PocketSlateApp.swift */,
 				2C6BABEC29FD59B200009E19 /* Assets.xcassets */,
 				2C6BABEE29FD59B200009E19 /* Preview Content */,
@@ -380,6 +388,7 @@
 				2C3333E52A48C7BB00990E4E /* CloudSyncing */,
 				2C3333E82A48C85A00990E4E /* KamaalLogger */,
 				2CF434172AB5B87C004BB880 /* PhrasesV2 */,
+				2CAA24C22AB77F4B00117D8B /* Persistance */,
 			);
 			productName = PocketSlate;
 			productReference = 2CB0272629FD58DF0000F5AD /* LexiGlotty.app */;
@@ -406,6 +415,7 @@
 				2CDCDD4B2A6ECAF600CF7757 /* CloudSyncing */,
 				2CDCDD4C2A6ECAF600CF7757 /* KamaalLogger */,
 				2CF434192AB5B88C004BB880 /* PhrasesV2 */,
+				2CAA24C42AB77F5100117D8B /* Persistance */,
 			);
 			productName = PocketSlate;
 			productReference = 2CDCDD612A6ECAF600CF7757 /* LexiGlotty.app */;
@@ -553,6 +563,7 @@
 				2C2D7B052A4888E200330C8E /* AppDelegate_iOS.swift in Sources */,
 				2C6BABF229FD59B300009E19 /* PocketSlateApp.swift in Sources */,
 				2C6BABF429FD59B300009E19 /* ContentView.swift in Sources */,
+				2C128F192AB7779C005D9DC1 /* Features.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +575,7 @@
 				2CDCDD512A6ECAF600CF7757 /* AppDelegate_iOS.swift in Sources */,
 				2CDCDD522A6ECAF600CF7757 /* PocketSlateApp.swift in Sources */,
 				2CDCDD532A6ECAF600CF7757 /* ContentView.swift in Sources */,
+				2C128F182AB7779C005D9DC1 /* Features.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,6 +1056,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2C3333E72A48C85A00990E4E /* XCRemoteSwiftPackageReference "KamaalSwift" */;
 			productName = KamaalLogger;
+		};
+		2CAA24C22AB77F4B00117D8B /* Persistance */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Persistance;
+		};
+		2CAA24C42AB77F5100117D8B /* Persistance */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Persistance;
 		};
 		2CDCDD472A6ECAF600CF7757 /* AppLocales */ = {
 			isa = XCSwiftPackageProductDependency;

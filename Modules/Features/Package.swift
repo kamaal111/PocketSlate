@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "CloudSyncing", targets: ["CloudSyncing"]),
         .library(name: "PhrasesV1", targets: ["PhrasesV1"]),
         .library(name: "PhrasesV2", targets: ["PhrasesV2"]),
+        .library(name: "Persistance", targets: ["Persistance"]),
         .library(name: "Users", targets: ["Users"]),
     ],
     dependencies: [
@@ -61,6 +62,9 @@ let package = Package(
             .process("Internals/Resources"),
         ]),
         .testTarget(name: "PhrasesV2Tests", dependencies: ["PhrasesV2"]),
+        .target(name: "Persistance", dependencies: [
+            .product(name: "KamaalExtensions", package: "KamaalSwift"),
+        ]),
         .target(
             name: "Users",
             dependencies: [

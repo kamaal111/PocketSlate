@@ -9,4 +9,6 @@ import Foundation
 import Observation
 
 @Observable
-final class PhrasesManager { }
+final class PhrasesManager {
+    private(set) var isLoadingPhrase = false
+}
