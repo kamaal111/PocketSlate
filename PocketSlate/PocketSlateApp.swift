@@ -8,6 +8,8 @@
 import Users
 import SwiftUI
 import PhrasesV2
+import SwiftData
+import Persistance
 
 @main
 struct PocketSlateApp: App {
@@ -23,6 +25,7 @@ struct PocketSlateApp: App {
                 .frame(minWidth: 300, minHeight: 300)
                 .usersEnvironment()
                 .phrasesEnvironment()
+                .modelContainer(Persistance.shared.dataContainer)
         }
     }
 }

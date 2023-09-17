@@ -12,6 +12,7 @@ import KamaalUI
 
 public struct PhrasesScreen: View {
     @EnvironmentObject private var userData: UserData
+    @Environment(PhrasesManager.self) var phrasesManager
 
     @State private var viewModel = ViewModel()
 
@@ -37,6 +38,9 @@ public struct PhrasesScreen: View {
                 #if os(macOS)
                 .padding(.horizontal, .small)
                 #endif
+                if phrasesManager.isLoadingPhrase {
+                    KLoading()
+                }
             }
         }
         .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {

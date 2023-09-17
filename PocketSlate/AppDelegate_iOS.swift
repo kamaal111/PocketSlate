@@ -25,11 +25,13 @@ extension AppDelegate: UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         #if !targetEnvironment(simulator)
-        Task {
-            do {
-                try await Skypiea.shared.subscripeToAll()
-            } catch {
-                logger.error(label: "failed to subscribe to iCloud subscriptions", error: error)
+        if Features.subscribeToCloudKit {
+            Task {
+                do {
+                    try await Skypiea.shared.subscripeToAll()
+                } catch {
+                    logger.error(label: "failed to subscribe to iCloud subscriptions", error: error)
+                }
             }
         }
         #endif
