@@ -16,11 +16,13 @@ private let logger = KamaalLogger(from: PhrasesScreen.self, failOnError: true)
 extension PhrasesScreen {
     @Observable
     final class ViewModel {
-        private(set) var locales: (primary: Locale, secondary: Locale)
+        private(set) var locales: LocalePair
         private(set) var selectedLocaleSelector: LocaleSelectorTypes?
+        private(set) var supportedTranslatableLocales: [Locale] = []
         var editMode: EditMode = .inactive
         var newPrimaryPhrase = ""
         var newSecondaryPhrase = ""
+        var localeSelectorSheetIsShown = false
 
         private var previouslySelectedLocales: [Locale]
 
@@ -29,19 +31,91 @@ extension PhrasesScreen {
             self.init(locales: initialLocales)
         }
 
-        private init(locales: (primary: Locale, secondary: Locale)) {
+        private init(locales: LocalePair) {
             self.locales = locales
             self.previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
         }
 
+        var selectedLocaleSelectorLocales: [Locale] {
+            guard let selectedLocaleSelector else {
+                logger.error("Failed to know which selector has been selected")
+                return Self.locales
+            }
+
+            let currentLocale: Locale
+            switch selectedLocaleSelector {
+            case .primary:
+                currentLocale = locales.primary
+            case .secondary:
+                currentLocale = locales.secondary
+            }
+
+            return previouslySelectedLocales
+                .concat(Self.locales)
+                .filter { $0 != currentLocale }
+                .uniques()
+        }
+
         @MainActor
         func swapLocales() {
-            locales = (locales.secondary, locales.primary)
+            setLocales(locales.swapped())
+        }
+
+        @MainActor
+        func selectLocale(_ locale: Locale) {
+            guard let selectedLocaleSelector else {
+                closeLocaleSelectorSheet()
+                logger.error("Failed to know which selector has been selected")
+                return
+            }
+
+            setSelectedLocale(locale, localeSelector: selectedLocaleSelector)
+            closeLocaleSelectorSheet()
         }
 
         @MainActor
         func selectLocaleSelector(_ selector: LocaleSelectorTypes) {
             withAnimation { self.selectedLocaleSelector = selector }
+            openLocaleSelectorSheet()
+        }
+
+        @MainActor
+        func closeLocaleSelectorSheet() {
+            localeSelectorSheetIsShown = false
+            selectedLocaleSelector = nil
+        }
+
+        @MainActor
+        private func openLocaleSelectorSheet() {
+            localeSelectorSheetIsShown = true
+        }
+
+        @MainActor
+        private func setSelectedLocale(_ locale: Locale, localeSelector: LocaleSelectorTypes) {
+            var newLocales: LocalePair
+            switch localeSelector {
+            case .primary:
+                newLocales = .init(primary: locale, secondary: locales.secondary)
+                if newLocales.primary == newLocales.secondary {
+                    newLocales = newLocales.setSecondary(with: locales.primary)
+                }
+            case .secondary:
+                newLocales = .init(primary: locales.primary, secondary: locale)
+                if newLocales.primary == newLocales.secondary {
+                    newLocales = newLocales.setPrimary(with: locales.secondary)
+                }
+            }
+
+            if newLocales != locales {
+                setLocales(newLocales)
+            }
+        }
+
+        @MainActor
+        private func setLocales(_ locales: LocalePair) {
+            self.locales = locales
+            UserDefaults.primaryLocale = locales.primary
+            UserDefaults.secondaryLocale = locales.secondary
         }
 
         static let locales: [Locale] = {
@@ -75,7 +149,7 @@ extension PhrasesScreen {
                 .prepended(preferredLocale)
         }()
 
-        private static func getInitialLocales() -> (primary: Locale, secondary: Locale) {
+        private static func getInitialLocales() -> LocalePair {
             let preferredLocale = locales.first!
             var primaryLocale = UserDefaults.primaryLocale
             if primaryLocale == nil {
@@ -92,7 +166,7 @@ extension PhrasesScreen {
                 UserDefaults.secondaryLocale = secondaryLocale
             }
 
-            return (primaryLocale!, secondaryLocale!)
+            return .init(primary: primaryLocale!, secondary: secondaryLocale!)
         }
     }
 }

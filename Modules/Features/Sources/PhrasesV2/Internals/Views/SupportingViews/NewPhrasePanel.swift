@@ -17,7 +17,7 @@ struct NewPhrasePanel: View {
     @Binding var primaryPhrase: String
     @Binding var secondaryPhrase: String
 
-    let locales: (primary: Locale, secondary: Locale)
+    let locales: LocalePair
     let submitNewPhrase: () -> Void
 
     var body: some View {
@@ -65,7 +65,7 @@ struct NewPhrasePanel: View {
     NewPhrasePanel(
         primaryPhrase: .constant("Hello"),
         secondaryPhrase: .constant("Ciao"),
-        locales: (Locale(identifier: "en"), Locale(identifier: "it")),
+        locales: LocalePair(primary: Locale(identifier: "en"), secondary: Locale(identifier: "it")),
         submitNewPhrase: { }
     )
     .usersEnvironment()

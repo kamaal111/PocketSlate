@@ -25,7 +25,7 @@ extension AppDelegate: NSApplicationDelegate {
             do {
                 try await Skypiea.shared.subscripeToAll()
             } catch {
-                logger.error(label: "failed to subscribe to iCloud subscriptions", error: error)
+                logger.warning("failed to subscribe to iCloud subscriptions; error='\(error)'")
             }
         }
     }
