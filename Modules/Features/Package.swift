@@ -19,6 +19,7 @@ let package = Package(
         .package(path: "../AppLocales"),
         .package(path: "../AppUI"),
         .package(path: "../PocketSlateAPI"),
+        .package(path: "../Models"),
     ],
     targets: [
         .target(
@@ -60,6 +61,7 @@ let package = Package(
             "Users",
             "Persistance",
             "PocketSlateAPI",
+            "Models",
         ],
         resources: [
             .process("Internals/Resources"),
@@ -67,6 +69,7 @@ let package = Package(
         .testTarget(name: "PhrasesV2Tests", dependencies: ["PhrasesV2"]),
         .target(name: "Persistance", dependencies: [
             .product(name: "KamaalExtensions", package: "KamaalSwift"),
+            "Models",
         ]),
         .target(
             name: "Users",
