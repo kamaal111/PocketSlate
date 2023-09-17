@@ -15,6 +15,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "1.2.0")),
+        .package(url: "https://github.com/apple/swift-algorithms.git", .upToNextMajor(from: "1.0.0")),
         .package(path: "../AppLocales"),
         .package(path: "../AppUI"),
         .package(path: "../PocketSlateAPI"),
@@ -54,8 +55,10 @@ let package = Package(
             .product(name: "KamaalExtensions", package: "KamaalSwift"),
             .product(name: "KamaalLogger", package: "KamaalSwift"),
             .product(name: "KamaalAlgorithms", package: "KamaalSwift"),
+            .product(name: "Algorithms", package: "swift-algorithms"),
             "AppUI",
             "Users",
+            "Persistance",
             "PocketSlateAPI",
         ],
         resources: [
