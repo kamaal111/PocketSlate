@@ -41,6 +41,9 @@ public struct PhrasesScreen: View {
                 if phrasesManager.isLoadingPhrase {
                     KLoading()
                 }
+                ForEach(phrasesManager.phrases) { phrase in
+                    Text(phrase.translations?.first?.value ?? "Nothing")
+                }
             }
         }
         .sheet(isPresented: $viewModel.localeSelectorSheetIsShown) {
@@ -61,6 +64,7 @@ public struct PhrasesScreen: View {
     private func submitNewPhrase() { }
 
     private func handleOnAppear() {
+        Task { await phrasesManager.fetchPhrasesForLocalePair(viewModel.locales) }
         Task { await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale) }
     }
 }

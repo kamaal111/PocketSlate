@@ -21,5 +21,10 @@ public class Persistance {
         self.dataContainer = try! ModelContainer(for: schema, configurations: [modelConfiguration])
     }
 
+    @MainActor
+    public var dataContainerContext: ModelContext {
+        dataContainer.mainContext
+    }
+
     public static let shared = Persistance()
 }
