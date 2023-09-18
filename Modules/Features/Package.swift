@@ -20,6 +20,7 @@ let package = Package(
         .package(path: "../AppUI"),
         .package(path: "../PocketSlateAPI"),
         .package(path: "../Models"),
+        .package(path: "../PSShared"),
     ],
     targets: [
         .target(
@@ -62,6 +63,7 @@ let package = Package(
             "Persistance",
             "PocketSlateAPI",
             "Models",
+            "PSShared",
         ],
         resources: [
             .process("Internals/Resources"),

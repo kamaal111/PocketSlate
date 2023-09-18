@@ -9,6 +9,7 @@ import Users
 import AppUI
 import SwiftUI
 import KamaalUI
+import Persistance
 import KamaalExtensions
 
 public struct PhrasesScreen: View {
@@ -43,7 +44,14 @@ public struct PhrasesScreen: View {
                     KLoading()
                 }
                 ForEach(phrasesManager.phrases) { phrase in
-                    PhraseView(phrase: phrase)
+                    PhraseView(
+                        phrase: phrase,
+                        locales: viewModel.appLocalePair,
+                        onDeleteTranslation: handleDeleteTranslation,
+                        translateText: { phrase, sourceLocale, targetLocale in
+                            handlePhraseTranslation(phrase, from: sourceLocale, to: targetLocale)
+                        }
+                    )
                 }
             }
         }
@@ -60,6 +68,24 @@ public struct PhrasesScreen: View {
         })
         .environment(\.editMode, $viewModel.editMode)
         .onAppear(perform: handleOnAppear)
+    }
+
+    private func handlePhraseTranslation(_ phrase: AppPhrase, from sourceLocale: Locale, to targetLocale: Locale) {
+        #warning("Handle")
+        fatalError("\(phrase) \(sourceLocale) \(targetLocale)")
+    }
+
+    private func handleDeleteTranslation(_ phrase: AppPhrase) {
+        Task {
+            let result = await phrasesManager.deleteTranslation(phrase: phrase, locales: viewModel.locales)
+            switch result {
+            case let .failure(failure):
+                #warning("Handle this error")
+                print("Failed to delete phrase", failure)
+                return
+            case .success: break
+            }
+        }
     }
 
     private func submitNewPhrase() {
