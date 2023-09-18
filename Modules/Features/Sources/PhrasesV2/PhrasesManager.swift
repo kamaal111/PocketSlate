@@ -34,6 +34,12 @@ final class PhrasesManager {
         }
     }
 
+    func deleteTranslation(phrase _: AppPhrase, locales _: Pair<Locale>) async -> Result<Void, Errors> {
+        #warning("Handle this")
+        fatalError()
+        return .success(())
+    }
+
     func fetchPhrasesForLocalePair(_ locales: Pair<Locale>) async -> Result<Void, Errors> {
         await withLoading {
             let translations: [AppTranslation]

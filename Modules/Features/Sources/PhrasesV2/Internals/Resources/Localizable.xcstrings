@@ -1,10 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Are you sure want to delete these phrases?" : {
+      "extractionState" : "manual"
+    },
     "Clear search" : {
       "extractionState" : "manual"
     },
     "Close" : {
+      "extractionState" : "manual"
+    },
+    "Delete phrase" : {
       "extractionState" : "manual"
     },
     "Done" : {
@@ -16,10 +22,16 @@
     "New translation" : {
       "extractionState" : "manual"
     },
+    "Not set" : {
+      "extractionState" : "manual"
+    },
     "Nothing found matching '%@'" : {
       "extractionState" : "manual"
     },
     "Search" : {
+      "extractionState" : "manual"
+    },
+    "Sure" : {
       "extractionState" : "manual"
     }
   },

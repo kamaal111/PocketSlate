@@ -42,6 +42,19 @@ extension PhrasesScreen {
             }
         }
 
+        var appLocalePair: Pair<AppLocale> {
+            Pair(
+                primary: AppLocale(
+                    value: locales.primary,
+                    isTranslatable: supportedTranslatableLocales.contains(locales.primary)
+                ),
+                secondary: AppLocale(
+                    value: locales.secondary,
+                    isTranslatable: supportedTranslatableLocales.contains(locales.secondary)
+                )
+            )
+        }
+
         var newPhrasePair: Pair<String?> {
             let trimmedPrimary = newPrimaryPhrase.trimmingByWhitespacesAndNewLines
             let primary: String? = if trimmedPrimary.isEmpty { nil } else { trimmedPrimary }
