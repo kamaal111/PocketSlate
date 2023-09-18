@@ -8,6 +8,7 @@
 import Models
 import SwiftData
 import Foundation
+import KamaalExtensions
 
 @Model
 public class AppPhrase: Hashable, Identifiable {
@@ -25,6 +26,36 @@ public class AppPhrase: Hashable, Identifiable {
         self.translations = translations
         self.creationDate = creationDate
         self.updatedDate = updatedDate
+    }
+
+    @MainActor
+    public func editTranslation(value: String, locale: Locale) throws -> AppPhrase {
+        var translationToBeEdited = translations?.find(by: \.locale, is: locale)
+        guard translationToBeEdited?.value != value else { return self }
+
+        let isNew = translationToBeEdited == nil
+        if isNew {
+            translationToBeEdited = try AppTranslation.create(
+                locale: locale,
+                value: value,
+                phrase: self
+            )
+        } else {
+            translationToBeEdited!.setValue(value)
+        }
+
+        var newTranslations = translations ?? []
+        if !isNew {
+            newTranslations = newTranslations.appended(translationToBeEdited!)
+        } else {
+            let existingTranslationIndex = newTranslations.findIndex(by: \.id, is: translationToBeEdited!.id!)!
+            newTranslations = newTranslations
+                .removed(at: existingTranslationIndex)
+                .appended(translationToBeEdited!)
+        }
+
+        translations = newTranslations
+        return self
     }
 
     @MainActor

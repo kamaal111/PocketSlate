@@ -82,6 +82,12 @@ extension PhrasesScreen {
                 .uniques()
         }
 
+        @MainActor
+        func clearNewPhraseFields() {
+            newPrimaryPhrase = ""
+            newSecondaryPhrase = ""
+        }
+
         func fetchSupportedTranslationLocales(forTargetLocale targetLocale: Locale) async {
             guard let api = pocketSlateAPI else {
                 logger.warning("Pocket slate api not configured")

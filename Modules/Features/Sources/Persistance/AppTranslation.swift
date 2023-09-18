@@ -14,7 +14,7 @@ import KamaalExtensions
 public class AppTranslation: Hashable, Identifiable {
     public let id: UUID?
     public let localeIdentifier: String?
-    public let value: String?
+    public private(set) var value: String?
     public private(set) var phrase: AppPhrase?
     public let creationDate: Date?
     public let updatedDate: Date?
@@ -47,6 +47,17 @@ public class AppTranslation: Hashable, Identifiable {
 
     public func setPhrase(_ phrase: AppPhrase) {
         self.phrase = phrase
+    }
+
+    public func setValue(_ value: String) {
+        self.value = value
+    }
+
+    @MainActor
+    public static func create(locale: Locale, value: String, phrase: AppPhrase) throws -> AppTranslation {
+        let translation = AppTranslation(id: UUID(), locale: locale, value: value, phrase: phrase)
+        Persistance.shared.dataContainerContext.insert(translation)
+        return translation
     }
 
     @MainActor
