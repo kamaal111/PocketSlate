@@ -71,8 +71,17 @@ public struct PhrasesScreen: View {
     }
 
     private func handlePhraseTranslation(_ phrase: AppPhrase, from sourceLocale: Locale, to targetLocale: Locale) {
-        #warning("Handle")
-        fatalError("\(phrase) \(sourceLocale) \(targetLocale)")
+        Task {
+            let result = await phrasesManager.translatePhrase(phrase, from: sourceLocale, to: targetLocale)
+            switch result {
+            case let .failure(failure):
+                #warning("Handle this error")
+                assertionFailure("Failure; \(failure)")
+                print("Failed to translate phrase", failure)
+                return
+            case .success: break
+            }
+        }
     }
 
     private func handleDeleteTranslation(_ phrase: AppPhrase) {
@@ -100,6 +109,8 @@ public struct PhrasesScreen: View {
                 return
             case .success: break
             }
+
+            viewModel.clearNewPhraseFields()
         }
     }
 
