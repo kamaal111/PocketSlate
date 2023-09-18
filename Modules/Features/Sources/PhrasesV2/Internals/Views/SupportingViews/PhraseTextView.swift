@@ -11,6 +11,7 @@ import PSShared
 import KamaalExtensions
 
 struct PhraseTextView: View {
+    @Environment(\.editMode) var editMode
     @Environment(\.isEnabled) var isEnabled
 
     let translation: String?
@@ -45,7 +46,8 @@ struct PhraseTextView: View {
         #if os(iOS)
             .onTapGesture(perform: {
                 if editMode?.isEditing == true {
-                    onEditText(phrase)
+//                    onEditText(phrase)
+                    fatalError("implement editing")
                 }
             })
         #endif
