@@ -66,17 +66,29 @@ public struct PhrasesScreen: View {
         guard !viewModel.newPhrasePair.array.allSatisfy({ $0 == nil }) else { return }
 
         Task {
-            #warning("Handle this error")
-            await phrasesManager.createPhrase(values: viewModel.newPhrasePair, locales: viewModel.locales)
+            let result = await phrasesManager.createPhrase(values: viewModel.newPhrasePair, locales: viewModel.locales)
+            switch result {
+            case let .failure(failure):
+                #warning("Handle this error")
+                print("Failed to create phrase", failure)
+                return
+            case .success: break
+            }
         }
     }
 
     private func handleOnAppear() {
-        Task { await phrasesManager.fetchPhrasesForLocalePair(viewModel.locales) }
         Task {
-            #warning("Handle this error")
-            await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale)
+            let result = await phrasesManager.fetchPhrasesForLocalePair(viewModel.locales)
+            switch result {
+            case let .failure(failure):
+                #warning("Handle this error")
+                print("Failed to fetch phrases", failure)
+                return
+            case .success: break
+            }
         }
+        Task { await viewModel.fetchSupportedTranslationLocales(forTargetLocale: userData.appLocale) }
     }
 }
 
