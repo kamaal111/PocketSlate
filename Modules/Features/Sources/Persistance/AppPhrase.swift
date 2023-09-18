@@ -12,8 +12,12 @@ import Foundation
 @Model
 public class AppPhrase: Hashable, Identifiable {
     public let id: UUID?
-    @Relationship(deleteRule: .cascade, inverse: \AppTranslation.phrase) public let translations: [AppTranslation]?
+
+    @Relationship(deleteRule: .cascade, inverse: \AppTranslation.phrase)
+    public private(set) var translations: [AppTranslation]?
+
     public let creationDate: Date?
+
     public let updatedDate: Date?
 
     public init(id: UUID, translations: [AppTranslation]?, creationDate: Date = Date(), updatedDate: Date = Date()) {
@@ -38,11 +42,10 @@ public class AppPhrase: Hashable, Identifiable {
                     phrase: nil
                 )
             }
+        assert(!translations.isEmpty)
         guard !translations.isEmpty else { return nil }
 
         let phrase = AppPhrase(id: UUID(), translations: translations)
-        translations
-            .forEach { translation in translation.setPhrase(phrase) }
         Persistance.shared.dataContainerContext.insert(phrase)
 
         return phrase

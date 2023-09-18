@@ -51,9 +51,12 @@ public class AppTranslation: Hashable, Identifiable {
 
     @MainActor
     public static func fetchTranslations(forPair locales: Pair<Locale>) throws -> [AppTranslation] {
+        let primaryLocaleIdentifier = locales.primary.identifier
+        let secondaryLocaleIdentifier = locales.secondary.identifier
         let localesArray = locales.array.map(\.identifier)
         return try filter(predicate: #Predicate { translation in
-            translation.localeIdentifier != nil && localesArray.contains(translation.localeIdentifier!)
+            translation.localeIdentifier == primaryLocaleIdentifier
+                || translation.localeIdentifier == secondaryLocaleIdentifier
         })
     }
 }
