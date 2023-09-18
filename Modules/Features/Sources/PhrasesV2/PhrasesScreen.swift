@@ -43,7 +43,7 @@ public struct PhrasesScreen: View {
                     KLoading()
                 }
                 ForEach(phrasesManager.phrases) { phrase in
-                    Text(phrase.translations?.first?.value ?? "Nothing")
+                    PhraseView(phrase: phrase)
                 }
             }
         }

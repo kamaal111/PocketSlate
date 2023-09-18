@@ -22,8 +22,8 @@ public class Skypiea {
     )
 
     public let subscriptionsWanted = [
-        "CloudPhrase",
-        "CloudTranslation",
+        "CD_AppPhrase",
+        "CD_AppTranslation",
     ]
 
     private var subscriptions: [CKSubscription] = [] {

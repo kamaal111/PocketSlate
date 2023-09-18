@@ -8,5 +8,5 @@
 import Foundation
 
 enum Features {
-    static let subscribeToCloudKit = false
+    static let subscribeToCloudKit = true
 }
