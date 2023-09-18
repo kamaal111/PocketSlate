@@ -13,9 +13,12 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-generator", exact: "0.1.5"),
-        .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "0.1.0")),
-        .package(url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMinor(from: "0.1.0")),
+        .package(
+            url: "https://github.com/Kamaalio/swift-openapi-generator",
+            revision: "dd9526dcc64049df10cfb4a343ed5ee60a675e04"
+        ),
+        .package(url: "https://github.com/apple/swift-openapi-runtime", .upToNextMinor(from: "0.2.2")),
+        .package(url: "https://github.com/apple/swift-openapi-urlsession", .upToNextMinor(from: "0.2.2")),
         .package(url: "https://github.com/Kamaalio/KamaalSwift.git", .upToNextMajor(from: "1.2.0")),
         .package(path: "../AppLocales"),
         .package(path: "../PSShared"),

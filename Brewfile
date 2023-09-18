@@ -3,5 +3,5 @@ tap 'kamaal111/tap'
 
 brew 'swiftformat'
 brew 'swiftlint'
-brew 'kamaalio/xctools/xctools'
-brew 'kamaal111/open-api-maker/open_api_maker'
+brew 'kamaalio/tap/xctools'
+brew 'kamaal111/tap/open_api_maker'
