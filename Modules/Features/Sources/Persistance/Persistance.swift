@@ -30,5 +30,12 @@ public class Persistance {
         dataContainer.mainContext
     }
 
+    @MainActor
+    public func filter<T: PersistentModel>(predicate: Predicate<T>) throws -> [T] {
+        var translationFetch = FetchDescriptor<T>(predicate: predicate)
+        translationFetch.includePendingChanges = true
+        return try dataContainerContext.fetch(translationFetch)
+    }
+
     public static let shared = Persistance()
 }
