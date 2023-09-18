@@ -34,9 +34,9 @@ public struct PocketSlateTranslationAPI {
                 let result: Operations.makeTranslation.Output
                 do {
                     result = try await client.makeTranslation(.init(
-                        headers: .init(App_Version: defaultHeaders.appVersion,
-                                       App_Name: defaultHeaders.appName,
-                                       Api_Key: defaultHeaders.apiKey),
+                        headers: .init(App_hyphen_Version: defaultHeaders.appVersion,
+                                       App_hyphen_Name: defaultHeaders.appName,
+                                       Api_hyphen_Key: defaultHeaders.apiKey),
                         body: .json(.init(
                             source_locale: sourceLocaleIdentifier,
                             target_locale: targetLocaleIdentifer,
@@ -73,9 +73,9 @@ public struct PocketSlateTranslationAPI {
                     result = try await client.getSupportedLocales(.init(
                         query: .init(target: targetIdentifier),
                         headers: .init(
-                            App_Version: defaultHeaders.appVersion,
-                            App_Name: defaultHeaders.appName,
-                            Api_Key: defaultHeaders.apiKey
+                            App_hyphen_Version: defaultHeaders.appVersion,
+                            App_hyphen_Name: defaultHeaders.appName,
+                            Api_hyphen_Key: defaultHeaders.apiKey
                         )
                     ))
                 } catch {
