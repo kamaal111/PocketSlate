@@ -53,6 +53,40 @@ final class PhrasesManager {
         fatalError()
     }
 
+    func updatePhrases(_ phrases: [(phrase: AppPhrase, changes: EditedPhrase)]) async -> Result<Void, Errors> {
+        var lastError: Error?
+        var updatedPhrases: [AppPhrase] = []
+        for (phrase, changes) in phrases {
+            guard let phraseID = phrase.id else { continue }
+
+            var editedPhrase: AppPhrase?
+            for updatedTranslation in changes.translations.array {
+                do {
+                    editedPhrase = try await (editedPhrase ?? phrase).editTranslation(
+                        value: updatedTranslation.value.trimmingByWhitespacesAndNewLines,
+                        locale: updatedTranslation.locale
+                    )
+                } catch {
+                    lastError = error
+                    continue
+                }
+            }
+            assert(editedPhrase != nil)
+            updatedPhrases = updatedPhrases.appended(editedPhrase!)
+        }
+
+        let currentAndUpdatedPhrases = self.phrases
+            .enumerated()
+            .map { _, phrase in updatedPhrases.find(by: \.id, is: phrase.id) ?? phrase }
+        await setPhrases(currentAndUpdatedPhrases)
+
+        if let lastError {
+            return .failure(.translationError(context: lastError))
+        }
+
+        return .success(())
+    }
+
     func translatePhrase(
         _ phrase: AppPhrase,
         from sourceLocale: Locale,
