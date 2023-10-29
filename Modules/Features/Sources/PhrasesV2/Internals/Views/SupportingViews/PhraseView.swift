@@ -13,30 +13,46 @@ import Persistance
 import KamaalExtensions
 
 struct PhraseView: View {
+    @Environment(\.editMode) private var editMode
+
     @State private var deletionConfirmation = false
+
+    @Binding var editingPrimaryText: String
+    @Binding var editingSecondaryText: String
 
     let phrase: AppPhrase
     let locales: Pair<AppLocale>
-    let onDeleteTranslation: (_ phrase: AppPhrase) -> Void
-    let translateText: (_ phrase: AppPhrase, _ sourceLocale: Locale, _ targetLocale: Locale) -> Void
+    let isEditingText: Bool
+    let onDeleteTranslation: () -> Void
+    let translateText: (_ sourceLocale: Locale, _ targetLocale: Locale) -> Void
+    let onEditSelect: () -> Void
+    let phraseTranslationToDisplay: (_ locale: Locale) -> String
 
     var body: some View {
         HStack {
             PhraseTextView(
-                translation: phrase.translations?.find(by: \.locale, is: locales.primary.value)?.value,
-                sourceLocale: locales.primary.value,
-                targetLocale: locales.secondary.value,
+                editingText: $editingPrimaryText,
+                translation: phraseTranslationToDisplay(locales.primary.value),
+                locale: locales.primary.value,
                 isTranslatable: locales.primary.isTranslatable,
-                translateText: { translateText(phrase, locales.primary.value, locales.secondary.value) }
+                isEditingText: isEditingText,
+                translateText: { translateText(locales.primary.value, locales.secondary.value) },
+                onEditSelect: onEditSelect
             )
             SplitterView()
             PhraseTextView(
-                translation: phrase.translations?.find(by: \.locale, is: locales.secondary.value)?.value,
-                sourceLocale: locales.secondary.value,
-                targetLocale: locales.primary.value,
+                editingText: $editingSecondaryText,
+                translation: phraseTranslationToDisplay(locales.secondary.value),
+                locale: locales.secondary.value,
                 isTranslatable: locales.secondary.isTranslatable,
-                translateText: { translateText(phrase, locales.secondary.value, locales.primary.value) }
+                isEditingText: isEditingText,
+                translateText: { translateText(locales.secondary.value, locales.primary.value) },
+                onEditSelect: onEditSelect
             )
+            if editMode?.isEditing == true, !isEditingText {
+                Spacer()
+                editButtons
+            }
         }
         #if os(macOS)
         .padding(.horizontal, .small)
@@ -56,8 +72,32 @@ struct PhraseView: View {
         )
     }
 
+    private var editButtons: some View {
+        HStack {
+            #if os(macOS)
+            editActionButton(imageSystemName: "pencil", action: { onEditSelect() })
+            #endif
+        }
+        .padding(.bottom, -12)
+    }
+
+    private func editActionButton(imageSystemName: String, action: @escaping () -> Void) -> some View {
+        #if os(macOS)
+        Button(action: action) {
+            Image(systemName: imageSystemName)
+                .kBold()
+                .foregroundColor(.accentColor)
+        }
+        #else
+        Image(systemName: imageSystemName)
+            .kBold()
+            .foregroundColor(.accentColor)
+            .onTapGesture(perform: action)
+        #endif
+    }
+
     private func handleDefiniteDeletion() {
-        onDeleteTranslation(phrase)
+        onDeleteTranslation()
         deletionConfirmation = false
     }
 }

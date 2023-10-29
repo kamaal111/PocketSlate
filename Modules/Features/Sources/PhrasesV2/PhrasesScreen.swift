@@ -45,11 +45,18 @@ public struct PhrasesScreen: View {
                 }
                 ForEach(phrasesManager.phrases) { phrase in
                     PhraseView(
+                        editingPrimaryText: $viewModel.editingPrimaryPhrase,
+                        editingSecondaryText: $viewModel.editingSecondaryPhrase,
                         phrase: phrase,
                         locales: viewModel.appLocalePair,
-                        onDeleteTranslation: handleDeleteTranslation,
-                        translateText: { phrase, sourceLocale, targetLocale in
+                        isEditingText: viewModel.phraseTextIsBeingEdited(phrase),
+                        onDeleteTranslation: { handleDeleteTranslation(phrase) },
+                        translateText: { sourceLocale, targetLocale in
                             handlePhraseTranslation(phrase, from: sourceLocale, to: targetLocale)
+                        },
+                        onEditSelect: { viewModel.selectTextEditingPhrase(phrase) },
+                        phraseTranslationToDisplay: { locale in
+                            viewModel.phraseTranslationToDisplay(phrase, locale: locale)
                         }
                     )
                 }
@@ -68,6 +75,25 @@ public struct PhrasesScreen: View {
         })
         .environment(\.editMode, $viewModel.editMode)
         .onAppear(perform: handleOnAppear)
+        .onChange(of: viewModel.editMode, editModeDidChange)
+    }
+
+    private func editModeDidChange(_ oldValue: EditMode, _ newValue: EditMode) {
+        guard !newValue.isEditing, oldValue.isEditing else { return }
+
+        Task {
+            let phrasesWithChanges = await viewModel.getEditedAppPhrases(phrasesManager.phrases)
+            let result = await phrasesManager.updatePhrases(phrasesWithChanges)
+            switch result {
+            case let .failure(failure):
+                #warning("Handle this error")
+                assertionFailure("Failure; \(failure)")
+                print("Failed to update translation", failure)
+                return
+            case .success: break
+            }
+            viewModel.finishEditing()
+        }
     }
 
     private func handlePhraseTranslation(_ phrase: AppPhrase, from sourceLocale: Locale, to targetLocale: Locale) {

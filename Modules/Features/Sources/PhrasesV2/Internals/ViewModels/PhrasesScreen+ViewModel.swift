@@ -8,6 +8,7 @@
 import AppUI
 import Models
 import SwiftUI
+import Persistance
 import Observation
 import KamaalLogger
 import PocketSlateAPI
@@ -21,13 +22,17 @@ extension PhrasesScreen {
         private(set) var locales: Pair<Locale>
         private(set) var selectedLocaleSelector: LocaleSelectorTypes?
         private(set) var supportedTranslatableLocales: [Locale] = []
+        private(set) var editedPhrases: [EditedPhrase] = []
         var editMode: EditMode = .inactive
         var newPrimaryPhrase = ""
         var newSecondaryPhrase = ""
         var localeSelectorSheetIsShown = false
+        var editingPrimaryPhrase = ""
+        var editingSecondaryPhrase = ""
 
         private var previouslySelectedLocales: [Locale]
         private var pocketSlateAPI: PocketSlateAPI?
+        private var textEditingPhrase: AppPhrase?
 
         convenience init() {
             let initialLocales = Self.getInitialLocales()
@@ -88,6 +93,21 @@ extension PhrasesScreen {
             newSecondaryPhrase = ""
         }
 
+        @MainActor
+        func selectTextEditingPhrase(_ phrase: AppPhrase) {
+            guard editMode.isEditing else {
+                logger.error("Should only be able to select in edit mode")
+                return
+            }
+
+            guard textEditingPhrase?.id != phrase.id, phrase.id != nil else { return }
+
+            addLastEditedToEditedPhrases()
+            textEditingPhrase = phrase
+            editingPrimaryPhrase = phrase.translations?.find(by: \.locale, is: locales.primary)?.value ?? ""
+            editingSecondaryPhrase = phrase.translations?.find(by: \.locale, is: locales.secondary)?.value ?? ""
+        }
+
         func fetchSupportedTranslationLocales(forTargetLocale targetLocale: Locale) async {
             guard let api = pocketSlateAPI else {
                 logger.warning("Pocket slate api not configured")
@@ -133,6 +153,90 @@ extension PhrasesScreen {
         func closeLocaleSelectorSheet() {
             localeSelectorSheetIsShown = false
             selectedLocaleSelector = nil
+        }
+
+        @MainActor
+        func finishEditing() {
+            editedPhrases = []
+            textEditingPhrase = nil
+        }
+
+        func phraseTextIsBeingEdited(_ phrase: AppPhrase) -> Bool {
+            guard let textEditingPhrase else { return false }
+
+            return phrase.id == textEditingPhrase.id
+        }
+
+        func phraseTranslationToDisplay(_ phrase: AppPhrase, locale: Locale) -> String {
+            if let phraseID = phrase.id,
+               let editedPhrase = editedPhrases.find(by: \.id, is: phraseID) {
+                if locale == editedPhrase.translations.primary.locale {
+                    return editedPhrase.translations.primary.value
+                }
+                if locale == editedPhrase.translations.secondary.locale {
+                    return editedPhrase.translations.secondary.value
+                }
+                logger.error("Expected current locales to match passed in locale")
+            }
+            return phrase.translations?.find(by: \.locale, is: locale)?.value ?? ""
+        }
+
+        func getEditedAppPhrases(_ appPhrases: [AppPhrase]) async -> [(phrase: AppPhrase, changes: EditedPhrase)] {
+            await addLastEditedToEditedPhrases()
+            return appPhrases
+                .filter { phrase in
+                    guard let phraseID = phrase.id else { return false }
+                    guard let editedPhrase = editedPhrases.find(by: \.id, is: phraseID) else { return false }
+
+                    let editedPrimaryPhraseTranslation = editedPhrase.translations.primary.value
+                        .trimmingByWhitespacesAndNewLines
+                    let existingPrimaryPhraseTranslation = phrase.translations?
+                        .find(by: \.locale, is: editedPhrase.translations.primary.locale)?.value ?? ""
+                    let primaryPhraseHasBeenRemoved = editedPrimaryPhraseTranslation
+                        .isEmpty && !existingPrimaryPhraseTranslation.isEmpty
+                    guard !primaryPhraseHasBeenRemoved else { return true }
+
+                    let primaryPhraseHasChanged = !editedPrimaryPhraseTranslation
+                        .isEmpty && editedPrimaryPhraseTranslation != existingPrimaryPhraseTranslation
+                    guard !primaryPhraseHasChanged else { return true }
+
+                    let editedSecondaryPhraseTranslation = editedPhrase.translations.secondary.value
+                        .trimmingByWhitespacesAndNewLines
+                    let existingSecondaryTranslation = phrase.translations?
+                        .find(by: \.locale, is: editedPhrase.translations.secondary.locale)?.value ?? ""
+                    let secondaryPhraseHasBeenRemoved = editedSecondaryPhraseTranslation
+                        .isEmpty && !existingSecondaryTranslation.isEmpty
+                    guard !secondaryPhraseHasBeenRemoved else { return true }
+
+                    let secondaryPhraseHasChanged = !editedSecondaryPhraseTranslation
+                        .isEmpty && editedSecondaryPhraseTranslation != existingSecondaryTranslation
+                    return secondaryPhraseHasChanged
+                }
+                .compactMap { phrase -> (AppPhrase, EditedPhrase)? in
+                    guard let phraseID = phrase.id else { return nil }
+                    guard let editedPhrase = editedPhrases.find(by: \.id, is: phraseID) else { return nil }
+
+                    return (phrase, editedPhrase)
+                }
+        }
+
+        @MainActor
+        private func addLastEditedToEditedPhrases() {
+            guard let textEditingPhrase, let textEditingPhraseID = textEditingPhrase.id
+            else { return }
+
+            var editedPhrases = editedPhrases
+            if let existingEditedPhraseIndex = editedPhrases.findIndex(by: \.id, is: textEditingPhraseID) {
+                editedPhrases = editedPhrases.removed(at: existingEditedPhraseIndex)
+            }
+
+            let editingTranslationPair = Pair(
+                primary: EditedPhrase.Translation(value: editingPrimaryPhrase, locale: locales.primary),
+                secondary: EditedPhrase.Translation(value: editingSecondaryPhrase, locale: locales.secondary)
+            )
+            editedPhrases = editedPhrases
+                .appended(EditedPhrase(id: textEditingPhraseID, translations: editingTranslationPair))
+            self.editedPhrases = editedPhrases
         }
 
         @MainActor
