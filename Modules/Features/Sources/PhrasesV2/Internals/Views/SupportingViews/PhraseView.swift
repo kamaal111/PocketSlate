@@ -75,7 +75,8 @@ struct PhraseView: View {
     private var editButtons: some View {
         HStack {
             #if os(macOS)
-            editActionButton(imageSystemName: "pencil", action: { onEditSelect() })
+            editActionButton(imageSystemName: "pencil", action: onEditSelect)
+            editActionButton(imageSystemName: "trash.fill", action: onDeleteSelect)
             #endif
         }
         .padding(.bottom, -12)
@@ -94,6 +95,10 @@ struct PhraseView: View {
             .foregroundColor(.accentColor)
             .onTapGesture(perform: action)
         #endif
+    }
+
+    private func onDeleteSelect() {
+        deletionConfirmation = true
     }
 
     private func handleDefiniteDeletion() {

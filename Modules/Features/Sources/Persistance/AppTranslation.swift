@@ -54,6 +54,11 @@ public class AppTranslation: Hashable, Identifiable {
     }
 
     @MainActor
+    public func delete() {
+        Persistance.shared.dataContainerContext.delete(self)
+    }
+
+    @MainActor
     public static func create(locale: Locale, value: String, phrase: AppPhrase) throws -> AppTranslation {
         let translation = AppTranslation(id: UUID(), locale: locale, value: value, phrase: phrase)
         Persistance.shared.dataContainerContext.insert(translation)

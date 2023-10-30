@@ -34,6 +34,7 @@ final class PhrasesManager {
         case fetchFailure(context: Error)
         case unknownTranslationFailure
         case translationError(context: Error)
+        case deleteTranslationsFailure(context: Error)
     }
 
     func createPhrase(values: Pair<String?>, locales: Pair<Locale>) async -> Result<Void, Errors> {
@@ -48,17 +49,45 @@ final class PhrasesManager {
         }
     }
 
-    func deleteTranslation(phrase _: AppPhrase, locales _: Pair<Locale>) async -> Result<Void, Errors> {
-        #warning("Handle this")
-        fatalError()
+    @MainActor
+    func deleteTranslation(phrase: AppPhrase, locales: Pair<Locale>) async -> Result<Void, Errors> {
+        await withLoading {
+            let phraseIndex = phrases.findIndex(by: \.id, is: phrase.id)
+            guard let phraseIndex else {
+                logger.error("Failed to find phrase to remove")
+                return .success(())
+            }
+
+            let phraseWithDeletedTranslations: AppPhrase?
+            do {
+                phraseWithDeletedTranslations = try phrase.deleteTranslations(for: locales.array)
+            } catch {
+                return .failure(.deleteTranslationsFailure(context: error))
+            }
+
+            if let phraseWithDeletedTranslations {
+                if phraseWithDeletedTranslations.translations?.find(where: { translation in
+                    guard let locale = translation.locale else { return false }
+                    return locales.array.contains(locale)
+                }) == nil {
+                    setPhrases(phrases.removed(at: phraseIndex))
+                } else {
+                    var newPhrases = phrases
+                    newPhrases[phraseIndex] = phraseWithDeletedTranslations
+                    setPhrases(newPhrases)
+                }
+                return .success(())
+            }
+
+            setPhrases(phrases.removed(at: phraseIndex))
+            return .success(())
+        }
     }
 
     func updatePhrases(_ phrases: [(phrase: AppPhrase, changes: EditedPhrase)]) async -> Result<Void, Errors> {
         var lastError: Error?
         var updatedPhrases: [AppPhrase] = []
         for (phrase, changes) in phrases {
-            guard let phraseID = phrase.id else { continue }
-
             var editedPhrase: AppPhrase?
             for updatedTranslation in changes.translations.array {
                 do {
@@ -135,6 +164,10 @@ final class PhrasesManager {
                 return .failure(.fetchFailure(context: error))
             }
             let phrases = translations
+                .filter { translation in
+                    guard let value = translation.value else { return false }
+                    return !value.trimmingByWhitespacesAndNewLines.isEmpty
+                }
                 .compactMap(\.phrase)
                 .uniqued(on: \.id)
             await setPhrases(phrases)

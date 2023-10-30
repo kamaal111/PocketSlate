@@ -31,7 +31,7 @@ public class AppPhrase: Hashable, Identifiable {
     @MainActor
     public func editTranslation(value: String, locale: Locale) throws -> AppPhrase {
         var translationToBeEdited = translations?.find(by: \.locale, is: locale)
-        guard translationToBeEdited?.value != value else { return self }
+        guard (translationToBeEdited?.value ?? "") != value else { return self }
 
         let isNew = translationToBeEdited == nil
         if isNew {
@@ -56,6 +56,40 @@ public class AppPhrase: Hashable, Identifiable {
 
         translations = newTranslations
         return self
+    }
+
+    @MainActor
+    public func deleteTranslations(for locales: [Locale]) throws -> AppPhrase? {
+        guard let translations else {
+            delete()
+            return nil
+        }
+
+        let translationsToRemove = translations
+            .filter { translation in
+                guard let locale = translation.locale else { return false }
+                return locales.contains(locale)
+            }
+        let translationsToRemoveIDs = translationsToRemove.compactMap(\.id)
+        let newTranslations = translations.filter { translation in
+            guard let id = translation.id else { return false }
+            return !translationsToRemoveIDs.contains(id)
+        }
+        guard !newTranslations.isEmpty else {
+            delete()
+            return nil
+        }
+
+        for translation in translationsToRemove {
+            translation.delete()
+        }
+        self.translations = newTranslations
+        return self
+    }
+
+    @MainActor
+    public func delete() {
+        Persistance.shared.dataContainerContext.delete(self)
     }
 
     @MainActor
