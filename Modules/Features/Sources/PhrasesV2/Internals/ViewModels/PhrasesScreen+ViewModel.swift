@@ -81,6 +81,7 @@ extension PhrasesScreen {
             case .secondary: currentLocale = locales.secondary
             }
 
+            #warning("Not sorting by last used anymore")
             return previouslySelectedLocales
                 .concat(Self.locales)
                 .filter { $0 != currentLocale }
