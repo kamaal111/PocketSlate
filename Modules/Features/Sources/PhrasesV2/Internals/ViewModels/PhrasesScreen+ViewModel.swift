@@ -266,9 +266,19 @@ extension PhrasesScreen {
                 }
             }
 
-            if newLocales != locales {
-                setLocales(newLocales)
+            guard newLocales != locales else { return }
+
+            var previouslySelectedLocales = UserDefaults.previouslySelectedLocales ?? []
+            let previouslySelectedLocaleIndex = previouslySelectedLocales.findIndex(
+                by: \.identifier,
+                is: locale.identifier
+            )
+            if let previouslySelectedLocaleIndex {
+                previouslySelectedLocales = previouslySelectedLocales.removed(at: previouslySelectedLocaleIndex)
             }
+            UserDefaults.previouslySelectedLocales = previouslySelectedLocales
+                .prepended(locale)
+            setLocales(newLocales)
         }
 
         @MainActor
