@@ -66,10 +66,11 @@ final class PhrasesManager {
             }
 
             if let phraseWithDeletedTranslations {
-                if phraseWithDeletedTranslations.translations?.find(where: { translation in
+                let hasTranslationOfLocales = phraseWithDeletedTranslations.translations?.find(where: { translation in
                     guard let locale = translation.locale else { return false }
                     return locales.array.contains(locale)
-                }) == nil {
+                }) == nil
+                if hasTranslationOfLocales {
                     setPhrases(phrases.removed(at: phraseIndex))
                 } else {
                     var newPhrases = phrases
