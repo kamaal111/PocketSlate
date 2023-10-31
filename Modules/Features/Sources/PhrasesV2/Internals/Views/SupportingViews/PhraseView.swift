@@ -76,7 +76,10 @@ struct PhraseView: View {
         HStack {
             #if os(macOS)
             editActionButton(imageSystemName: "pencil", action: onEditSelect)
+            #endif
             editActionButton(imageSystemName: "trash.fill", action: onDeleteSelect)
+            #if os(iOS)
+                .padding(.top, -12)
             #endif
         }
         .padding(.bottom, -12)
